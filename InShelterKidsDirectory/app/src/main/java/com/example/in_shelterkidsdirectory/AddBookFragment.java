@@ -1,5 +1,5 @@
 
-package com.example.dlpbgj;
+package com.example.in_shelterkidsdirectory;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package com.example.dlpbgj;
+package com.example.in_shelterkidsdirectory;
 
 import android.Manifest;
 import android.content.Intent;
