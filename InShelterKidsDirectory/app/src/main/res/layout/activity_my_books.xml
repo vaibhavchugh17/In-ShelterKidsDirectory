@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.in_shelterkidsdirectory.MyBooks">
+
+
+    <ListView
+        android:id="@+id/book_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="65dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_book_button"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="10dp"
+        android:clickable="true"
+        android:focusable="auto"
+        android:focusableInTouchMode="false"
+        android:visibility="visible"
+        app:backgroundTint="#0B6ACF"
+        app:elevation="9dp"
+        app:fabSize="auto"
+        app:srcCompat="@drawable/fragment" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|left"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <CheckBox
+            android:id="@+id/checkAvailable"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="90dp"
+            android:text="Available"
+            android:textColor="#ffffff"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/checkbox_selector"/>
+
+        <CheckBox
+            android:id="@+id/checkBorrowed"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="10dp"
+            android:text="Borrowed"
+            android:textColor="#ffffff"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/checkbox_selector"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

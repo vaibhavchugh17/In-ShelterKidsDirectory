@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textAllCaps="true"
+        android:text="New Notifications"
+        android:gravity="center_horizontal"
+        android:textColor="#eee9e9"
+        android:background="@drawable/custom_text_view"/>
+
+    <ListView
+        android:id="@+id/notification_listview"
+        android:layout_width="match_parent"
+        android:background="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="350dp"
+        android:layout_marginTop="40dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="390dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="30dp"
+            android:background="@drawable/custom_text_view"
+            android:gravity="center_horizontal"
+            android:text="Read Notifications"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#eee9e9"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/custom_text_view"
+            android:text="clear"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="#eee9e9"
+            android:textSize="20sp">
+
+        </Button>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/readNotification_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="430dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
+
+
+</FrameLayout>

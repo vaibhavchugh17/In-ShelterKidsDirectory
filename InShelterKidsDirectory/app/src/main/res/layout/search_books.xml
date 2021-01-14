@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:ems="10"
+            android:hint="Description"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:inputType="textPersonName"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/search"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_button"
+            android:text="SEARCH">
+
+        </Button>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        >
+
+        <CheckBox
+            android:id="@+id/check_available"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="90dp"
+            android:ems="10"
+            android:text="Available"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/checkbox_selector">
+
+        </CheckBox>
+
+
+        <CheckBox
+            android:id="@+id/check_borrowed"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="10dp"
+            android:ems="10"
+            android:text="Borrowed"
+            android:background="@drawable/checkbox_selector">
+
+        </CheckBox>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/book_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_marginTop="120dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
+
+</FrameLayout>
