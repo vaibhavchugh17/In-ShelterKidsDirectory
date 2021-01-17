@@ -176,18 +176,6 @@ public class AddBookFragment extends DialogFragment implements Serializable {
         else if (getArguments().get("Uid")!=null){
             bookUid = (String)getArguments().get("Uid");
         }
-        /**
-         * When scan button is clicked
-         * Starts new activity for scanning the barcode
-         */
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), barcode_scanner.class);
-                startActivityForResult(intent, 1);
-
-            }
-        });
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -307,12 +295,6 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                             wrong_input = true;
                             focus = bookTitle;
                         }
-/*
-                        if (book_status.equals("")) { //Mandatory to enter book's status
-                            bookStatus.setError("Please select the book's status");
-                            wrong_input = true;
-                            focus = bookStatus;
-                        }*/
 
                         if (book_description.equals("")) {    //Mandatory to enter book's description
                             bookDescription.setError("Please enter the book's description");
@@ -378,12 +360,6 @@ public class AddBookFragment extends DialogFragment implements Serializable {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if (resultCode == -1) {
-                String code = data.getStringExtra("ISBN");
-                bookISBN.setText(code);
-            }
-        }
         if (requestCode == REQUEST && resultCode == -1 && data != null && data.getData() != null) {
             path = data.getData();
             try {

@@ -106,44 +106,6 @@ public class customBookAdapter extends ArrayAdapter<Book> {
             }
         });
 
-
-
-
-
-
-  /*          ref.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                @Override
-                public void onComplete(@NonNull Task<Uri> task) {
-                    if (task.isSuccessful()) {
-                        Uri download = task.getResult();
-                        Glide.with(context).load(download.toString()).centerCrop().into(img);
-                    }
-                    else{
-                        System.out.println("OOOOOPPPPSSS");
-                        final StorageReference newRef = imagesRef.child("defaultb.png");
-                        newRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
-                            @Override
-                            public void onSuccess(@NonNull Uri downloadUrl) {
-                                Glide
-                                        .with(context)
-                                        .load(downloadUrl.toString())
-                                        .centerCrop()
-                                        .into(img);
-                            }
-                        });
-
-                    }
-
-                    }
-
-                });
-*/
-
-
-
-
-
-
         return view;
 
     }

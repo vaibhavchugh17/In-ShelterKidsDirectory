@@ -33,23 +33,13 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".UserLocation"
-            android:label="@string/title_activity_user_location" />
-        <activity android:name=".ReturnBook" />
-        <activity android:name=".AcceptBook" />
         <activity android:name=".BookRequests" />
-        <activity android:name=".BorrowBook" />
-        <activity android:name=".HandBook" />
         <activity android:name=".UserProfile" />
         <activity android:name=".ViewBookDetails" />
         <activity android:name=".barcode_scanner" />
         <activity android:name=".HomePage" />
         <activity android:name=".MyBooks" />
         <activity android:name=".Search_by_descr" />
-        <activity android:name=".View_Requests" />
-        <activity android:name=".View_Borrowed" />
-        <activity android:name=".ViewNotifications" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

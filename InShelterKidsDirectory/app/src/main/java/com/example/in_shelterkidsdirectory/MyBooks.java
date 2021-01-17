@@ -105,57 +105,15 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
                                 String uid = Integer.toString(name.size() + 1);
                                 AddBookFragment fragment = AddBookFragment.newInstance(uid);
                                 fragment.show(getSupportFragmentManager(), "ADD_BOOK");
-                                //data.put("Uid", Integer.toString(name.size() + 1));
-                                //name.add(Integer.toString(name.size() + 1));
-                                //HashMap<String, Object> array = new HashMap<>();
-                                //array.put("Array", name);
-                                /*arrayReference
-                                        .document("Array")
-                                        .update(array)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d(TAG, "Array Size successfully updated");
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.d(TAG, "Failed to update Array Size");
-                                            }
-                                        });*/
                             }
                         }
                     }
                     });
-
-                //new AddBookFragment().show(getSupportFragmentManager(), "ADD_BOOK");
             }
         });
 
         db = FirebaseFirestore.getInstance();
         userBookCollectionReference = db.collection("Users");//Creating/pointing to a sub-collection of the books that user owns
-        /*userBookCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable
-                    FirebaseFirestoreException error) { //Manages the state of the sub-collection
-                bookDataList.clear();
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    String book_title = doc.getId();
-                    String book_author = (String) doc.getData().get("Book Author");
-                    String book_ISBN = (String) doc.getData().get("Book ISBN");
-                    String book_status = (String) doc.getData().get("Book Status");
-                    String book_description = (String) doc.getData().get("Book Description");
-                    String book_owner = (String) doc.getData().get("Owner");
-                    String book_uid = (String) doc.getData().get("Uid");
-                    Book temp = new Book(book_title, book_author, book_ISBN, book_status, book_description, book_owner);
-                    temp.setUid(book_uid);
-                    bookDataList.add(temp); // Adding the cities and provinces from FireStore
-                }
-                bookAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud
-            }
-
-        });*/
         userBookCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

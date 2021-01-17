@@ -190,34 +190,6 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 startActivity(intent);
             }
         });
-        /**
-         * on press of button Book Requests the activity to request books
-         * is initialized
-         */
-
-        requests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), View_Requests.class);
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
-            }
-        });
-        /**
-         * on press of button Borrowed the activity to borrow books
-         * is initialized
-         */
-
-        borrowed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), View_Borrowed.class);
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
-            }
-        });
-
-
 
 
         /**
@@ -231,34 +203,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 fragment.show(getSupportFragmentManager(), "Profile Picture");
             }
         });
-        /**
-         * on press of button Book Requests the activity to request books
-         * is initialized
-         */
-        bookRequests.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BookRequests.class);
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
-            }
-        });
 
-        /**
-         * on press of button View Notification the activity to view the notification
-         * is initialized
-         */
-
-
-
-        viewNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ViewNotifications.class);
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
-            }
-        });
 
     }
 

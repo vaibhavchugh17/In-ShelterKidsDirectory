@@ -161,14 +161,7 @@ public class Book implements Serializable {
   public HashMap<String, Integer> getNotifications() {
     return notifications;
   }
-  /*
-      public HashMap<String, Integer> getAcceptNotifications() {
-          return acceptNotifications;
-      }
-      public HashMap<String, Integer> getDeclineNotifications() {
-          return declineNotifications;
-      }
-  */
+
   public void setNotifications(HashMap<String, Integer> notifications) {
     if (notifications!=null){
       this.notifications = notifications;
@@ -178,14 +171,7 @@ public class Book implements Serializable {
   public void addNotification(String user){
     notifications.put(user,0);
   }
-  /*
-      public void addAcceptNotification(String user){
-          acceptNotifications.put(user,0);
-      }
-      public void addDeclineNotification(String user){
-          declineNotifications.put(user,0);
-      }
-  */
+
   public void updateNotification(String user){
     notifications.put(user,1);
   }
