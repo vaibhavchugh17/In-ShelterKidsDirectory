@@ -33,7 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Search_by_descr extends AppCompatActivity implements RequestBookFragment.OnFragmentInteractionListener {
+public class Search_by_descr extends AppCompatActivity {
     ListView bookList;
     ArrayAdapter<Book> bookAdapter;
     ArrayList<Book> bookDataList;
