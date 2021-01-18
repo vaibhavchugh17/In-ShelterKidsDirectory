@@ -32,15 +32,11 @@ import java.util.Map;
 public class HomePage extends AppCompatActivity implements ImageFragment.OnFragmentInteractionListener {
     public static final String EXTRA_MESSAGE2 = "com.example.dlpbgj.MESSAGE2";
 
-    ImageButton viewNotifications;
     ImageButton info_button;
     ImageButton userProfiles;
-    ImageButton myBooksButton;
+    ImageButton KidsButton;
     ImageButton search;
-    ImageButton requests;
-    ImageButton borrowed;
     ImageButton signOut;
-    ImageButton bookRequests;
     FirebaseStorage storage;
     FirebaseFirestore Userdb;
     private User currentUser;
@@ -58,13 +54,9 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
         currentUser = (User) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE1);//Catching the user object given by the MainActivity
         info_button = findViewById(R.id.MyInfo);
         userProfiles = findViewById(R.id.UserProfiles);
-        myBooksButton = findViewById(R.id.MyBooks);
+        KidsButton = findViewById(R.id.AllKids);
         search = findViewById(R.id.Search);
-        requests = findViewById(R.id.Requests);
-        borrowed = findViewById(R.id.Borrowed);
         signOut = findViewById(R.id.SignOut);
-        bookRequests = findViewById(R.id.BookRequests);
-        viewNotifications = findViewById(R.id.viewNotifications);
         final ImageView profile = findViewById(R.id.Profile);
         storage = FirebaseStorage.getInstance();
         final StorageReference storageReference = storage.getReference();
@@ -73,8 +65,8 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
         final String success = "Signed Out!";
 
 
-        final CollectionReference userBookCollectionReference = Userdb.collection("Users");
-        DocumentReference docRef = userBookCollectionReference.document(currentUser.getUsername()); //If username does not exist then prompt for a sign-up
+        final CollectionReference KidCollectionReference = Userdb.collection("Users");
+        DocumentReference docRef = KidCollectionReference.document(currentUser.getUsername()); //If username does not exist then prompt for a sign-up
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -124,22 +116,21 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
             }
         });
         /**
-         * on press of button Book Requests the activity to borrow books
+         * on press of button Kids the activity to view all the kids
          * is initialized
          */
 
 
-        myBooksButton.setOnClickListener(new View.OnClickListener() {
+        KidsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {        //When user clicks this button, a list of all the books that the owner owns is shown
+            public void onClick(View view) {        //When user clicks this button, a list of all the kids is shown
                 Intent intent = new Intent(getApplicationContext(), MyBooks.class);
                 intent.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the MyBooks activity
                 startActivity(intent);
             }
         });
         /**
-         * on press of button Book Requests the activity to borrow books
-         * is initialized
+         * on press of signOut, user is signed out and sent back to the main activity
          */
 
         signOut.setOnClickListener(new View.OnClickListener() {
@@ -152,7 +143,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
             }
         });
         /**
-         * on press of button Book Requests the activity to borrow books
+         * on press of button UserProfiles
          * is initialized
          */
 
@@ -178,7 +169,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
             }
         });
         /**
-         * on press of button Search Books the activity to search
+         * on press of button Search the activity to search through all the kids
          * is initialized
          */
 

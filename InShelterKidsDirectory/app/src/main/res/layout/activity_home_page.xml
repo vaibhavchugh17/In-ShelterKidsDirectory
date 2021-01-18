@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageButton
-                    android:id="@+id/MyBooks"
+                    android:id="@+id/AllKids"
                     android:src="@drawable/books2"
                     android:layout_width="80dp"
                     android:layout_height="80dp">
