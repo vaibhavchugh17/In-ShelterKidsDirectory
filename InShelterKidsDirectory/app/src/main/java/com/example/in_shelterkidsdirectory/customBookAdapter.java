@@ -75,36 +75,51 @@ public class customBookAdapter extends ArrayAdapter<Book> {
         storageReference = storage.getReference();
         StorageReference imagesRef =  storageReference.child("images/");
         final StorageReference defaultRef = imagesRef.child("defaultb.png");
+        try {
+            final StorageReference ref = imagesRef.child(book.getUid());
+            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+                    Glide
+                            .with(context)
+                            .load(downloadUrl.toString())
+                            .centerCrop()
+                            .into(img);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("BookImageError", e.getMessage());
+                    defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadUrl) {
 
-        final StorageReference ref = imagesRef.child(book.getUid());
-        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide
-                        .with(context)
-                        .load(downloadUrl.toString())
-                        .centerCrop()
-                        .into(img);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("BookImageError", e.getMessage());
-                defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri downloadUrl) {
-                        
-                        Glide
-                                .with(context)
-                                .load(downloadUrl.toString())
-                                .centerCrop()
-                                .into(img);
-                    }
-                });
+                            Glide
+                                    .with(context)
+                                    .load(downloadUrl.toString())
+                                    .centerCrop()
+                                    .into(img);
+                        }
+                    });
 
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception e){
+            defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+
+                    Glide
+                            .with(context)
+                            .load(downloadUrl.toString())
+                            .centerCrop()
+                            .into(img);
+                }
+            });
+        }
+
 
         return view;
 
