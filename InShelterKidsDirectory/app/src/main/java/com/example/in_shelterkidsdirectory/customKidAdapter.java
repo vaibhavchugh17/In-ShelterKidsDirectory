@@ -28,21 +28,21 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class customKidAdapter extends ArrayAdapter<Book> {
+public class customKidAdapter extends ArrayAdapter<Kid> {
 
-    private final ArrayList<Book> books;
+    private final ArrayList<Kid> kids;
     private final Context context;
     FirebaseStorage storage;
     StorageReference storageReference;
 
-    public customKidAdapter(Context context, ArrayList<Book> books) {
-        super(context, 0, books);
-        this.books = books;
+    public customKidAdapter(Context context, ArrayList<Kid> kids) {
+        super(context, 0, kids);
+        this.kids = kids;
         this.context = context;
     }
 
     /**
-     * Function to use our custom array adapter to show the books of a user.
+     * Function to use our custom array adapter to show the kids of a user.
      *
      * @param position
      * @param convertView
@@ -55,20 +55,20 @@ public class customKidAdapter extends ArrayAdapter<Book> {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.bookcontent, parent, false); //Attaches layout from bookcontent to each item inside the ListView
+            view = LayoutInflater.from(context).inflate(R.layout.bookcontent, parent, false); //Attaches layout from kidcontent to each item inside the ListView
         }
 
-        Book book = books.get(position);
+        Kid kid = kids.get(position);
 
         ImageView img = view.findViewById(R.id.imageView1);
-        TextView bookTitle = view.findViewById(R.id.textView1);
-        TextView bookOwner = view.findViewById(R.id.textView2);
-        TextView bookStatus = view.findViewById(R.id.textView3);
+        TextView kidTitle = view.findViewById(R.id.textView1);
+
+        TextView kidStatus = view.findViewById(R.id.textView3);
 
 
-        bookTitle.setText(book.getTitle());
-        bookStatus.setText(book.getStatus()); //Setting the values of each textView inside the view in ListView
-        bookOwner.setText(book.getOwner());
+        kidTitle.setText(kid.getFirstName());
+        kidStatus.setText(kid.getStatus()); //Setting the values of each textView inside the view in ListView
+
 
 
         storage = FirebaseStorage.getInstance();
@@ -76,7 +76,7 @@ public class customKidAdapter extends ArrayAdapter<Book> {
         StorageReference imagesRef =  storageReference.child("images/");
         final StorageReference defaultRef = imagesRef.child("defaultb.png");
         try {
-            final StorageReference ref = imagesRef.child(book.getUid());
+            final StorageReference ref = imagesRef.child(kid.getUID());
             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri downloadUrl) {
@@ -89,7 +89,7 @@ public class customKidAdapter extends ArrayAdapter<Book> {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d("BookImageError", e.getMessage());
+                    Log.d("KidImageError", e.getMessage());
                     defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri downloadUrl) {

@@ -1,8 +1,9 @@
 package com.example.in_shelterkidsdirectory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Kid {
+public class Kid implements Serializable {
     String firstName;
     String lastName;
     String middleName;
@@ -10,10 +11,11 @@ public class Kid {
     String DOB;
     String hairColor;
     String status;
-    float height;
+    String UID;
+    String height;
     String nationality;
-    ArrayList<String> allergies;
-    ArrayList<String> birthmarks;
+    String allergies;
+    String birthmarks;
 
     //These attributes down below are not included in the constructor as they will be added later when the kid information is added using setters
     Parent father;
@@ -22,7 +24,7 @@ public class Kid {
     ArrayList<String> notes;
     ArrayList<String> referrals;
 
-    public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, String status, float height, String nationality, ArrayList<String> allergies, ArrayList<String> birthmarks) {
+    public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, String status, String height, String nationality, String allergies, String birthmarks) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -84,11 +86,11 @@ public class Kid {
         this.hairColor = hairColor;
     }
 
-    public float getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(float height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
@@ -100,19 +102,19 @@ public class Kid {
         this.nationality = nationality;
     }
 
-    public ArrayList<String> getAllergies() {
+    public String getAllergies() {
         return allergies;
     }
 
-    public void setAllergies(ArrayList<String> allergies) {
+    public void setAllergies(String allergies) {
         this.allergies = allergies;
     }
 
-    public ArrayList<String> getBirthmarks() {
+    public String getBirthmarks() {
         return birthmarks;
     }
 
-    public void setBirthmarks(ArrayList<String> birthmarks) {
+    public void setBirthmarks(String birthmarks) {
         this.birthmarks = birthmarks;
     }
 
@@ -162,5 +164,13 @@ public class Kid {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 }

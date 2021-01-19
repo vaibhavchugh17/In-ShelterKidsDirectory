@@ -9,12 +9,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:weightSum="2"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:background="#202F65"
             android:padding="20dp">
 
@@ -31,12 +33,12 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:layout_toRightOf="@+id/bookPic"
+                android:layout_toRightOf="@+id/kidPic"
                 android:background="@drawable/custom_button"
                 android:text="Choose"
                 android:textColor="#FFFFFF"
                 android:layout_marginStart="20dp"
-                android:layout_toEndOf="@+id/bookPic" />
+                android:layout_toEndOf="@+id/kidPic" />
 
             <Button
                 android:id="@+id/Picture1"
@@ -45,7 +47,7 @@
                 android:layout_below="@+id/Picture"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/bookPic"
+                android:layout_toRightOf="@+id/kidPic"
                 android:background="@drawable/custom_button"
                 android:text="UPLOAD"
                 android:textColor="#FFFFFF" />
@@ -57,7 +59,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/Picture1"
-                android:layout_toRightOf="@+id/bookPic"
+                android:layout_toRightOf="@+id/kidPic"
                 android:background="@drawable/custom_button"
                 android:text="DELETE"
                 android:textColor="#FFFFFF"/>
@@ -65,8 +67,9 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="535dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -88,6 +91,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,6 +192,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:hint="Allergies">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/kid_allergies"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Birthmarks">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/kid_birthmarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:hint="Hair Color">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -218,20 +252,6 @@
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </LinearLayout>
 
     </LinearLayout>

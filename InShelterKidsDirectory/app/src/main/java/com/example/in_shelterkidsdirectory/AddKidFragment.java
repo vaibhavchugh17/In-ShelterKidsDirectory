@@ -9,19 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,9 +40,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public class AddBookFragment extends DialogFragment implements Serializable {
+public class AddKidFragment extends DialogFragment implements Serializable {
     private TextInputEditText kidFirstName;
     private TextInputEditText kidLastName;
     private TextInputEditText kidMiddleName;
@@ -56,6 +50,8 @@ public class AddBookFragment extends DialogFragment implements Serializable {
     private TextInputEditText kidDOB;
     private TextInputEditText kidEyeColor;
     private TextInputEditText kidHairColor;
+    private TextInputEditText kidAllergies;
+    private TextInputEditText kidBirthmarks;
     private Kid kid;
     private TextView kidStatus;
     private ImageView kidPic;
@@ -63,7 +59,7 @@ public class AddBookFragment extends DialogFragment implements Serializable {
     //To add. Button for adding parents. To add functionalities for notes, referrals, concerns, allergies, birthmarks, legalGuardians
 
 
-    private String bookUid;
+    private String kidUid;
     private OnFragmentInteractionListener listener;
     private final int REQUEST = 22;
     private Uri path;
@@ -73,28 +69,28 @@ public class AddBookFragment extends DialogFragment implements Serializable {
 
 
     public interface OnFragmentInteractionListener {
-        void onOkPressed(Book newBook);
+        void onOkPressed(Kid newKid);
 
-        void onOkPressed(Book book, String oldBookName);
+        void onOkPressed(Kid kid, String oldKidName);
 
-        void onDeletePressed(Book book);
+        void onDeletePressed(Kid kid);
 
         void onOkPressed();
     }
 
-    static AddBookFragment newInstance(Book book, User user) {
+    static AddKidFragment newInstance(Kid kid, User user) {
         Bundle args = new Bundle();
-        args.putSerializable("Book", book);
+        args.putSerializable("Kid", kid);
         args.putSerializable("User", user);
-        AddBookFragment fragment = new AddBookFragment();
+        AddKidFragment fragment = new AddKidFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    static AddBookFragment newInstance(String uid){
+    static AddKidFragment newInstance(String uid){
         Bundle args = new Bundle();
         args.putSerializable("Uid",uid);
-        AddBookFragment fragment = new AddBookFragment();
+        AddKidFragment fragment = new AddKidFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -117,7 +113,7 @@ public class AddBookFragment extends DialogFragment implements Serializable {
     }
 
     /**
-     * When a book is selected, the edit fragment opens up
+     * When a kid is selected, the edit fragment opens up
      *
      * @param savedInstanceState
      * @return
@@ -134,7 +130,8 @@ public class AddBookFragment extends DialogFragment implements Serializable {
         kidDOB = view.findViewById(R.id.kidBirthDate);
         kidEyeColor = view.findViewById(R.id.kid_eyeColor);
         kidHairColor = view.findViewById(R.id.kid_hairColor);
-
+        kidAllergies = view.findViewById(R.id.kid_allergies);
+        kidBirthmarks = view.findViewById(R.id.kid_birthmarks);
         kidPic = view.findViewById(R.id.kidPic);
         kidStatus = view.findViewById(R.id.kid_status_editText);
         final ArrayList<String> validStatus = new ArrayList<String>();
@@ -157,8 +154,7 @@ public class AddBookFragment extends DialogFragment implements Serializable {
 
         String title = "Add Kid";
 
-        if (getArguments().get("Book") != null) {
-            book = (Book) getArguments().get("Book");
+        if (getArguments().get("Kid") != null) {
             kid  = (Kid) getArguments().get("Kid");
             title = "Edit Kid";
 
@@ -171,11 +167,12 @@ public class AddBookFragment extends DialogFragment implements Serializable {
             kidEyeColor.setText(kid.getEyeColor());
             kidHairColor.setText(kid.getHairColor());
             kidStatus.setText(kid.getStatus());
-
+            kidAllergies.setText(kid.getAllergies());
+            kidBirthmarks.setText(kid.getBirthmarks());
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageReference = storage.getReference();
-            if (book.getUid()!=null){
-                StorageReference imagesRef = storageReference.child("images/" + book.getUid());
+            if (kid.getUID()!=null){
+                StorageReference imagesRef = storageReference.child("images/" + kid.getUID());
                 imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri downloadUrl) {
@@ -183,22 +180,22 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                                 .with(getContext())
                                 .load(downloadUrl.toString())
                                 .centerCrop()
-                                .into(bookPic);
+                                .into(kidPic);
                     }
                 });
             }
 
         }
         else if (getArguments().get("Uid")!=null){
-            bookUid = (String)getArguments().get("Uid");
+            kidUid = (String)getArguments().get("Uid");
         }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0){
-                    if (getArguments().get("Book") != null){
-                        kidStatus.setText("Kid Status -" + book.getStatus());
+                    if (getArguments().get("Kid") != null){
+                        kidStatus.setText("Kid Status -" + kid.getStatus());
                     }
                     else{
                         kidStatus.setText("Kid Status -");
@@ -212,8 +209,8 @@ public class AddBookFragment extends DialogFragment implements Serializable {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                if (getArguments().get("Book") != null){
-                    kidStatus.setText("Book Status -" + kid.getStatus());
+                if (getArguments().get("Kid") != null){
+                    kidStatus.setText("Kid Status -" + kid.getStatus());
                 }
                 else{
                     kidStatus.setText(statusStr);
@@ -229,19 +226,19 @@ public class AddBookFragment extends DialogFragment implements Serializable {
         picture2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadPhoto(book);
+                uploadPhoto(kid);
 
             }
         });
         deletePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (book.getUid() != null){
-                    StorageReference ref = storageReference.child("images/" + book.getUid());
+                if (kid.getUID() != null){
+                    StorageReference ref = storageReference.child("images/" + kid.getUID());
                     ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast toast = Toast.makeText(getContext(), "Book Photo Successfully deleted!", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(getContext(), "Kid Photo Successfully deleted!", Toast.LENGTH_SHORT);
                             toast.show();
                             Fragment currentFragment = getFragmentManager().findFragmentByTag("ADD_BOOK");
                             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -253,13 +250,13 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                             .addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast toast = Toast.makeText(getContext(), "Failed to delete book photo!", Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), "Failed to delete kid photo!", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
                             });
                 }
                 else{
-                    Toast toast = Toast.makeText(getContext(), "Please upload a book photo first :)", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), "Please upload a kid photo first :)", Toast.LENGTH_SHORT);
                     toast.show();
                 }
 
@@ -283,9 +280,9 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                 bDel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (getArguments().get("Book") != null) {
-                            book = (Book) getArguments().get("Book");
-                            listener.onDeletePressed(book);
+                        if (getArguments().get("Kid") != null) {
+                            kid = (Kid) getArguments().get("Kid");
+                            listener.onDeletePressed(kid);
                         } else {
                             listener.onOkPressed();
                         }
@@ -309,6 +306,8 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                         String eye_color = kidEyeColor.getText().toString();
                         String hair_color =kidHairColor.getText().toString();
                         String kid_status = kidStatus.getText().toString();
+                        String kid_allergies = kidAllergies.getText().toString();
+                        String kid_birthmarks = kidBirthmarks.getText().toString();
                         kid_status = kid_status.replace(statusStr,"");
                         View focus = null;
                         boolean wrong_input = false;
@@ -361,12 +360,11 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                         if (wrong_input) {
                             focus.requestFocus();
 
-                        } else if (getArguments().get("Book") != null) {
-
-                            Book book = (Book) getArguments().get("Book");
-                            User user = (User) getArguments().get("User");
+                        } else if (getArguments().get("Kid") != null) {
 
                             Kid kid = (Kid) getArguments().get("Kid");
+                            User user = (User) getArguments().get("User");
+
                             kid.setFirstName(first_name);
                             kid.setLastName(last_name);
                             kid.setMiddleName(middle_name);
@@ -378,23 +376,12 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                             kid.setStatus(kid_status);
 
 
-
-
-
-
-
-                            String temp = book.getTitle();
-
-                            book.setAuthor(book_author);
-                            book.setISBN(book_ISBN);
-                            book.setStatus(book_status.replace(statusStr,""));
-                            book.setTitle(book_title);
-                            book.setDescription(book_description);
-                            book.setOwner(user.getUsername());
-                            listener.onOkPressed(book, temp);
+                            String temp = kid.getFirstName();
+                            kid.setStatus(kid_status.replace(statusStr,""));
+                            listener.onOkPressed(kid, temp);
                             dialog.dismiss();
                         } else {
-                            listener.onOkPressed(new Book(book_title, book_author, book_ISBN, book_status, book_description)); //Send the inputted book as a parameter to the main function's implementation of this method
+                            listener.onOkPressed(new Kid(first_name,last_name,middle_name,eye_color,dob,hair_color,kid_status,height,nationality,kid_allergies,kid_birthmarks)); //Send the inputted kid as a parameter to the main function's implementation of this method
                             dialog.dismiss();
                         }
 
@@ -425,7 +412,7 @@ public class AddBookFragment extends DialogFragment implements Serializable {
             try {
                 Context applicationContext = Kids.getContextOfApplication();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), path);
-                bookPic.setImageBitmap(bitmap);
+                kidPic.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -447,13 +434,13 @@ public class AddBookFragment extends DialogFragment implements Serializable {
         startActivityForResult(Intent.createChooser(intent, "Select Image"), REQUEST);
     }
 
-    private void uploadPhoto(Book book) {
+    private void uploadPhoto(Kid kid) {
         if (path != null) {
             final ProgressDialog statusDialog = new ProgressDialog(this.getContext());
             statusDialog.setTitle("Uploading");
             statusDialog.show();
-            //Log.d("Book Fragment",book.getUid());
-            StorageReference ref = storageReference.child("images/" + bookUid);
+            //Log.d("Kid Fragment",kid.getUid());
+            StorageReference ref = storageReference.child("images/" + kidUid);
             ref.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

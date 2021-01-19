@@ -35,15 +35,15 @@ import java.util.HashMap;
 
 public class Search_by_descr extends AppCompatActivity {
     ListView bookList;
-    ArrayAdapter<Book> bookAdapter;
-    ArrayList<Book> bookDataList;
-    ArrayList<Book> filteredDataList;
-    ArrayAdapter<Book> filteredBookAdapter;
+    ArrayAdapter<Kid> bookAdapter;
+    ArrayList<Kid> bookDataList;
+    ArrayList<Kid> filteredDataList;
+    ArrayAdapter<Kid> filteredKidAdapter;
     FirebaseFirestore db;
     EditText description;
     Button search;
-    CollectionReference userBookCollectionReference;
-    String TAG = "BookSearch";
+    CollectionReference userKidCollectionReference;
+    String TAG = "KidSearch";
     CheckBox checkAvail;
     CheckBox checkBorr;
     String availableConstraint = "available";
@@ -63,7 +63,7 @@ public class Search_by_descr extends AppCompatActivity {
         bookDataList = new ArrayList<>();
         filteredDataList = new ArrayList<>();
         bookAdapter = new customKidAdapter(this, bookDataList);
-        filteredBookAdapter = new customKidAdapter(this, filteredDataList);
+        filteredKidAdapter = new customKidAdapter(this, filteredDataList);
         bookList.setAdapter(bookAdapter);
 
         db = FirebaseFirestore.getInstance();
@@ -81,39 +81,39 @@ public class Search_by_descr extends AppCompatActivity {
                         final String descrInput = description.getText().toString();
                         for (QueryDocumentSnapshot d : value) {
                             final String username = d.getId();
-                            CollectionReference eachUser = Db.collection("Users/" + username + "/MyBooks");
+                            CollectionReference eachUser = Db.collection("Users/" + username + "/MyKids");
                             eachUser.addSnapshotListener(new EventListener<QuerySnapshot>() {
                                 @Override
                                 public void onEvent(@Nullable QuerySnapshot value2, @Nullable FirebaseFirestoreException error) {
-                                    for (QueryDocumentSnapshot newBook : value2) {
-                                        String book_description = (String) newBook.getData().get("Book Description");
-                                        if (!currentUser.getUsername().equals(newBook.getData().get("Owner"))){
+                                    for (QueryDocumentSnapshot newKid : value2) {
+                                        String book_description = (String) newKid.getData().get("Kid Description");
+                                        if (!currentUser.getUsername().equals(newKid.getData().get("Owner"))){
                                             if (book_description != null) {
                                                 if (book_description.contains(descrInput)) {
-                                                    if (!("Borrowed").equals(newBook.getData().get("Book Status")) && !("Accepted").equals(newBook.getData().get("Book Status"))){
-                                                        String book_title = newBook.getId();
-                                                        String book_author = (String) newBook.getData().get("Book Author");
-                                                        String book_ISBN = (String) newBook.getData().get("Book ISBN");
-                                                        String book_status = (String) newBook.getData().get("Book Status");
-                                                        HashMap<String,String> req = (HashMap<String, String>) newBook.getData().get("Requests");
-                                                        Book thisBook = new Book(book_title, book_author, book_ISBN, book_status, book_description, username, req);
-                                                        bookDataList.add(thisBook);
+                                                    if (!("Borrowed").equals(newKid.getData().get("Kid Status")) && !("Accepted").equals(newKid.getData().get("Kid Status"))){
+                                                        String book_title = newKid.getId();
+                                                        String book_author = (String) newKid.getData().get("Kid Author");
+                                                        String book_ISBN = (String) newKid.getData().get("Kid ISBN");
+                                                        String book_status = (String) newKid.getData().get("Kid Status");
+                                                        HashMap<String,String> req = (HashMap<String, String>) newKid.getData().get("Requests");
+                                                        Kid thisKid = new Kid("test","test","test","test","test","test","test","test","test","test","test");
+                                                        bookDataList.add(thisKid);
                                                         bookAdapter.notifyDataSetChanged();
                                                         if (checkAvail.isChecked() && checkBorr.isChecked()) {
                                                             if (!(book_status.toLowerCase().equals(availableConstraint) || book_status.toLowerCase().equals(borrowedConstraint))) {
-                                                                bookDataList.remove(thisBook);
+                                                                bookDataList.remove(thisKid);
                                                                 bookAdapter.notifyDataSetChanged();
                                                             }
                                                         }
                                                         if (checkBorr.isChecked() && !checkAvail.isChecked()) {
                                                             if (!(book_status.toLowerCase().equals(borrowedConstraint))) {
-                                                                bookDataList.remove(thisBook);
+                                                                bookDataList.remove(thisKid);
                                                                 bookAdapter.notifyDataSetChanged();
                                                             }
                                                         }
                                                         if (!checkBorr.isChecked() && checkAvail.isChecked()) {
                                                             if (!(book_status.toLowerCase().equals(availableConstraint))) {
-                                                                bookDataList.remove(thisBook);
+                                                                bookDataList.remove(thisKid);
                                                                 bookAdapter.notifyDataSetChanged();
                                                             }
                                                         }
