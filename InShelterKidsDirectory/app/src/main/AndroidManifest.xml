@@ -33,7 +33,7 @@
         <activity android:name=".UserProfile" />
         <activity android:name=".ViewBookDetails" />
         <activity android:name=".HomePage" />
-        <activity android:name=".MyBooks" />
+        <activity android:name=".Kids" />
         <activity android:name=".Search_by_descr" />
         <activity android:name=".MainActivity">
             <intent-filter>
