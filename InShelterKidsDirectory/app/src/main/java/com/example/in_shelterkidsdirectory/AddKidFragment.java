@@ -2,6 +2,7 @@
 package com.example.in_shelterkidsdirectory;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AddKidFragment extends DialogFragment implements Serializable {
     private TextInputEditText kidFirstName;
@@ -52,6 +56,8 @@ public class AddKidFragment extends DialogFragment implements Serializable {
     private TextInputEditText kidHairColor;
     private TextInputEditText kidAllergies;
     private TextInputEditText kidBirthmarks;
+    DatePickerDialog.OnDateSetListener DateListener;
+    private Button kidDobButton;
     private Kid kid;
     private TextView kidStatus;
     private ImageView kidPic;
@@ -134,6 +140,7 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         kidBirthmarks = view.findViewById(R.id.kid_birthmarks);
         kidPic = view.findViewById(R.id.kidPic);
         kidStatus = view.findViewById(R.id.kid_status_editText);
+        kidDobButton = view.findViewById(R.id.select_date_kid);
         final ArrayList<String> validStatus = new ArrayList<String>();
         validStatus.add("Residential");
         validStatus.add("Out-Reach");
@@ -154,9 +161,30 @@ public class AddKidFragment extends DialogFragment implements Serializable {
 
         String title = "Add Kid";
 
+        kidDobButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int date = calendar.get(Calendar.DATE);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,DateListener,year,month,date);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        DateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                String temp = i2 + "/" + i1 + "/" + i ;
+                kidDOB.setText(temp);
+            }
+        };
+
         if (getArguments().get("Kid") != null) {
             kid  = (Kid) getArguments().get("Kid");
-            title = "Edit Kid";
+            title = "Edit Kid Details";
 
             kidFirstName.setText(kid.getFirstName());
             kidLastName.setText(kid.getLastName());

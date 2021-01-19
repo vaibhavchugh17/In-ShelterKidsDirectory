@@ -455,7 +455,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public void onDeletePressed(Kid kid) {
-        CollectionReference collectionReference = db.collection("Users/"+currentUser.getUsername()+"/MyKids");
+        CollectionReference collectionReference = db.collection("Kids");
         collectionReference
                 .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
                 .delete()

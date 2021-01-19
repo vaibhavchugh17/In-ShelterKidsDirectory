@@ -74,7 +74,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/book_list"
+        android:id="@+id/kid_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
