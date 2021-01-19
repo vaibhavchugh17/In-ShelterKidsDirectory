@@ -19,7 +19,7 @@
             android:padding="20dp">
 
             <ImageView
-                android:id="@+id/bookPic"
+                android:id="@+id/kidPic"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:layout_centerVertical="true"/>
@@ -76,39 +76,71 @@
                 android:layout_marginBottom="20dp"
                 android:text="Required Fields*" />
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="First Name*">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/kid_firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Middle Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/kid_middleName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Last Name*">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/kid_lastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:hint="ISBN Code">
+                    android:hint="Date of Birth*">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/book_ISBN_editText"
+                        android:id="@+id/kidBirthDate"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:layout_weight="2"/>
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageButton
-                    android:id="@+id/scan2"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/barcode"
-                    android:layout_marginStart="20dp"
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="SCAN"
-                    android:textColor="#FFFFFF"/>
+                    android:layout_weight="2"
+                    android:textColor="#FFFFFF"
+                    android:text="SELECT Date"
+                    android:background="@drawable/custom_button"
+                    android:id="@+id/select_date_kid">
+                </Button>
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -116,10 +148,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Book Title*">
+                android:hint="Height (in decimal)">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/book_title_editText"
+                    android:id="@+id/kid_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -129,10 +161,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Book Author">
+                android:hint="Nationality">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/book_author_editText"
+                    android:id="@+id/kid_nationality"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -142,24 +174,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Book Description*">
+                android:hint="Eye Color">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/book_description_editText"
+                    android:id="@+id/kid_eyeColor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Hair Color">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/kid_hairColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:hint="Book Status*">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Kid Status*">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/book_status_editText"
+                    android:id="@+id/kid_status_editText"
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
@@ -168,12 +212,23 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
             <Spinner
-                android:id="@+id/book_status"
+                android:id="@+id/kid_status"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp" />
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ public class Kid {
     String eyeColor;
     String DOB;
     String hairColor;
+    String status;
     float height;
     String nationality;
     ArrayList<String> allergies;
@@ -21,7 +22,7 @@ public class Kid {
     ArrayList<String> notes;
     ArrayList<String> referrals;
 
-    public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, float height, String nationality, ArrayList<String> allergies, ArrayList<String> birthmarks) {
+    public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, String status, float height, String nationality, ArrayList<String> allergies, ArrayList<String> birthmarks) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -32,6 +33,7 @@ public class Kid {
         this.nationality = nationality;
         this.allergies = allergies;
         this.birthmarks = birthmarks;
+        this.status=status;
     }
 
     public String getFirstName() {
@@ -152,5 +154,13 @@ public class Kid {
 
     public void setReferrals(ArrayList<String> referrals) {
         this.referrals = referrals;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

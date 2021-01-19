@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 //When the user clicks Kids button from HomePage, this activity gets invoked
-//To display a list of all the kids
+//To display a list of all the kids. WORKING EDIT TILL HERE.
 public class Kids extends AppCompatActivity implements AddBookFragment.OnFragmentInteractionListener {
     public static Context contextOfApplication;
     ListView kidList;
@@ -72,8 +72,8 @@ public class Kids extends AppCompatActivity implements AddBookFragment.OnFragmen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_books);
-        kidList = findViewById(R.id.book_list);
+        setContentView(R.layout.activity_all_kids);
+        kidList = findViewById(R.id.kid_list);
         contextOfApplication = getApplicationContext();
 
         storage = FirebaseStorage.getInstance();
@@ -89,8 +89,8 @@ public class Kids extends AppCompatActivity implements AddBookFragment.OnFragmen
         filteredKidAdapter = new customKidAdapter(this, filteredDataList);
 
 
-        final FloatingActionButton addCityButton = findViewById(R.id.add_book_button);  //Invoking a fragment to add the books when the FAB is clicked
-        addCityButton.setOnClickListener(new View.OnClickListener() {
+        final FloatingActionButton addKidButton = findViewById(R.id.add_kid_button);  //Invoking a fragment to add the books when the FAB is clicked
+        addKidButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 arrayReference = db.collection("GlobalArray");

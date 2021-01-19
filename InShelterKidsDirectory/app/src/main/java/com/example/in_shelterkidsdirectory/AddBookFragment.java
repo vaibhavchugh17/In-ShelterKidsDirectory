@@ -48,18 +48,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AddBookFragment extends DialogFragment implements Serializable {
-    private TextInputEditText bookTitle;
-    private TextInputEditText bookAuthor;
-    private TextInputEditText bookISBN;
+    private TextInputEditText kidFirstName;
+    private TextInputEditText kidLastName;
+    private TextInputEditText kidMiddleName;
+    private TextInputEditText kidNationality;
+    private TextInputEditText kidHeight;
+    private TextInputEditText kidDOB;
+    private TextInputEditText kidEyeColor;
+    private TextInputEditText kidHairColor;
+    private Kid kid;
+    private TextView kidStatus;
+    private ImageView kidPic;
+
+    //To add. Button for adding parents. To add functionalities for notes, referrals, concerns, allergies, birthmarks, legalGuardians
+
+
     private String bookUid;
-    private TextView bookStatus;
-    private TextInputEditText bookDescription;
     private OnFragmentInteractionListener listener;
     private final int REQUEST = 22;
     private Uri path;
-    private ImageView bookPic;
-    private Book book;
-    private final String statusStr = "Book Status -";
+    private final String statusStr = "Kid Status -";
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -118,44 +126,52 @@ public class AddBookFragment extends DialogFragment implements Serializable {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.add_book_fragment_layout, null);
-        bookPic = view.findViewById(R.id.bookPic);
-        bookTitle = view.findViewById(R.id.book_title_editText);
-        bookAuthor = view.findViewById(R.id.book_author_editText);
-        bookISBN = view.findViewById(R.id.book_ISBN_editText);
-        bookStatus = view.findViewById(R.id.book_status_editText);
-        bookDescription = view.findViewById(R.id.book_description_editText);
+        kidFirstName = view.findViewById(R.id.kid_firstName);
+        kidLastName = view.findViewById(R.id.kid_lastName);
+        kidMiddleName = view.findViewById(R.id.kid_middleName);
+        kidNationality = view.findViewById(R.id.kid_nationality);
+        kidHeight = view.findViewById(R.id.kid_height);
+        kidDOB = view.findViewById(R.id.kidBirthDate);
+        kidEyeColor = view.findViewById(R.id.kid_eyeColor);
+        kidHairColor = view.findViewById(R.id.kid_hairColor);
+
+        kidPic = view.findViewById(R.id.kidPic);
+        kidStatus = view.findViewById(R.id.kid_status_editText);
         final ArrayList<String> validStatus = new ArrayList<String>();
-        validStatus.add("Available");
-        validStatus.add("Borrowed");
-        validStatus.add("Accepted");
-        validStatus.add("Requested");
+        validStatus.add("Residential");
+        validStatus.add("Out-Reach");
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        ImageButton scan = view.findViewById(R.id.scan2);
         Button picture = view.findViewById(R.id.Picture);
         Button picture2 = view.findViewById(R.id.Picture1);
         Button deletePhoto = view.findViewById(R.id.delete_photo);
-        Spinner spinner = view.findViewById(R.id.book_status);
+        Spinner spinner = view.findViewById(R.id.kid_status);
         final ArrayList<String> Statuses = new ArrayList<>();
         Statuses.add("Select Status:");
-        Statuses.add("Available");
-        Statuses.add("Borrowed");
-        Statuses.add("Requested");
+        Statuses.add("Residential");
+        Statuses.add("Out-Reach");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.spinner_layout, Statuses);
         adapter.setDropDownViewResource(R.layout.spinner_layout);
         spinner.setAdapter(adapter);
 
-        String title = "Add Book";
+        String title = "Add Kid";
 
         if (getArguments().get("Book") != null) {
             book = (Book) getArguments().get("Book");
-            title = "Edit Book";
-            bookTitle.setText(book.getTitle());
-            bookAuthor.setText(book.getAuthor());
-            bookISBN.setText(book.getISBN());
-            bookStatus.setText(book.getStatus());
-            bookDescription.setText(book.getDescription());
+            kid  = (Kid) getArguments().get("Kid");
+            title = "Edit Kid";
+
+            kidFirstName.setText(kid.getFirstName());
+            kidLastName.setText(kid.getLastName());
+            kidMiddleName.setText(kid.getMiddleName());
+            kidNationality.setText(kid.getNationality());
+            kidHeight.setText(kid.getHeight()); //Convert to string
+            kidDOB.setText(kid.getDOB());
+            kidEyeColor.setText(kid.getEyeColor());
+            kidHairColor.setText(kid.getHairColor());
+            kidStatus.setText(kid.getStatus());
+
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageReference = storage.getReference();
             if (book.getUid()!=null){
@@ -182,14 +198,14 @@ public class AddBookFragment extends DialogFragment implements Serializable {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0){
                     if (getArguments().get("Book") != null){
-                        bookStatus.setText("Book Status -" + book.getStatus());
+                        kidStatus.setText("Kid Status -" + book.getStatus());
                     }
                     else{
-                        bookStatus.setText("Book Status -");
+                        kidStatus.setText("Kid Status -");
                     }
                 }
                 else{
-                    bookStatus.setText("Book Status -" + Statuses.get(i));
+                    kidStatus.setText("Kid Status -" + Statuses.get(i));
                 }
 
             }
@@ -197,10 +213,10 @@ public class AddBookFragment extends DialogFragment implements Serializable {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 if (getArguments().get("Book") != null){
-                    bookStatus.setText("Book Status -" + book.getStatus());
+                    kidStatus.setText("Book Status -" + kid.getStatus());
                 }
                 else{
-                    bookStatus.setText(statusStr);
+                    kidStatus.setText(statusStr);
                 }
             }
         });
@@ -282,39 +298,65 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                 bOk.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String book_title = bookTitle.getText().toString();
-                        String book_author = bookAuthor.getText().toString();
-                        String book_ISBN = bookISBN.getText().toString();
-                        String book_status = bookStatus.getText().toString();
-                        book_status = book_status.replace(statusStr,"");
-                        String book_description = bookDescription.getText().toString();
+
+
+                        String first_name = kidFirstName.getText().toString();
+                        String last_name = kidLastName.getText().toString();
+                        String middle_name = kidMiddleName.getText().toString();
+                        String nationality = kidNationality.getText().toString();
+                        String height = kidHeight.getText().toString();
+                        String dob = kidDOB.getText().toString();
+                        String eye_color = kidEyeColor.getText().toString();
+                        String hair_color =kidHairColor.getText().toString();
+                        String kid_status = kidStatus.getText().toString();
+                        kid_status = kid_status.replace(statusStr,"");
                         View focus = null;
                         boolean wrong_input = false;
-                        if (bookTitle.getText().toString().equals("")) { //Mandatory to enter book's title
-                            bookTitle.setError("Please enter the book's title!");
+
+                        if (first_name.equals("")) { //Mandatory to enter kid's first name
+                            kidFirstName.setError("Please enter the first name of the kid");
                             wrong_input = true;
-                            focus = bookTitle;
+                            focus = kidFirstName;
+                        }
+                        if (last_name.equals("")) { //Mandatory to enter kid's last name
+                            kidLastName.setError("Please enter the last name of the kid");
+                            wrong_input = true;
+                            focus = kidLastName;
                         }
 
-                        if (book_description.equals("")) {    //Mandatory to enter book's description
-                            bookDescription.setError("Please enter the book's description");
+                        if (dob.equals("")) { //Mandatory to enter kid's DOB
+                            kidDOB.setError("Please enter the DOB of the kid");
                             wrong_input = true;
-                            focus = bookDescription;
-
+                            focus = kidDOB;
                         }
-                       if (!validStatus.contains(book_status)) { //Input validation for the status
-                            bookStatus.setError("Please choose a valid status from drop-down menu");
+
+
+
+                        if (!validStatus.contains(kid_status)) { //Input validation for the status
+                            kidStatus.setError("Please choose a valid status from drop-down menu");
                             wrong_input = true;
                             focus = spinner;
 
                         }
-                        if (book_author.equals("")) {
-                            book_author = "Unknown";
+                        if (middle_name.equals("")) {
+                            middle_name = "";
 
                         }
-                        if (book_ISBN.equals("")) {
-                            book_ISBN = "Unknown";
+                        if (nationality.equals("")) {
+                            nationality = "Unknown";
                         }
+                        if (height.equals("")) {
+                            height = "Unknown";
+                        }
+
+                        if (eye_color.equals("")) {
+                            eye_color = "Unknown";
+                        }
+                        if (hair_color.equals("")) {
+                            hair_color = "Unknown";
+                        }
+
+
 
                         if (wrong_input) {
                             focus.requestFocus();
@@ -324,7 +366,25 @@ public class AddBookFragment extends DialogFragment implements Serializable {
                             Book book = (Book) getArguments().get("Book");
                             User user = (User) getArguments().get("User");
 
+                            Kid kid = (Kid) getArguments().get("Kid");
+                            kid.setFirstName(first_name);
+                            kid.setLastName(last_name);
+                            kid.setMiddleName(middle_name);
+                            kid.setDOB(dob);
+                            kid.setEyeColor(eye_color);
+                            kid.setHairColor(hair_color);
+                            kid.setNationality(nationality);
+                            kid.setHeight(height);
+                            kid.setStatus(kid_status);
+
+
+
+
+
+
+
                             String temp = book.getTitle();
+
                             book.setAuthor(book_author);
                             book.setISBN(book_ISBN);
                             book.setStatus(book_status.replace(statusStr,""));

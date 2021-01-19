@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.in_shelterkidsdirectory.MyBooks">
+    tools:context="com.example.in_shelterkidsdirectory.Kids">
 
 
     <ListView
-        android:id="@+id/book_list"
+        android:id="@+id/kid_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="65dp"
@@ -17,7 +17,7 @@
         android:dividerHeight="10dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_book_button"
+        android:id="@+id/add_kid_button"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_gravity="bottom|end"
