@@ -113,53 +113,29 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         });
 
         db = FirebaseFirestore.getInstance();
-        userKidCollectionReference = db.collection("Users");//Creating/pointing to a sub-collection of the kids that user owns
+        userKidCollectionReference = db.collection("Kids");//Creating/pointing to a sub-collection of the kids that user owns
         userKidCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 kidDataList.clear();
                 kidAdapter.notifyDataSetChanged();
-                for (QueryDocumentSnapshot d : value) {
-                    final String username = d.getId();
-                    CollectionReference eachUser = db.collection("Users/" + username + "/MyKids");
-                    eachUser.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                        @Override
-                        public void onEvent(@Nullable QuerySnapshot value2, @Nullable FirebaseFirestoreException error) {
-                            for (QueryDocumentSnapshot newKid : value2) {
-                                String owner = (String)newKid.getData().get("Owner");
-                                HashMap<String,String> map = (HashMap<String, String>)newKid.getData().get("Requests");
-                                String borrower = "";
-                                if (map != null){
-                                    for (String key : map.keySet()){
-                                        if (("Borrowed").equals(map.get(key))){
-                                            borrower = key;
-                                        }
-                                    }
-                                }
-                                if(owner!=null) {
-                                    String current = currentUser.getUsername();
-                                    if (owner.equals(current) || borrower.equals(current)) {
-                                        String kid_title = newKid.getId();
-                                        String kid_author = (String) newKid.getData().get("Kid Author");
-                                        String kid_ISBN = (String) newKid.getData().get("Kid ISBN");
-                                        String kid_status;
-                                        if (borrower.equals(current)) {
-                                            kid_status = "Borrowed";
-                                        } else {
-                                            kid_status = (String) newKid.getData().get("Kid Status");
-                                        }
-                                        String kid_description = (String) newKid.getData().get("Kid Description");
-                                        String kid_owner = (String) newKid.getData().get("Owner");
-                                        String kid_uid = (String) newKid.getData().get("Uid");
-                                        Kid temp = new Kid("test","test","test","test","test","test","test","test","test","test","test");
-                                        temp.setUID(kid_uid);
-                                        kidDataList.add(temp); // Adding the cities and provinces from FireStore
-                                        kidAdapter.notifyDataSetChanged();
-                                    }
-                                }
-                            }
-                        }
-                    });
+                for (QueryDocumentSnapshot newKid : value) {
+                    String kid_firstName = (String)newKid.getData().get("First Name");    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
+                    String kid_lastName = (String)newKid.getData().get("Last Name");
+                    String kid_dob = (String)newKid.getData().get("DOB");
+                    String kidStatus = (String)newKid.getData().get("Status");
+                    String kid_height = (String)newKid.getData().get("Height");
+                    String kid_middleName = (String)newKid.getData().get("Middle Name");
+                    String kid_hair = (String)newKid.getData().get("Hair Color");
+                    String kid_eye = (String)newKid.getData().get("Eye Color");
+                    String kid_allergies = (String)newKid.getData().get("Allergies");
+                    String kid_birthmarks = (String)newKid.getData().get("Birthmarks");
+                    String kid_nationality = (String)newKid.getData().get("Nationality");
+                    String kid_uid = (String) newKid.getData().get("Uid");
+                    Kid temp = new Kid(kid_firstName,kid_lastName,kid_middleName,kid_eye,kid_dob,kid_hair,kidStatus,kid_height,kid_nationality,kid_allergies,kid_birthmarks);
+                    temp.setUID(kid_uid);
+                    kidDataList.add(temp); // Adding the cities and provinces from FireStore
+                    kidAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -273,24 +249,35 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
      */
 
     @Override
-    public void onOkPressed(final Kid kid) { //Whenever the user adds a kid, this method is called where the added kid is sent as a parameter from the fragment
+    public void onOkPressed(final Kid newKid) { //Whenever the user adds a kid, this method is called where the added kid is sent as a parameter from the fragment
 
-        /*final HashMap<String, String> data = new HashMap<>();
-        final String kidTitle = newKid.getTitle();    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
-        final String kidAuthor = newKid.getAuthor();
-        String kidISBN = newKid.getISBN();
+        final HashMap<String, String> data = new HashMap<>();
+        final String kid_firstName = newKid.getFirstName();    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
+        final String kid_lastName = newKid.getLastName();
+        String kid_dob = newKid.getDOB();
         String kidStatus = newKid.getStatus();
-        String kidDescription = newKid.getDescription();
-        String kidOwner = currentUser.getUsername();
-        if (kidTitle.length() > 0 && kidAuthor.length() > 0 && kidISBN.length() > 0 && kidStatus.length() > 0) {//Data inside the document will consist of the following
+        String kid_height = newKid.getHeight();
+        String kid_middleName = newKid.getMiddleName();
+        String kid_hair = newKid.getHairColor();
+        String kid_eye = newKid.getEyeColor();
+        String kid_allergies = newKid.getAllergies();
+        String kid_birthmarks = newKid.getBirthmarks();
+        String kid_nationality = newKid.getNationality();
+        if (kid_firstName.length() > 0 && kid_lastName.length() > 0 && kidStatus.length() > 0) {//Data inside the document will consist of the following
             //Adding data inside the hash map
-            data.put("Kid Author", kidAuthor);
-            data.put("Kid ISBN", kidISBN);
-            data.put("Kid Status", kidStatus);
-            data.put("Kid Description", kidDescription);
-            data.put("Owner", kidOwner);
+            data.put("First Name", kid_firstName);
+            data.put("Last Name", kid_lastName);
+            data.put("Status", kidStatus);
+            data.put("Middle Name", kid_middleName);
+            data.put("DOB", kid_dob);
+            data.put("Height", kid_height);
+            data.put("Hair Color", kid_hair);
+            data.put("Eye Color", kid_eye);
+            data.put("Allergies", kid_allergies);
+            data.put("Birthmarks", kid_birthmarks);
+            data.put("Nationality", kid_nationality);
         }
-        CollectionReference collectionReference = db.collection("Users/" + currentUser.getUsername()+"/MyKids");
+        CollectionReference collectionReference = db.collection("Kids");
         arrayReference = db.collection("GlobalArray");
         DocumentReference docRef = arrayReference.document("Array"); //If username does not exist then prompt for a sign-up
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -321,7 +308,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                     }
                                 });
                         collectionReference
-                                .document(kidTitle)
+                                .document(kid_firstName+kid_lastName+data.get("Uid"))
                                 .set(data)
                                 //Debugging methods
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -351,7 +338,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
-        });*/
+        });
 
     }
 
@@ -363,15 +350,24 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
      */
     @Override
     public void onOkPressed(final Kid kid, final String oldKidName) {
-       /* final HashMap<String, Object> data = new HashMap<>();
-        data.put("Kid Author", newKid.getAuthor());
-        data.put("Kid ISBN", newKid.getISBN());
-        data.put("Kid Status", newKid.getStatus());
-        data.put("Kid Description", newKid.getDescription());
-        data.put("Owner", newKid.getOwner());
-        data.put("Uid", newKid.getUid());
-        CollectionReference collectionReference = db.collection("Users/"+currentUser.getUsername()+"/MyKids");
-        DocumentReference docRef = collectionReference.document(newKid.getTitle());
+        final HashMap<String, Object> data = new HashMap<>();
+        data.put("First Name", kid.getFirstName());
+        data.put("Last Name", kid.getLastName());
+        data.put("Status", kid.getStatus());
+        data.put("Middle Name", kid.getMiddleName());
+        data.put("DOB", kid.getDOB());
+        data.put("Height", kid.getHeight());
+        data.put("Hair Color", kid.getHairColor());
+        data.put("Eye Color", kid.getEyeColor());
+        data.put("Allergies", kid.getAllergies());
+        data.put("Birthmarks", kid.getBirthmarks());
+        data.put("Nationality", kid.getNationality());
+        data.put("Concerns",kid.getConcerns());
+        data.put("Referrals",kid.getReferrals());
+        //data.put("Guardians",kid.get) Missing getter for guardians
+        data.put("Uid", kid.getUID());
+        CollectionReference collectionReference = db.collection("Kids");
+        DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getLastName()+kid.getUID());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -379,7 +375,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         collectionReference
-                                .document(newKid.getTitle())
+                                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
                                 .update(data)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -403,7 +399,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 });
                     } else {
                         collectionReference
-                                .document(oldKidName)
+                                .document(oldKidName+kid.getLastName()+kid.getUID())
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
@@ -417,9 +413,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                         Log.d(TAG, "Failed to delete the user kid data");
                                     }
                                 });
-                        kidDataList.remove(newKid);
+                        kidDataList.remove(kid);
                         collectionReference
-                                .document(newKid.getTitle())
+                                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
                                 .set(data)
                                 //Debugging methods
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -447,7 +443,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     }
                 }
             }
-        });*/
+        });
 
     }
 
@@ -459,9 +455,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public void onDeletePressed(Kid kid) {
-        /*CollectionReference collectionReference = db.collection("Users/"+currentUser.getUsername()+"/MyKids");
+        CollectionReference collectionReference = db.collection("Users/"+currentUser.getUsername()+"/MyKids");
         collectionReference
-                .document(kid.getTitle())
+                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -484,7 +480,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     }
                 });
         //kidDataList.remove(kid);
-        //kidAdapter.notifyDataSetChanged();*/
+        //kidAdapter.notifyDataSetChanged();
     }
 
     @Override
