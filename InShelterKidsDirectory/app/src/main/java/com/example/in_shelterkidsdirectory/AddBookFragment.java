@@ -363,7 +363,7 @@ public class AddBookFragment extends DialogFragment implements Serializable {
         if (requestCode == REQUEST && resultCode == -1 && data != null && data.getData() != null) {
             path = data.getData();
             try {
-                Context applicationContext = MyBooks.getContextOfApplication();
+                Context applicationContext = Kids.getContextOfApplication();
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), path);
                 bookPic.setImageBitmap(bitmap);
             } catch (IOException e) {

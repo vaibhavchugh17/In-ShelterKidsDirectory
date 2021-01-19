@@ -38,18 +38,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//When the user clicks MyBooks button from HomePage, this activity gets invoked
-public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFragmentInteractionListener {
+//When the user clicks Kids button from HomePage, this activity gets invoked
+//To display a list of all the kids
+public class Kids extends AppCompatActivity implements AddBookFragment.OnFragmentInteractionListener {
     public static Context contextOfApplication;
-    ListView bookList;
-    ArrayAdapter<Book> bookAdapter; //A custom adapter
-    ArrayList<Book> bookDataList;   //List of all the books user owns
-    ArrayAdapter<Book> filteredBookAdapter; //A custom adapter
+    ListView kidList;
+    ArrayAdapter<Book> kidAdapter; //A custom adapter
+    ArrayList<Book> kidDataList;   //List of all the books user owns
+    ArrayAdapter<Book> filteredKidAdapter; //A custom adapter
     ArrayList<Book> filteredDataList;
     FirebaseFirestore db;
     StorageReference storageReference;
     FirebaseStorage storage;
-    CollectionReference userBookCollectionReference;    //This is the sub-collection reference for the user who's logged in pointing to the collection of owned books
+    CollectionReference userKidCollectionReference;    //This is the sub-collection reference for the user who's logged in pointing to the collection of owned books
     CollectionReference arrayReference;
     String TAG = "MyBooks";
     CheckBox checkAvail;
@@ -64,7 +65,7 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
     }
 
     /**
-     * onCreate Called when MyBooks activity is launched.
+     * onCreate Called when Kids activity is launched.
      *
      * @param savedInstanceState
      */
@@ -72,7 +73,7 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_books);
-        bookList = findViewById(R.id.book_list);
+        kidList = findViewById(R.id.book_list);
         contextOfApplication = getApplicationContext();
 
         storage = FirebaseStorage.getInstance();
@@ -80,12 +81,12 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
 
         currentUser = (User) getIntent().getSerializableExtra(HomePage.EXTRA_MESSAGE2);  //Catching the object of current user who's logged in
 
-        bookDataList = new ArrayList<>();
-        bookAdapter = new customBookAdapter(this, bookDataList);   //Implementing a custom adapter that connects the ListView with the ArrayList using bookcontent.xml layout
-        bookList.setAdapter(bookAdapter);
+        kidDataList = new ArrayList<>();
+        kidAdapter = new customKidAdapter(this, kidDataList);   //Implementing a custom adapter that connects the ListView with the ArrayList using bookcontent.xml layout
+        kidList.setAdapter(kidAdapter);
 
         filteredDataList = new ArrayList<>();
-        filteredBookAdapter = new customBookAdapter(this, filteredDataList);
+        filteredKidAdapter = new customKidAdapter(this, filteredDataList);
 
 
         final FloatingActionButton addCityButton = findViewById(R.id.add_book_button);  //Invoking a fragment to add the books when the FAB is clicked
@@ -113,12 +114,12 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
         });
 
         db = FirebaseFirestore.getInstance();
-        userBookCollectionReference = db.collection("Users");//Creating/pointing to a sub-collection of the books that user owns
-        userBookCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        userKidCollectionReference = db.collection("Users");//Creating/pointing to a sub-collection of the books that user owns
+        userKidCollectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                bookDataList.clear();
-                bookAdapter.notifyDataSetChanged();
+                kidDataList.clear();
+                kidAdapter.notifyDataSetChanged();
                 for (QueryDocumentSnapshot d : value) {
                     final String username = d.getId();
                     CollectionReference eachUser = db.collection("Users/" + username + "/MyBooks");
@@ -153,8 +154,8 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
                                         String book_uid = (String) newBook.getData().get("Uid");
                                         Book temp = new Book(book_title, book_author, book_ISBN, book_status, book_description, book_owner);
                                         temp.setUid(book_uid);
-                                        bookDataList.add(temp); // Adding the cities and provinces from FireStore
-                                        bookAdapter.notifyDataSetChanged();
+                                        kidDataList.add(temp); // Adding the cities and provinces from FireStore
+                                        kidAdapter.notifyDataSetChanged();
                                     }
                                 }
                             }
@@ -172,8 +173,8 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 filteredDataList.clear();
                 if (isChecked) {
-                    for (int i = 0; i < bookDataList.size(); i++) {
-                        Book book = bookDataList.get(i);
+                    for (int i = 0; i < kidDataList.size(); i++) {
+                        Book book = kidDataList.get(i);
                         if (checkBorrowed.isChecked()) {
                             if (book.getStatus().toLowerCase().equals(availableConstraint) || book.getStatus().toLowerCase().equals(borrowedConstraint))
                                 filteredDataList.add(book);
@@ -182,22 +183,22 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
                                 filteredDataList.add(book);
                         }
                     }
-                    filteredBookAdapter.notifyDataSetChanged();
-                    bookList.setAdapter(filteredBookAdapter);
+                    filteredKidAdapter.notifyDataSetChanged();
+                    kidList.setAdapter(filteredKidAdapter);
                 } else {
                     if (!checkBorrowed.isChecked())
-                        bookList.setAdapter(bookAdapter);
+                        kidList.setAdapter(kidAdapter);
                     else {
-                        for (int i = 0; i < bookDataList.size(); i++) {
-                            Book book = bookDataList.get(i);
+                        for (int i = 0; i < kidDataList.size(); i++) {
+                            Book book = kidDataList.get(i);
                             filteredDataList.add(book);
                             if (!(book.getStatus().toLowerCase().equals(borrowedConstraint))) {
                                 filteredDataList.remove(book);
                             }
 
                         }
-                        filteredBookAdapter.notifyDataSetChanged();
-                        bookList.setAdapter(filteredBookAdapter);
+                        filteredKidAdapter.notifyDataSetChanged();
+                        kidList.setAdapter(filteredKidAdapter);
                     }
                 }
             }
@@ -208,8 +209,8 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 filteredDataList.clear();
                 if (isChecked) {
-                    for (int i = 0; i < bookDataList.size(); i++) {
-                        Book book = bookDataList.get(i);
+                    for (int i = 0; i < kidDataList.size(); i++) {
+                        Book book = kidDataList.get(i);
                         if (checkAvail.isChecked()) {
                             if (book.getStatus().toLowerCase().equals(availableConstraint) || book.getStatus().toLowerCase().equals(borrowedConstraint))
                                 filteredDataList.add(book);
@@ -220,23 +221,23 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
 
 
                     }
-                    filteredBookAdapter.notifyDataSetChanged();
-                    bookList.setAdapter(filteredBookAdapter);
+                    filteredKidAdapter.notifyDataSetChanged();
+                    kidList.setAdapter(filteredKidAdapter);
 
                 } else {
                     if (!checkAvail.isChecked())
-                        bookList.setAdapter(bookAdapter);
+                        kidList.setAdapter(kidAdapter);
                     else {
-                        for (int i = 0; i < bookDataList.size(); i++) {
-                            Book book = bookDataList.get(i);
+                        for (int i = 0; i < kidDataList.size(); i++) {
+                            Book book = kidDataList.get(i);
                             filteredDataList.add(book);
                             if (!(book.getStatus().toLowerCase().equals(availableConstraint))) {
                                 filteredDataList.remove(book);
                             }
 
                         }
-                        filteredBookAdapter.notifyDataSetChanged();
-                        bookList.setAdapter(filteredBookAdapter);
+                        filteredKidAdapter.notifyDataSetChanged();
+                        kidList.setAdapter(filteredKidAdapter);
 
                     }
 
@@ -244,10 +245,10 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
             }
         });
 
-        bookList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        kidList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Book book = bookDataList.get(i);
+                Book book = kidDataList.get(i);
                 Intent intent = new Intent(view.getContext(), ViewBookDetails.class);
                 intent.putExtra("Book", book);
                 startActivity(intent);
@@ -255,10 +256,10 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
             }
         });
 
-        bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        kidList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Book temp = bookDataList.get(i);
+                Book temp = kidDataList.get(i);
                 if (temp.getOwner().equals(currentUser.getUsername())){
                     AddBookFragment fragment = AddBookFragment.newInstance(temp, currentUser);
                     fragment.show(getSupportFragmentManager(), "ADD_BOOK");
@@ -423,7 +424,7 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
                                         Log.d(TAG, "Failed to delete the user book data");
                                     }
                                 });
-                        bookDataList.remove(newBook);
+                        kidDataList.remove(newBook);
                         collectionReference
                                 .document(newBook.getTitle())
                                 .set(data)
@@ -489,8 +490,8 @@ public class MyBooks extends AppCompatActivity implements AddBookFragment.OnFrag
                         Log.d(TAG, "Failed to delete the user book data");
                     }
                 });
-        //bookDataList.remove(book);
-        //bookAdapter.notifyDataSetChanged();
+        //kidDataList.remove(book);
+        //kidAdapter.notifyDataSetChanged();
     }
 
     @Override

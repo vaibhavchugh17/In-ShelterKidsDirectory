@@ -62,8 +62,8 @@ public class Search_by_descr extends AppCompatActivity {
 
         bookDataList = new ArrayList<>();
         filteredDataList = new ArrayList<>();
-        bookAdapter = new customBookAdapter(this, bookDataList);
-        filteredBookAdapter = new customBookAdapter(this, filteredDataList);
+        bookAdapter = new customKidAdapter(this, bookDataList);
+        filteredBookAdapter = new customKidAdapter(this, filteredDataList);
         bookList.setAdapter(bookAdapter);
 
         db = FirebaseFirestore.getInstance();

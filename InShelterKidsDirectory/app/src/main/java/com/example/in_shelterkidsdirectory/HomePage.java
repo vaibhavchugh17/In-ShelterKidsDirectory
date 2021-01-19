@@ -124,7 +124,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
         KidsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {        //When user clicks this button, a list of all the kids is shown
-                Intent intent = new Intent(getApplicationContext(), MyBooks.class);
+                Intent intent = new Intent(getApplicationContext(), Kids.class);
                 intent.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the MyBooks activity
                 startActivity(intent);
             }

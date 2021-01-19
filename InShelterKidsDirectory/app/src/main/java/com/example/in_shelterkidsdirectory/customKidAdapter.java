@@ -28,14 +28,14 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-public class customBookAdapter extends ArrayAdapter<Book> {
+public class customKidAdapter extends ArrayAdapter<Book> {
 
     private final ArrayList<Book> books;
     private final Context context;
     FirebaseStorage storage;
     StorageReference storageReference;
 
-    public customBookAdapter(Context context, ArrayList<Book> books) {
+    public customKidAdapter(Context context, ArrayList<Book> books) {
         super(context, 0, books);
         this.books = books;
         this.context = context;
