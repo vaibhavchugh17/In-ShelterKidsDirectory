@@ -62,11 +62,11 @@ public class customKidAdapter extends ArrayAdapter<Kid> {
 
         ImageView img = view.findViewById(R.id.imageView1);
         TextView kidTitle = view.findViewById(R.id.textView1);
-
+        TextView kidDob = view.findViewById(R.id.textView2);
         TextView kidStatus = view.findViewById(R.id.textView3);
 
-
-        kidTitle.setText(kid.getFirstName());
+        kidTitle.setText(kid.getFirstName() + " " + kid.getLastName());
+        kidDob.setText(kid.getDOB());
         kidStatus.setText(kid.getStatus()); //Setting the values of each textView inside the view in ListView
 
 
@@ -74,7 +74,7 @@ public class customKidAdapter extends ArrayAdapter<Kid> {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         StorageReference imagesRef =  storageReference.child("images/");
-        final StorageReference defaultRef = imagesRef.child("defaultb.png");
+        final StorageReference defaultRef = imagesRef.child("default.png");
         try {
             final StorageReference ref = imagesRef.child(kid.getUID());
             ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

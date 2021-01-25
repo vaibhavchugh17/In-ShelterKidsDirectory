@@ -147,9 +147,6 @@ public class AddKidFragment extends DialogFragment implements Serializable {
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        Button picture = view.findViewById(R.id.Picture);
-        Button picture2 = view.findViewById(R.id.Picture1);
-        Button deletePhoto = view.findViewById(R.id.delete_photo);
         Spinner spinner = view.findViewById(R.id.kid_status);
         final ArrayList<String> Statuses = new ArrayList<>();
         Statuses.add("Select Status:");
@@ -160,6 +157,17 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         spinner.setAdapter(adapter);
 
         String title = "Add Kid";
+        StorageReference imagesRef1 = storageReference.child("images/default.png"); //CHANGE THIS TO DISPLAY KID PICTURES
+        imagesRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                Glide
+                        .with(getContext())
+                        .load(downloadUrl.toString())
+                        .centerCrop()
+                        .into(kidPic);
+            }
+        });
 
         kidDobButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -245,52 +253,17 @@ public class AddKidFragment extends DialogFragment implements Serializable {
                 }
             }
         });
-        picture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SelectPhoto();
-            }
-        });
-        picture2.setOnClickListener(new View.OnClickListener() {
+
+        kidPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadPhoto(kid);
+                kidImageFragment fragment = kidImageFragment.newInstance(kid);
+                fragment.show(getFragmentManager(), "Kid Profile Picture");
+
 
             }
         });
-        deletePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (kid.getUID() != null){
-                    StorageReference ref = storageReference.child("images/" + kid.getUID());
-                    ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast toast = Toast.makeText(getContext(), "Kid Photo Successfully deleted!", Toast.LENGTH_SHORT);
-                            toast.show();
-                            Fragment currentFragment = getFragmentManager().findFragmentByTag("ADD_BOOK");
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.detach(currentFragment);
-                            fragmentTransaction.attach(currentFragment);
-                            fragmentTransaction.commit();
-                        }
-                    })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast toast = Toast.makeText(getContext(), "Failed to delete kid photo!", Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-                            });
-                }
-                else{
-                    Toast toast = Toast.makeText(getContext(), "Please upload a kid photo first :)", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
 
-            }
-
-        });
         final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle(title)
@@ -424,6 +397,9 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         return dialog;
     }
 
+
+
+
     /**
      * gets the result from barcode_scanner class
      * Sets the desired result inside the fragment
@@ -455,41 +431,6 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#202F65"));
     }
 
-    private void SelectPhoto() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Image"), REQUEST);
-    }
-
-    private void uploadPhoto(Kid kid) {
-        if (path != null) {
-            final ProgressDialog statusDialog = new ProgressDialog(this.getContext());
-            statusDialog.setTitle("Uploading");
-            statusDialog.show();
-            //Log.d("Kid Fragment",kid.getUid());
-            StorageReference ref = storageReference.child("images/" + kidUid);
-            ref.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    statusDialog.dismiss();
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            statusDialog.dismiss();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            statusDialog.setMessage("Uploaded " + (int) progress + "%");
-                        }
-                    });
-        }
-    }
 
 }
 
