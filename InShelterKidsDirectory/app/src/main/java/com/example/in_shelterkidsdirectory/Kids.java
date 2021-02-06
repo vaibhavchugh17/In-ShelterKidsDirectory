@@ -39,7 +39,7 @@ import java.util.Map;
 
 //When the user clicks Kids button from HomePage, this activity gets invoked
 //To display a list of all the kids. WORKING EDIT TILL HERE.
-public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener {
+public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener {
     public static Context contextOfApplication;
     ListView kidList;
     ArrayAdapter<Kid> kidAdapter; //A custom adapter
@@ -485,6 +485,10 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public void onOkPressed() {
+        //Do nothing
+    }
+    @Override
+    public void onAddPressed() {
         //Do nothing
     }
 

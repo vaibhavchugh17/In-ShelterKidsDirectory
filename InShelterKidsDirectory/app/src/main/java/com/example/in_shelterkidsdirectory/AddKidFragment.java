@@ -45,7 +45,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddKidFragment extends DialogFragment implements Serializable {
+public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener {
     private TextInputEditText kidFirstName;
     private TextInputEditText kidLastName;
     private TextInputEditText kidMiddleName;
@@ -56,8 +56,12 @@ public class AddKidFragment extends DialogFragment implements Serializable {
     private TextInputEditText kidHairColor;
     private TextInputEditText kidAllergies;
     private TextInputEditText kidBirthmarks;
-    DatePickerDialog.OnDateSetListener DateListener;
+    private DatePickerDialog.OnDateSetListener DateListener;
     private Button kidDobButton;
+    private Button parentButton;
+    private Button notesButton;
+    private Button concernsButton;
+    private Button referralsButton;
     private Kid kid;
     private TextView kidStatus;
     private ImageView kidPic;
@@ -141,6 +145,10 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         kidPic = view.findViewById(R.id.kidPic);
         kidStatus = view.findViewById(R.id.kid_status_editText);
         kidDobButton = view.findViewById(R.id.select_date_kid);
+        parentButton = view.findViewById(R.id.kid_parent);
+        notesButton = view.findViewById(R.id.kid_notes);
+        referralsButton = view.findViewById(R.id.kid_referrals);
+        concernsButton = view.findViewById(R.id.kid_concerns);
         final ArrayList<String> validStatus = new ArrayList<String>();
         validStatus.add("Residential");
         validStatus.add("Out-Reach");
@@ -179,6 +187,37 @@ public class AddKidFragment extends DialogFragment implements Serializable {
                 DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,DateListener,year,month,date);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
+            }
+        });
+
+        parentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonFragment fragment = CommonFragment.newInstance(kid, "Father");
+                fragment.show(getFragmentManager(),"Add_Parent");
+            }
+        });
+
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonFragment fragment = CommonFragment.newInstance(kid, "Notes");
+                fragment.show(getFragmentManager(),"Add_Notes");
+            }
+        });
+
+        concernsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonFragment fragment = CommonFragment.newInstance(kid, "Concerns");
+                fragment.show(getFragmentManager(),"Add_Concerns");
+            }
+        });
+
+        referralsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
@@ -429,6 +468,11 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#202F65"));
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#202F65"));
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#202F65"));
+    }
+
+    @Override
+    public void onAddPressed(){
+        //nothing yet
     }
 
 
