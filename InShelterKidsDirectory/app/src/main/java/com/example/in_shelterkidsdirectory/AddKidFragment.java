@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddKidFragment extends DialogFragment implements Serializable {
+    public static final String EXTRA_MESSAGE3 = "com.example.dlpbgj.MESSAGE3";
     private TextInputEditText kidFirstName;
     private TextInputEditText kidLastName;
     private TextInputEditText kidMiddleName;
@@ -61,6 +62,7 @@ public class AddKidFragment extends DialogFragment implements Serializable {
     private Kid kid;
     private TextView kidStatus;
     private ImageView kidPic;
+    private Button parentButton, notesButton, concernsButton, referralsButton;
 
     //To add. Button for adding parents. To add functionalities for notes, referrals, concerns, allergies, birthmarks, legalGuardians
 
@@ -144,6 +146,10 @@ public class AddKidFragment extends DialogFragment implements Serializable {
         final ArrayList<String> validStatus = new ArrayList<String>();
         validStatus.add("Residential");
         validStatus.add("Out-Reach");
+        parentButton = view.findViewById(R.id.kid_parent);
+        notesButton = view.findViewById(R.id.kid_notes);
+        concernsButton = view.findViewById(R.id.kid_concerns);
+        referralsButton = view.findViewById(R.id.kid_referrals);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -189,6 +195,18 @@ public class AddKidFragment extends DialogFragment implements Serializable {
                 kidDOB.setText(temp);
             }
         };
+
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), Notes.class);
+                intent.putExtra(EXTRA_MESSAGE3, kid);   //Sending the current kid as a parameter to the Notes activity
+                startActivity(intent);
+            }
+        });
+
+
+
 
         if (getArguments().get("Kid") != null) {
             kid  = (Kid) getArguments().get("Kid");
