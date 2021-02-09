@@ -18,6 +18,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -53,8 +55,12 @@ public class CommonFragment extends DialogFragment implements Serializable {
     private TextInputEditText parentNumber;
     private DatePickerDialog.OnDateSetListener DateListener;
     private Button dateOfBirth;
+    private RelativeLayout r_layout;
     private String title;
 
+    public interface OnFragmentInteractionListener {
+        void onAddPressed();
+    }
 
     static CommonFragment newInstance(Kid kid, String flag) {
         Bundle args = new Bundle();
@@ -88,10 +94,9 @@ public class CommonFragment extends DialogFragment implements Serializable {
         parentOccupation = view.findViewById(R.id.parent_occupation);
         parentAddress = view.findViewById(R.id.parent_home_address);
         dateOfBirth = view.findViewById(R.id.select_date_parent);
+        r_layout = view.findViewById(R.id.r_layout);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
-
 
         dateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,12 +133,27 @@ public class CommonFragment extends DialogFragment implements Serializable {
             }
             else if (flag.equals("Notes")){
                 title = "Notes";
+                //change the hint to notes
+                parentMiddleName.setVisibility(View.GONE);
+                parentLastName.setVisibility(View.GONE);
+                parentDOB.setVisibility(View.GONE);
+                parentNumber.setVisibility(View.GONE);
+                parentOccupation.setVisibility(View.GONE);
+                parentAddress.setVisibility(View.GONE);
+                dateOfBirth.setVisibility(View.GONE);
+                r_layout.setVisibility(View.GONE);
             }
             else if (flag.equals("Concerns")){
                 title = "Concerns";
-            }
-            else{
-                title = "Referrals";
+                //change the hint to notes
+                parentMiddleName.setVisibility(View.GONE);
+                parentLastName.setVisibility(View.GONE);
+                parentDOB.setVisibility(View.GONE);
+                parentNumber.setVisibility(View.GONE);
+                parentOccupation.setVisibility(View.GONE);
+                parentAddress.setVisibility(View.GONE);
+                dateOfBirth.setVisibility(View.GONE);
+                r_layout.setVisibility(View.GONE);
             }
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageReference = storage.getReference();
@@ -160,10 +180,6 @@ public class CommonFragment extends DialogFragment implements Serializable {
         super.onStart();
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#B59C34"));
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#B59C34"));
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onAddPressed();
     }
 
 }
