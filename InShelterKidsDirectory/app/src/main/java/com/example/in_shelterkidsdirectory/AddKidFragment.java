@@ -64,8 +64,6 @@ public class AddKidFragment extends DialogFragment implements Serializable {
     private ImageView kidPic;
     private Button parentButton, notesButton, concernsButton, referralsButton;
 
-    //To add. Button for adding parents. To add functionalities for notes, referrals, concerns, allergies, birthmarks, legalGuardians
-
 
     private String kidUid;
     private OnFragmentInteractionListener listener;

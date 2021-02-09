@@ -38,39 +38,56 @@ public class AddNote extends Activity {
         noteTitle = findViewById(R.id.addNoteTitle);
         noteContent = findViewById(R.id.addNoteContent);
         pbar = findViewById(R.id.progressBar);
-
-        //Everything should be inside the onclick listener of FAB
-        String title = noteTitle.getText().toString();
-        String content = noteContent.getText().toString();
-        pbar.setVisibility(View.VISIBLE);
-
-
-        if(title.isEmpty() || content.isEmpty()){
-            Toast.makeText(AddNote.this, "Should not have empty fields",Toast.LENGTH_SHORT).show();
-            return;
+        Kid kid = (Kid) getIntent().getSerializableExtra("Kid");
+        Note note = (Note) getIntent().getSerializableExtra("Note");
+        if (note != null){
+            noteContent.setText(note.getContent());
+            noteTitle.setText(note.getTitle());
         }
 
-        db = FirebaseFirestore.getInstance();
-        Kid kid = (Kid) getIntent().getSerializableExtra("Kid");
-        userKidCollectionReference = db.collection("Kids");
-        DocumentReference doc = userKidCollectionReference.document(kid.getFirstName() + kid.getLastName());
-        DocumentReference docRef = doc.collection("notes").document();
-        Map<String,Object> note = new HashMap<>();
-        note.put("title", title);
-        note.put("content", content);
 
-        docRef.set(note).addOnSuccessListener(new OnSuccessListener<Void>() {
+        FloatingActionButton fab = findViewById(R.id.save_note);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(AddNote.this, "Note saved",Toast.LENGTH_SHORT).show();
-                onBackPressed();
+            public void onClick(View view) {
+                String title = noteTitle.getText().toString();
+                String content = noteContent.getText().toString();
+                pbar.setVisibility(View.VISIBLE);
 
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AddNote.this, "Error, couldn't save",Toast.LENGTH_SHORT).show();
-                pbar.setVisibility(View.INVISIBLE);
+
+                if(title.isEmpty() || content.isEmpty()){
+                    Toast.makeText(AddNote.this, "Should not have empty fields",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                db = FirebaseFirestore.getInstance();
+                userKidCollectionReference = db.collection("Kids");
+                DocumentReference doc = userKidCollectionReference.document(kid.getFirstName().toLowerCase() + kid.getMiddleName().toLowerCase() + kid.getLastName().toLowerCase());
+                DocumentReference docRef = doc.collection("notes").document();
+
+                if(note != null) {
+                    docRef = doc.collection("notes").document(note.getId());
+                }
+
+                Map<String,Object> noteMap = new HashMap<>();
+                noteMap.put("title", title);
+                noteMap.put("content", content);
+
+                docRef.set(noteMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(AddNote.this, "Note saved",Toast.LENGTH_SHORT).show();
+                        onBackPressed();
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AddNote.this, "Error, couldn't save",Toast.LENGTH_SHORT).show();
+                        pbar.setVisibility(View.INVISIBLE);
+                    }
+                });
+
             }
         });
 
@@ -78,13 +95,6 @@ public class AddNote extends Activity {
 
 
 
- /*       FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+
     }
 }

@@ -2,26 +2,32 @@ package com.example.in_shelterkidsdirectory;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.in_shelterkidsdirectory.displayNotes;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    List<String> titles;
-    List<String> content;
-
-    public Adapter(List<String> title,List<String> content){
-        this.titles = title;
-        this.content = content;
+    ArrayList<Note> kidNotes;
+    Kid kid;
+    FirebaseFirestore db;
+    public Adapter(ArrayList<Note> notes, Kid k){
+        this.kidNotes = notes;
+        this.kid = k;
     }
 
     @NonNull
@@ -33,19 +39,49 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        holder.noteTitle.setText(titles.get(position));
-        holder.noteContent.setText(content.get(position));
-        //final int code = getRandomColor();
-        //holder.mCardView.setCardBackgroundColor(holder.view.getResources().getColor(code,null)); for random colors
+        holder.noteTitle.setText(kidNotes.get(position).getTitle());
+        holder.noteContent.setText(kidNotes.get(position).getContent());
+
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(), displayNotes.class);
-                i.putExtra("title",titles.get(position));
-                i.putExtra("content",content.get(position));
-                //i.putExtra("code",code);
+                Intent i = new Intent(v.getContext(), AddNote.class);
+                i.putExtra("Kid",kid);
+                i.putExtra("Note",kidNotes.get(position));
                 v.getContext().startActivity(i);
+            }
+        });
+
+
+        ImageView menuIcon =   holder.view.findViewById(R.id.menuIcon);
+        menuIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(v.getContext(),v);
+                menu.getMenu().add("Delete").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        db = FirebaseFirestore.getInstance();
+                        DocumentReference dRef =db.collection("Kids").document(kid.getFirstName().toLowerCase() + kid.getMiddleName().toLowerCase() + kid.getLastName().toLowerCase()).collection("notes").document(kidNotes.get(position).getId());
+                        dRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(v.getContext(), "Note deleted" ,Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(v.getContext(), "Error deleting node" ,Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                        return false;
+                    }
+                });
+
+                menu.show();
+
             }
         });
     }
@@ -54,7 +90,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return titles.size();
+        return kidNotes.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

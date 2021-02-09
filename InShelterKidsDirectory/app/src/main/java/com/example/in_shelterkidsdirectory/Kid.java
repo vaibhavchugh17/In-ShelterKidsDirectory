@@ -21,7 +21,7 @@ public class Kid implements Serializable {
     Parent father;
     Parent mother;
     ArrayList<String> concerns;
-    ArrayList<String> notes;
+    ArrayList<Note> notes;
     ArrayList<String> referrals;
 
     public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, String status, String height, String nationality, String allergies, String birthmarks) {
@@ -142,11 +142,11 @@ public class Kid implements Serializable {
         this.concerns = concerns;
     }
 
-    public ArrayList<String> getNotes() {
+    public ArrayList<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(ArrayList<String> notes) {
+    public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
     }
 
