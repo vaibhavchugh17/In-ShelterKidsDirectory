@@ -39,7 +39,7 @@ import java.util.Map;
 
 //When the user clicks Kids button from HomePage, this activity gets invoked
 //To display a list of all the kids. WORKING EDIT TILL HERE.
-public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener {
+public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener,SelectionFragment.OnFragmentInteractionListener {
     public static Context contextOfApplication;
     ListView kidList;
     ArrayAdapter<Kid> kidAdapter; //A custom adapter
@@ -263,6 +263,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         String kid_allergies = newKid.getAllergies();
         String kid_birthmarks = newKid.getBirthmarks();
         String kid_nationality = newKid.getNationality();
+        String kid_concerns = "";
+        if (newKid.getConcerns() != null){
+            kid_concerns = newKid.getConcerns();
+        }
+
         if (kid_firstName.length() > 0 && kid_lastName.length() > 0 && kidStatus.length() > 0) {//Data inside the document will consist of the following
             //Adding data inside the hash map
             data.put("First Name", kid_firstName);
@@ -276,6 +281,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             data.put("Allergies", kid_allergies);
             data.put("Birthmarks", kid_birthmarks);
             data.put("Nationality", kid_nationality);
+            data.put("Concerns", kid_concerns);
         }
         CollectionReference collectionReference = db.collection("Kids");
         arrayReference = db.collection("GlobalArray");
@@ -314,6 +320,86 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        CollectionReference fatherReference = db.collection("Kids/" + kid_firstName+kid_lastName+data.get("Uid")+"/Parents");
+                                        CollectionReference motherReference = db.collection("Kids/" + kid_firstName+kid_lastName+data.get("Uid")+"/Parents");
+                                        if (newKid.getFather() != null){
+                                            Parent father = newKid.getFather();
+                                            HashMap<String,String> fatherData = new HashMap<>();
+                                            fatherData.put("First Name", father.getFirstName());
+                                            fatherData.put("Last Name", father.getLastName());
+                                            fatherData.put("DOB", father.getDOB());
+                                            fatherData.put("Occupation", father.getOccupation());
+                                            fatherData.put("Address",father.getHomeAddress());
+                                            fatherData.put("Phone Number", father.getPhoneNumber());
+                                            fatherReference
+                                                    .document("Father")
+                                                    .set(fatherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        if (newKid.getMother() != null){
+                                            Parent mother = newKid.getMother();
+                                            HashMap<String,String> motherData = new HashMap<>();
+                                            motherData.put("First Name", mother.getFirstName());
+                                            motherData.put("Last Name", mother.getLastName());
+                                            motherData.put("DOB", mother.getDOB());
+                                            motherData.put("Occupation", mother.getOccupation());
+                                            motherData.put("Address",mother.getHomeAddress());
+                                            motherData.put("Phone Number", mother.getPhoneNumber());
+                                            motherReference
+                                                    .document("Mother")
+                                                    .set(motherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        CollectionReference referralReference = db.collection("Kids/" + kid_firstName+kid_lastName+data.get("Uid")+"/Referrals");
+                                        if (!newKid.getReferrals().isEmpty()){
+                                            ArrayList<Parent> referrals = newKid.getReferrals();
+                                            for (Parent referral : referrals){
+                                                HashMap<String,String> referralData = new HashMap<>();
+                                                referralData.put("First Name", referral.getFirstName());
+                                                referralData.put("Last Name", referral.getLastName());
+                                                referralData.put("DOB", referral.getDOB());
+                                                referralData.put("Occupation", referral.getOccupation());
+                                                referralData.put("Address", referral.getHomeAddress());
+                                                referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralReference
+                                                        .document(referral.getFirstName())
+                                                        .set(referralData)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d("Referral","Referral added");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.d("Referral","Referral failed");
+                                                            }
+                                                        });
+                                            }
+                                        }
                                         finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());
@@ -363,8 +449,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         data.put("Birthmarks", kid.getBirthmarks());
         data.put("Nationality", kid.getNationality());
         data.put("Concerns",kid.getConcerns());
-        data.put("Referrals",kid.getReferrals());
-        //data.put("Guardians",kid.get) Missing getter for guardians
+        if (kid.getConcerns() != null){
+            data.put("Concerns",kid.getConcerns());;
+        }
         data.put("Uid", kid.getUID());
         CollectionReference collectionReference = db.collection("Kids");
         DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getLastName()+kid.getUID());
@@ -380,6 +467,86 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        CollectionReference fatherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        CollectionReference motherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        if (kid.getFather() != null){
+                                            Parent father = kid.getFather();
+                                            HashMap<String,String> fatherData = new HashMap<>();
+                                            fatherData.put("First Name", father.getFirstName());
+                                            fatherData.put("Last Name", father.getLastName());
+                                            fatherData.put("DOB", father.getDOB());
+                                            fatherData.put("Occupation", father.getOccupation());
+                                            fatherData.put("Address",father.getHomeAddress());
+                                            fatherData.put("Phone Number", father.getPhoneNumber());
+                                            fatherReference
+                                                    .document("Father")
+                                                    .set(fatherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        if (kid.getMother() != null){
+                                            Parent mother = kid.getMother();
+                                            HashMap<String,String> motherData = new HashMap<>();
+                                            motherData.put("First Name", mother.getFirstName());
+                                            motherData.put("Last Name", mother.getLastName());
+                                            motherData.put("DOB", mother.getDOB());
+                                            motherData.put("Occupation", mother.getOccupation());
+                                            motherData.put("Address",mother.getHomeAddress());
+                                            motherData.put("Phone Number", mother.getPhoneNumber());
+                                            motherReference
+                                                    .document("Mother")
+                                                    .set(motherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Mother added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Mother failed");
+                                                        }
+                                                    });
+                                        }
+                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Referrals");
+                                        if (!kid.getReferrals().isEmpty()){
+                                            ArrayList<Parent> referrals = kid.getReferrals();
+                                            for (Parent referral : referrals){
+                                                HashMap<String,String> referralData = new HashMap<>();
+                                                referralData.put("First Name", referral.getFirstName());
+                                                referralData.put("Last Name", referral.getLastName());
+                                                referralData.put("DOB", referral.getDOB());
+                                                referralData.put("Occupation", referral.getOccupation());
+                                                referralData.put("Address", referral.getHomeAddress());
+                                                referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralReference
+                                                        .document(referral.getFirstName())
+                                                        .set(referralData)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d("Referral","Referral added");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.d("Referral","Referral failed");
+                                                            }
+                                                        });
+                                            }
+                                        }
                                         finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());
@@ -421,6 +588,86 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        CollectionReference fatherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        CollectionReference motherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        if (kid.getFather() != null){
+                                            Parent father = kid.getFather();
+                                            HashMap<String,String> fatherData = new HashMap<>();
+                                            fatherData.put("First Name", father.getFirstName());
+                                            fatherData.put("Last Name", father.getLastName());
+                                            fatherData.put("DOB", father.getDOB());
+                                            fatherData.put("Occupation", father.getOccupation());
+                                            fatherData.put("Address",father.getHomeAddress());
+                                            fatherData.put("Phone Number", father.getPhoneNumber());
+                                            fatherReference
+                                                    .document("Father")
+                                                    .set(fatherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        if (kid.getMother() != null){
+                                            Parent mother = kid.getMother();
+                                            HashMap<String,String> motherData = new HashMap<>();
+                                            motherData.put("First Name", mother.getFirstName());
+                                            motherData.put("Last Name", mother.getLastName());
+                                            motherData.put("DOB", mother.getDOB());
+                                            motherData.put("Occupation", mother.getOccupation());
+                                            motherData.put("Address",mother.getHomeAddress());
+                                            motherData.put("Phone Number", mother.getPhoneNumber());
+                                            motherReference
+                                                    .document("Mother")
+                                                    .set(motherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Referrals");
+                                        if (!kid.getReferrals().isEmpty()){
+                                            ArrayList<Parent> referrals = kid.getReferrals();
+                                            for (Parent referral : referrals){
+                                                HashMap<String,String> referralData = new HashMap<>();
+                                                referralData.put("First Name", referral.getFirstName());
+                                                referralData.put("Last Name", referral.getLastName());
+                                                referralData.put("DOB", referral.getDOB());
+                                                referralData.put("Occupation", referral.getOccupation());
+                                                referralData.put("Address", referral.getHomeAddress());
+                                                referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralReference
+                                                        .document(referral.getFirstName())
+                                                        .set(referralData)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                Log.d("Referral","Referral added");
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.d("Referral","Referral failed");
+                                                            }
+                                                        });
+                                            }
+                                        }
                                         finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());

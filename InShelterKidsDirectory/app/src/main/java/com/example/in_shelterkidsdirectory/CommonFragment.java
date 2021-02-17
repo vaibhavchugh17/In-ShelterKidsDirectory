@@ -71,11 +71,18 @@ public class CommonFragment extends DialogFragment implements Serializable {
         return fragment;
     }
 
+    static CommonFragment newInstance(Kid kid, Parent Referral){
+        Bundle args = new Bundle();
+        args.putSerializable("Kid", kid);
+        args.putSerializable("Referral",Referral);
+        CommonFragment fragment = new CommonFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        System.out.println(context.toString());
-        System.out.println(getContext().toString());
         if (context instanceof CommonFragment.OnFragmentInteractionListener) {
             listener = (CommonFragment.OnFragmentInteractionListener) context;
         } else {
@@ -124,24 +131,32 @@ public class CommonFragment extends DialogFragment implements Serializable {
         if (getArguments() != null) {
             kid = (Kid) getArguments().get("Kid");
             String flag = (String) getArguments().get("Flag");
+            if (flag == null){
+                flag = "";
+            }
             if (flag.equals("Father")){
                 title = "Father Information";
-
+                if (kid.getFather() != null){
+                    Parent father = kid.getFather();
+                    parentFirstName.setText(father.getFirstName());
+                    parentLastName.setText(father.getLastName());
+                    parentAddress.setText(father.getHomeAddress());
+                    parentOccupation.setText(father.getOccupation());
+                    parentNumber.setText(father.getPhoneNumber());
+                    parentDOB.setText(father.getDOB());
+                }
             }
             else if (flag.equals("Mother")){
                 title = "Mother Information";
-            }
-            else if (flag.equals("Notes")){
-                title = "Notes";
-                //change the hint to notes
-                parentMiddleName.setVisibility(View.GONE);
-                parentLastName.setVisibility(View.GONE);
-                parentDOB.setVisibility(View.GONE);
-                parentNumber.setVisibility(View.GONE);
-                parentOccupation.setVisibility(View.GONE);
-                parentAddress.setVisibility(View.GONE);
-                dateOfBirth.setVisibility(View.GONE);
-                r_layout.setVisibility(View.GONE);
+                if (kid.getMother() != null){
+                    Parent mother = kid.getMother();
+                    parentFirstName.setText(mother.getFirstName());
+                    parentLastName.setText(mother.getLastName());
+                    parentAddress.setText(mother.getHomeAddress());
+                    parentOccupation.setText(mother.getOccupation());
+                    parentNumber.setText(mother.getPhoneNumber());
+                    parentDOB.setText(mother.getDOB());
+                }
             }
             else if (flag.equals("Concerns")){
                 title = "Concerns";
@@ -154,9 +169,24 @@ public class CommonFragment extends DialogFragment implements Serializable {
                 parentAddress.setVisibility(View.GONE);
                 dateOfBirth.setVisibility(View.GONE);
                 r_layout.setVisibility(View.GONE);
+                if (kid.getConcerns() != null){
+                    parentFirstName.setText(kid.getConcerns());
+                }
             }
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference storageReference = storage.getReference();
+            else {
+                title = "Referral Information";
+                if (getArguments().get("Referral") != null){
+                    title = "Edit Referral Information";
+                    Parent referral = (Parent) getArguments().get("Referral");
+                    parentFirstName.setText(referral.getFirstName());
+                    parentLastName.setText(referral.getLastName());
+                    parentAddress.setText(referral.getHomeAddress());
+                    parentOccupation.setText(referral.getOccupation());
+                    parentNumber.setText(referral.getPhoneNumber());
+                    parentDOB.setText(referral.getDOB());
+                }
+            }
+
         }
 
 
@@ -168,7 +198,61 @@ public class CommonFragment extends DialogFragment implements Serializable {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onAddPressed();
+                        String flag = (String)getArguments().get("Flag");
+                        String firstName = parentFirstName.getText().toString();
+                        if (flag == null){
+                            flag = "";
+                        }
+                        if (flag.equals("Concerns")){
+                            kid.setConcerns(firstName);
+                        }
+                        else if (flag.equals("Referral")){
+                            String lastName = parentLastName.getText().toString();
+                            String DOB = parentDOB.getText().toString();
+                            String occupation = parentOccupation.getText().toString();
+                            String number = parentNumber.getText().toString();
+                            String address = parentAddress.getText().toString();
+                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
+                            kid.addReferrals(temp);
+                            listener.onAddPressed();
+                        }
+                        else if (flag.equals("Father")){
+                            String lastName = parentLastName.getText().toString();
+                            String DOB = parentDOB.getText().toString();
+                            String occupation = parentOccupation.getText().toString();
+                            String number = parentNumber.getText().toString();
+                            String address = parentAddress.getText().toString();
+                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
+                            kid.setFather(temp);
+                            listener.onAddPressed();
+                        }
+                        else if (flag.equals("Mother")){
+                            String lastName = parentLastName.getText().toString();
+                            String DOB = parentDOB.getText().toString();
+                            String occupation = parentOccupation.getText().toString();
+                            String number = parentNumber.getText().toString();
+                            String address = parentAddress.getText().toString();
+                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
+                            kid.setMother(temp);
+                            listener.onAddPressed();
+                        }
+                        else{
+                            String lastName = parentLastName.getText().toString();
+                            String DOB = parentDOB.getText().toString();
+                            String occupation = parentOccupation.getText().toString();
+                            String number = parentNumber.getText().toString();
+                            String address = parentAddress.getText().toString();
+                            Parent referral = (Parent) getArguments().get("Referral");
+                            kid.removeReferral(referral);
+                            referral.setLastName(lastName);
+                            referral.setFirstName(firstName);
+                            referral.setDOB(DOB);
+                            referral.setOccupation(occupation);
+                            referral.setPhoneNumber(number);
+                            referral.setHomeAddress(address);
+                            kid.addReferrals(referral);
+                            listener.onAddPressed();
+                        }
                     }
                 }).create();
     }

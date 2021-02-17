@@ -1,6 +1,8 @@
 package com.example.in_shelterkidsdirectory;
 
-public class Parent {
+import java.io.Serializable;
+
+public class Parent implements Serializable {
     String firstName;
     String lastName;
     String DOB;

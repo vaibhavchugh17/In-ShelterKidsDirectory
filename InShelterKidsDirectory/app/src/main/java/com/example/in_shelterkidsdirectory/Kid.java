@@ -20,9 +20,13 @@ public class Kid implements Serializable {
     //These attributes down below are not included in the constructor as they will be added later when the kid information is added using setters
     Parent father;
     Parent mother;
-    ArrayList<String> concerns;
+    String concerns;
     ArrayList<String> notes;
-    ArrayList<String> referrals;
+    ArrayList<Parent> referrals;
+
+    public Kid(){
+        this.referrals = new ArrayList<>();
+    }
 
     public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, String status, String height, String nationality, String allergies, String birthmarks) {
         this.firstName = firstName;
@@ -36,6 +40,7 @@ public class Kid implements Serializable {
         this.allergies = allergies;
         this.birthmarks = birthmarks;
         this.status=status;
+        this.referrals = new ArrayList<>();
     }
 
     public String getFirstName() {
@@ -134,11 +139,11 @@ public class Kid implements Serializable {
         this.mother = mother;
     }
 
-    public ArrayList<String> getConcerns() {
+    public String getConcerns() {
         return concerns;
     }
 
-    public void setConcerns(ArrayList<String> concerns) {
+    public void setConcerns(String concerns) {
         this.concerns = concerns;
     }
 
@@ -150,12 +155,20 @@ public class Kid implements Serializable {
         this.notes = notes;
     }
 
-    public ArrayList<String> getReferrals() {
+    public ArrayList<Parent> getReferrals() {
         return referrals;
     }
 
-    public void setReferrals(ArrayList<String> referrals) {
+    public void setReferrals(ArrayList<Parent> referrals) {
         this.referrals = referrals;
+    }
+
+    public void addReferrals (Parent parent){
+         referrals.add(parent);
+    }
+
+    public void removeReferral (Parent parent) {
+        this.referrals.remove(parent);
     }
 
     public String getStatus() {

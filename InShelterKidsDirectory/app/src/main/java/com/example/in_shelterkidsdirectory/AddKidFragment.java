@@ -45,7 +45,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener {
+public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener, SelectionFragment.OnFragmentInteractionListener {
     private TextInputEditText kidFirstName;
     private TextInputEditText kidLastName;
     private TextInputEditText kidMiddleName;
@@ -59,10 +59,9 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
     private DatePickerDialog.OnDateSetListener DateListener;
     private Button kidDobButton;
     private Button parentButton;
-    private Button notesButton;
     private Button concernsButton;
     private Button referralsButton;
-    private Kid kid;
+    private Kid kid = new Kid();
     private TextView kidStatus;
     private ImageView kidPic;
 
@@ -72,6 +71,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
     private String kidUid;
     private OnFragmentInteractionListener listener;
     private final int REQUEST = 22;
+    int LAUNCH = 23;
     private Uri path;
     private final String statusStr = "Kid Status -";
     FirebaseStorage storage;
@@ -146,7 +146,6 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         kidStatus = view.findViewById(R.id.kid_status_editText);
         kidDobButton = view.findViewById(R.id.select_date_kid);
         parentButton = view.findViewById(R.id.kid_parent);
-        notesButton = view.findViewById(R.id.kid_notes);
         referralsButton = view.findViewById(R.id.kid_referrals);
         concernsButton = view.findViewById(R.id.kid_concerns);
         final ArrayList<String> validStatus = new ArrayList<String>();
@@ -193,16 +192,8 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         parentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonFragment fragment = CommonFragment.newInstance(kid, "Father");
+                SelectionFragment fragment = SelectionFragment.newInstance(kid);
                 fragment.show(getFragmentManager(),"Add_Parent");
-            }
-        });
-
-        notesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonFragment fragment = CommonFragment.newInstance(kid, "Notes");
-                fragment.show(getFragmentManager(),"Add_Notes");
             }
         });
 
@@ -217,7 +208,16 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         referralsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getContext(), allUserProfiles.class);
+                if (kid != null){
+                    intent.putExtra("Kid", kid);
+                }
+                else{
+                    intent.putExtra("Kid", new Kid());
+                }
+                   //Sending the current user as a parameter to the allUserProfiles activity
 
+                startActivityForResult(intent,LAUNCH);
             }
         });
 
@@ -421,7 +421,11 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             listener.onOkPressed(kid, temp);
                             dialog.dismiss();
                         } else {
-                            listener.onOkPressed(new Kid(first_name,last_name,middle_name,eye_color,dob,hair_color,kid_status,height,nationality,kid_allergies,kid_birthmarks)); //Send the inputted kid as a parameter to the main function's implementation of this method
+                            Kid temp = new Kid(first_name,last_name,middle_name,eye_color,dob,hair_color,kid_status,height,nationality,kid_allergies,kid_birthmarks);
+                            if (kid != null){
+                                temp.setReferrals(kid.getReferrals());
+                            }
+                            listener.onOkPressed(temp);//Send the inputted kid as a parameter to the main function's implementation of this method
                             dialog.dismiss();
                         }
 
@@ -460,6 +464,9 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                 e.printStackTrace();
             }
         }
+        else if (requestCode == LAUNCH && resultCode == -1){
+            kid = (Kid) data.getSerializableExtra("Kid");
+        }
     }
 
     @Override
@@ -475,6 +482,10 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         //nothing yet
     }
 
+    @Override
+    public void onBackPressed(){
+        //nothing yet
+    }
 
 }
 

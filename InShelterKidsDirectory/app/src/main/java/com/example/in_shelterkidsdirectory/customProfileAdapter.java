@@ -22,17 +22,15 @@ import com.google.firebase.storage.StorageReference;
 import java.awt.font.NumericShaper;
 import java.util.ArrayList;
 
-public class customProfileAdapter extends ArrayAdapter<String> {
+public class customProfileAdapter extends ArrayAdapter<Parent> {
 
-    private final ArrayList<String> users;
+    private final ArrayList<Parent> referrals;
     private final Context context;
-    FirebaseStorage storage;
-    StorageReference storageReference;
 
 
-    public customProfileAdapter(Context context, ArrayList<String> users) {
-        super(context, 0, users);
-        this.users = users;
+    public customProfileAdapter(Context context, ArrayList<Parent> referrals) {
+        super(context, 0, referrals);
+        this.referrals = referrals;
         this.context = context;
     }
 
@@ -53,25 +51,11 @@ public class customProfileAdapter extends ArrayAdapter<String> {
             view = LayoutInflater.from(context).inflate(R.layout.display_user_profiles, parent, false); //Attaches layout from bookcontent to each item inside the ListView
         }
 
-        String username = users.get(position);
+        Parent referral = referrals.get(position);
 
-        TextView dispUser = view.findViewById(R.id.textViewP);
-        ImageView dispImage = view.findViewById(R.id.imageViewP);
-        dispUser.setText(username);
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        TextView dispReferral = view.findViewById(R.id.textViewP);
+        dispReferral.setText(referral.getFirstName());
 
-        StorageReference imagesRef = storageReference.child("images/" + username);
-        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide
-                        .with(context)
-                        .load(downloadUrl.toString())
-                        .centerCrop()
-                        .into(dispImage);
-            }
-        });
     return view;
 
     }
