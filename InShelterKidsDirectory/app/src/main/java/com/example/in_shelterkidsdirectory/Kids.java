@@ -36,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 //When the user clicks Kids button from HomePage, this activity gets invoked
 //To display a list of all the kids. WORKING EDIT TILL HERE.
@@ -134,6 +135,54 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     String kid_uid = (String) newKid.getData().get("Uid");
                     Kid temp = new Kid(kid_firstName,kid_lastName,kid_middleName,kid_eye,kid_dob,kid_hair,kidStatus,kid_height,kid_nationality,kid_allergies,kid_birthmarks);
                     temp.setUID(kid_uid);
+                    DocumentReference fatherReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Father");
+                    DocumentReference motherReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Mother");
+                    fatherReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Map<String, Object> data = document.getData();
+                                    String father_firstName = (String)data.get("First Name");    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
+                                    String father_lastName = (String)data.get("Last Name");
+                                    String father_dob = (String)data.get("DOB");
+                                    String father_number = (String)data.get("Phone Number");
+                                    String father_occupation = (String)data.get("Occupation");
+                                    String father_address = (String)data.get("Address");
+                                    Parent father = new Parent(father_firstName,father_lastName,father_dob,father_address,father_occupation,father_number);
+                                    temp.setFather(father);
+                                } else {
+                                    Log.d("Father","Father does not exist");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                    motherReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Map<String, Object> data = document.getData();
+                                    String mother_firstName = (String)data.get("First Name");    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
+                                    String mother_lastName = (String)data.get("Last Name");
+                                    String mother_dob = (String)data.get("DOB");
+                                    String mother_number = (String)data.get("Phone Number");
+                                    String mother_occupation = (String)data.get("Occupation");
+                                    String mother_address = (String)data.get("Address");
+                                    Parent mother = new Parent(mother_firstName,mother_lastName,mother_dob,mother_address,mother_occupation,mother_number);
+                                    temp.setMother(mother);
+                                } else {
+                                    Log.d("Mother","Mother does not exist");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
                     kidDataList.add(temp); // Adding the cities and provinces from FireStore
                     kidAdapter.notifyDataSetChanged();
                 }

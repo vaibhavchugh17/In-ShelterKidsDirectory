@@ -415,20 +415,19 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
 
                         } else if (getArguments().get("Kid") != null) {
 
-                            Kid kid = (Kid) getArguments().get("Kid");
+                            Kid oldKid = (Kid) getArguments().get("Kid");
                             User user = (User) getArguments().get("User");
 
-                            kid.setFirstName(first_name);
-                            kid.setLastName(last_name);
-                            kid.setMiddleName(middle_name);
-                            kid.setDOB(dob);
-                            kid.setEyeColor(eye_color);
-                            kid.setHairColor(hair_color);
-                            kid.setNationality(nationality);
-                            kid.setHeight(height);
-                            kid.setStatus(kid_status);
-
-
+                            oldKid.setFirstName(first_name);
+                            oldKid.setLastName(last_name);
+                            oldKid.setMiddleName(middle_name);
+                            oldKid.setDOB(dob);
+                            oldKid.setEyeColor(eye_color);
+                            oldKid.setHairColor(hair_color);
+                            oldKid.setNationality(nationality);
+                            oldKid.setHeight(height);
+                            oldKid.setStatus(kid_status);
+                            oldKid.setReferrals(kid.getReferrals());
                             String temp = kid.getFirstName();
                             kid.setStatus(kid_status.replace(statusStr,""));
                             listener.onOkPressed(kid, temp);
@@ -437,6 +436,8 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             Kid temp = new Kid(first_name,last_name,middle_name,eye_color,dob,hair_color,kid_status,height,nationality,kid_allergies,kid_birthmarks);
                             if (kid != null){
                                 temp.setReferrals(kid.getReferrals());
+                                temp.setFather(kid.getFather());
+                                temp.setMother(kid.getMother());
                             }
                             listener.onOkPressed(temp);//Send the inputted kid as a parameter to the main function's implementation of this method
                             dialog.dismiss();

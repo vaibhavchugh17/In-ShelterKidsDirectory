@@ -46,22 +46,30 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.image_fragment, null);
         String title = "Select a Parent";
+        String mother_title = "Add Mother's Information";
+        String father_title = "Add Father's Information";
         if (getArguments() != null) {
             kid = (Kid) getArguments().get("Kid");
+            if (kid.getMother()!=null){
+                mother_title = "View Mother's details";
+            }
+            if (kid.getFather()!=null){
+                father_title = "View Father's details";
+            }
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
                 .setTitle(title)
-                .setNegativeButton("Add Mother", new DialogInterface.OnClickListener() {
+                .setNegativeButton(mother_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         CommonFragment fragment = CommonFragment.newInstance(kid, "Mother");
                         fragment.show(getFragmentManager(),"Add_Parent");
                     }
                 })
-                .setPositiveButton("Add Father", new DialogInterface.OnClickListener() {
+                .setPositiveButton(father_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         CommonFragment fragment = CommonFragment.newInstance(kid, "Father");

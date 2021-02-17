@@ -55,12 +55,8 @@ public class allUserProfiles extends AppCompatActivity implements CommonFragment
         referrals.setAdapter(profileAdapter);
         db = FirebaseFirestore.getInstance();
         collectionReference = db.collection("Kids");
-        if (kid != null){
-            name = kid.getFirstName() + kid.getLastName() + kid.getUID();
-        }
-        else{
-            kid = new Kid();
-        }
+
+        name = kid.getFirstName() + kid.getLastName() + kid.getUID();
         profileList.clear();
         profileAdapter.notifyDataSetChanged();
         for (Parent parent : kid.getReferrals()) {
