@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener, SelectionFragment.OnFragmentInteractionListener {
+    public static final String EXTRA_MESSAGE3 = "com.example.dlpbgj.MESSAGE3";
     private TextInputEditText kidFirstName;
     private TextInputEditText kidLastName;
     private TextInputEditText kidMiddleName;
@@ -61,6 +62,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
     private Button parentButton;
     private Button concernsButton;
     private Button referralsButton;
+    private Button notesButton;
     private Kid kid = new Kid();
     private TextView kidStatus;
     private ImageView kidPic;
@@ -148,6 +150,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         parentButton = view.findViewById(R.id.kid_parent);
         referralsButton = view.findViewById(R.id.kid_referrals);
         concernsButton = view.findViewById(R.id.kid_concerns);
+        notesButton = view.findViewById(R.id.kid_notes);
         final ArrayList<String> validStatus = new ArrayList<String>();
         validStatus.add("Residential");
         validStatus.add("Out-Reach");
@@ -194,6 +197,16 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
             public void onClick(View v) {
                 SelectionFragment fragment = SelectionFragment.newInstance(kid);
                 fragment.show(getFragmentManager(),"Add_Parent");
+            }
+        });
+
+
+        notesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Notes.class);
+                intent.putExtra(EXTRA_MESSAGE3, kid);   //Sending the current kid as a parameter to the Notes activity
+                startActivity(intent);
             }
         });
 

@@ -21,12 +21,13 @@ public class Kid implements Serializable {
     Parent father;
     Parent mother;
     String concerns;
-    ArrayList<String> notes;
+    ArrayList<Note> notes;
     ArrayList<Parent> referrals;
 
     public Kid(){
         this.referrals = new ArrayList<>();
     }
+
 
     public Kid(String firstName, String lastName, String middleName, String eyeColor, String DOB, String hairColor, String status, String height, String nationality, String allergies, String birthmarks) {
         this.firstName = firstName;
@@ -147,11 +148,11 @@ public class Kid implements Serializable {
         this.concerns = concerns;
     }
 
-    public ArrayList<String> getNotes() {
+    public ArrayList<Note> getNotes() {
         return notes;
     }
 
-    public void setNotes(ArrayList<String> notes) {
+    public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
     }
 

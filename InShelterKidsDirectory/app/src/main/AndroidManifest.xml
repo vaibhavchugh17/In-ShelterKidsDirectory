@@ -19,7 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
-        <activity android:name=".UserProfileViewOnly"></activity>
+        <activity
+            android:name=".AddNote"
+            android:label="@string/title_activity_add_note"/>
+        <activity android:name=".Notes" />
+        <activity android:name=".UserProfileViewOnly" />
         <activity android:name=".allUserProfiles" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -29,7 +33,6 @@
              sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
-
         <activity android:name=".UserProfile" />
         <activity android:name=".ViewBookDetails" />
         <activity android:name=".HomePage" />
