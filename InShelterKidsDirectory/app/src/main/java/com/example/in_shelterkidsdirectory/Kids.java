@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,8 +17,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,7 +41,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 //When the user clicks Kids button from HomePage, this activity gets invoked
 //To display a list of all the kids. WORKING EDIT TILL HERE.
@@ -53,10 +59,10 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     CollectionReference userKidCollectionReference;    //This is the sub-collection reference for the user who's logged in pointing to the collection of owned kids
     CollectionReference arrayReference;
     String TAG = "MyKids";
-    CheckBox checkAvail;
-    CheckBox checkBorrowed;
-    String availableConstraint = "available";
-    String borrowedConstraint = "borrowed";
+    CheckBox checkResidential;
+    CheckBox checkOut;
+    String residentialConstraint = "Residential";
+    String outConstraint = "Out-Reach";
     private User currentUser;
     private Uri path;
 
@@ -73,9 +79,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_kids);
+        setSupportActionBar(findViewById(R.id.my_toolbar));
         kidList = findViewById(R.id.kid_list);
         contextOfApplication = getApplicationContext();
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Details for all kids!");
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -189,34 +197,34 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             }
         });
 
-        checkAvail = findViewById(R.id.checkAvailable);
-        checkBorrowed = findViewById(R.id.checkBorrowed);
+        checkResidential = findViewById(R.id.checkResidential);
+        checkOut = findViewById(R.id.checkOut);
         //Code Added to update results depending on whether user wants to see only available or all kids
-        checkAvail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkResidential.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 filteredDataList.clear();
                 if (isChecked) {
                     for (int i = 0; i < kidDataList.size(); i++) {
                         Kid kid = kidDataList.get(i);
-                        if (checkBorrowed.isChecked()) {
-                            if (kid.getStatus().toLowerCase().equals(availableConstraint) || kid.getStatus().toLowerCase().equals(borrowedConstraint))
+                        if (checkOut.isChecked()) {
+                            if (kid.getStatus().toLowerCase().equals(residentialConstraint) || kid.getStatus().toLowerCase().equals(outConstraint))
                                 filteredDataList.add(kid);
                         } else {
-                            if (kid.getStatus().toLowerCase().equals(availableConstraint))
+                            if (kid.getStatus().toLowerCase().equals(residentialConstraint))
                                 filteredDataList.add(kid);
                         }
                     }
                     filteredKidAdapter.notifyDataSetChanged();
                     kidList.setAdapter(filteredKidAdapter);
                 } else {
-                    if (!checkBorrowed.isChecked())
+                    if (!checkOut.isChecked())
                         kidList.setAdapter(kidAdapter);
                     else {
                         for (int i = 0; i < kidDataList.size(); i++) {
                             Kid kid = kidDataList.get(i);
                             filteredDataList.add(kid);
-                            if (!(kid.getStatus().toLowerCase().equals(borrowedConstraint))) {
+                            if (!(kid.getStatus().toLowerCase().equals(outConstraint))) {
                                 filteredDataList.remove(kid);
                             }
 
@@ -228,18 +236,18 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             }
         });
 
-        checkBorrowed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        checkOut.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 filteredDataList.clear();
                 if (isChecked) {
                     for (int i = 0; i < kidDataList.size(); i++) {
                         Kid kid = kidDataList.get(i);
-                        if (checkAvail.isChecked()) {
-                            if (kid.getStatus().toLowerCase().equals(availableConstraint) || kid.getStatus().toLowerCase().equals(borrowedConstraint))
+                        if (checkResidential.isChecked()) {
+                            if (kid.getStatus().toLowerCase().equals(residentialConstraint) || kid.getStatus().toLowerCase().equals(outConstraint))
                                 filteredDataList.add(kid);
                         } else {
-                            if (kid.getStatus().toLowerCase().equals(borrowedConstraint))
+                            if (kid.getStatus().toLowerCase().equals(outConstraint))
                                 filteredDataList.add(kid);
                         }
 
@@ -249,13 +257,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     kidList.setAdapter(filteredKidAdapter);
 
                 } else {
-                    if (!checkAvail.isChecked())
+                    if (!checkResidential.isChecked())
                         kidList.setAdapter(kidAdapter);
                     else {
                         for (int i = 0; i < kidDataList.size(); i++) {
                             Kid kid = kidDataList.get(i);
                             filteredDataList.add(kid);
-                            if (!(kid.getStatus().toLowerCase().equals(availableConstraint))) {
+                            if (!(kid.getStatus().toLowerCase().equals(residentialConstraint))) {
                                 filteredDataList.remove(kid);
                             }
 
@@ -777,6 +785,64 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 });
         //kidDataList.remove(kid);
         //kidAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+        StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
+        MenuItem menuItem = menu.findItem(R.id.itemProfile);
+        View view = MenuItemCompat.getActionView((MenuItem) menuItem);
+        CircleImageView profileImage = view.findViewById(R.id.appbar_profile_image);
+
+        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                Glide
+                        .with(getApplicationContext())
+                        .load(downloadUrl.toString())
+                        .centerCrop()
+                        .into(profileImage);
+            }
+        });
+
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
+                intent.putExtra("User", currentUser);
+                startActivity(intent);
+
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+
+            case R.id.itemSearch:
+                Intent intent = new Intent(getApplicationContext(), Search_by_descr.class);
+                intent.putExtra("User", currentUser);
+                startActivity(intent);
+                break;
+            case R.id.itemProfile:
+                Toast.makeText(this,"profileClicked",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.itemLogOut:
+                Intent nIntent = new Intent(Kids.this, MainActivity.class);
+                Toast toast = Toast.makeText(Kids.this, "Signed Out!", Toast.LENGTH_SHORT);
+                toast.show();
+                startActivity(nIntent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

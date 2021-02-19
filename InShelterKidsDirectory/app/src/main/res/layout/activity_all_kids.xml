@@ -12,9 +12,12 @@
         android:id="@+id/kid_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
         android:layout_marginBottom="65dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"/>
+    <include
+        layout="@layout/appbar"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_kid_button"
@@ -40,28 +43,28 @@
         android:weightSum="2">
 
         <CheckBox
-            android:id="@+id/checkAvailable"
+            android:id="@+id/checkResidential"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="90dp"
-            android:text="Available"
+            android:text="Residential"
             android:textColor="#ffffff"
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/checkbox_selector"/>
 
         <CheckBox
-            android:id="@+id/checkBorrowed"
+            android:id="@+id/checkOut"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginTop="10dp"
             android:layout_marginRight="100dp"
             android:layout_marginLeft="10dp"
-            android:text="Borrowed"
+            android:text="Out Reach"
             android:textColor="#ffffff"
             android:clickable="true"
             android:focusable="true"

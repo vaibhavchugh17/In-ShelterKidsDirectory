@@ -91,8 +91,7 @@ public class allUserProfiles extends AppCompatActivity implements CommonFragment
                             }
                         });
                     } else {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Doesn't exist in database", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Log.d("Referral","Referral does not exist in database");
                     }
                 } else {
                     Log.d("Referrals", "get failed with ", task.getException());
