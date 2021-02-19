@@ -70,7 +70,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
 
         currentUser = (User) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE1);//Catching the user object given by the MainActivity
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Welcome!");
+        actionBar.setTitle("Welcome");
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
