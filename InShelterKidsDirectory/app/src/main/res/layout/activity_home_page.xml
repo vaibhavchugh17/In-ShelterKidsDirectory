@@ -36,44 +36,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
-                android:layout_columnWeight = "1"
-                android:layout_rowWeight="1"
-                app:cardElevation="6dp"
-                app:cardCornerRadius="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp">
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:padding="16dp"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageButton
-                        android:id="@+id/UserProfiles"
-                        android:layout_width="80dp"
-                        android:src="@drawable/users"
-                        android:layout_height="80dp">
-                    </ImageButton>
-
-                    <TextView
-                        android:layout_marginTop="12dp"
-                        android:textSize="18sp"
-                        android:text="Users"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </TextView>
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
 
             <androidx.cardview.widget.CardView
-            android:layout_columnWeight = "1"
-            android:layout_rowWeight="1"
+
             app:cardElevation="6dp"
             app:cardCornerRadius="12dp"
             android:layout_width="wrap_content"
@@ -103,9 +69,6 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-
-
-
 
 
         </GridLayout>

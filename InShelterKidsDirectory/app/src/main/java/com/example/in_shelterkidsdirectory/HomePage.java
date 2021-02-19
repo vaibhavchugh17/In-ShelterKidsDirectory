@@ -45,7 +45,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HomePage extends AppCompatActivity implements ImageFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
     public static final String EXTRA_MESSAGE2 = "com.example.dlpbgj.MESSAGE2";
 
-    ImageButton userProfiles;
     ImageButton KidsButton;
     FirebaseStorage storage;
     FirebaseFirestore Userdb;
@@ -81,7 +80,6 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
 
-        userProfiles = findViewById(R.id.UserProfiles);
         KidsButton = findViewById(R.id.AllKids);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -141,22 +139,6 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 startActivity(intent);
             }
         });
-
-        /**
-         * on press of button UserProfiles
-         * is initialized
-         */
-
-        userProfiles.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {        //When user clicks this button, a list of all users using the app is shown
-                Intent intent = new Intent(getApplicationContext(), allUserProfiles.class);
-                intent.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
-                startActivity(intent);
-            }
-        });
-
-
 
 
     }
