@@ -1,10 +1,15 @@
 package com.example.in_shelterkidsdirectory;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,7 +18,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,18 +35,18 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 //As soon as the user successfully logs in, this activity gets invoked. This is the home page of the user.
 public class HomePage extends AppCompatActivity implements ImageFragment.OnFragmentInteractionListener {
     public static final String EXTRA_MESSAGE2 = "com.example.dlpbgj.MESSAGE2";
 
-    ImageButton info_button;
     ImageButton userProfiles;
     ImageButton KidsButton;
-    ImageButton search;
-    ImageButton signOut;
     FirebaseStorage storage;
     FirebaseFirestore Userdb;
     private User currentUser;
+    StorageReference storageReference;
 
     /**
      * Activity is launched when a user successfully signs in.
@@ -50,17 +57,19 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        setSupportActionBar(findViewById(R.id.my_toolbar));
+
 
         currentUser = (User) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE1);//Catching the user object given by the MainActivity
-        info_button = findViewById(R.id.MyInfo);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Welcome!");
+
+
+
         userProfiles = findViewById(R.id.UserProfiles);
         KidsButton = findViewById(R.id.AllKids);
-        search = findViewById(R.id.Search);
-        signOut = findViewById(R.id.SignOut);
-        final ImageView profile = findViewById(R.id.Profile);
         storage = FirebaseStorage.getInstance();
-        final StorageReference storageReference = storage.getReference();
-        final TextView userName = findViewById(R.id.MyName);
+        storageReference = storage.getReference();
         Userdb = FirebaseFirestore.getInstance();
         final String success = "Signed Out!";
 
@@ -97,18 +106,6 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                         }
                         name += "'s Library";
 
-                        userName.setText(name);
-                        StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
-                        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri downloadUrl) {
-                                Glide
-                                        .with(getApplicationContext())
-                                        .load(downloadUrl.toString())
-                                        .centerCrop()
-                                        .into(profile);
-                            }
-                        });
                     }
                 } else {
                     Log.d("HomePage", "User get failed with ", task.getException());
@@ -129,19 +126,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 startActivity(intent);
             }
         });
-        /**
-         * on press of signOut, user is signed out and sent back to the main activity
-         */
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent nIntent = new Intent(view.getContext(), MainActivity.class);
-                Toast toast = Toast.makeText(view.getContext(), success, Toast.LENGTH_SHORT);
-                toast.show();
-                startActivity(nIntent);
-            }
-        });
         /**
          * on press of button UserProfiles
          * is initialized
@@ -155,47 +140,68 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 startActivity(intent);
             }
         });
-        /**
-         * on press of button info_button the activity to User info
-         * is initialized
-         */
 
-        info_button.setOnClickListener(new View.OnClickListener() {
+
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main,menu);
+        StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
+        MenuItem menuItem = menu.findItem(R.id.itemProfile);
+        View view = MenuItemCompat.getActionView((MenuItem) menuItem);
+        CircleImageView profileImage = view.findViewById(R.id.appbar_profile_image);
+
+        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onClick(View view) {
+            public void onSuccess(Uri downloadUrl) {
+                Glide
+                        .with(getApplicationContext())
+                        .load(downloadUrl.toString())
+                        .centerCrop()
+                        .into(profileImage);
+            }
+        });
+
+
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UserProfile.class);
                 intent.putExtra("User", currentUser);
                 startActivity(intent);
+
             }
         });
-        /**
-         * on press of button Search the activity to search through all the kids
-         * is initialized
-         */
 
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+
+            case R.id.itemSearch:
                 Intent intent = new Intent(getApplicationContext(), Search_by_descr.class);
                 intent.putExtra("User", currentUser);
                 startActivity(intent);
-            }
-        });
+                break;
+            case R.id.itemProfile:
+                Toast.makeText(this,"profileClicked",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.itemLogOut:
+                Intent nIntent = new Intent(HomePage.this, MainActivity.class);
+                Toast toast = Toast.makeText(HomePage.this, "Signed Out!", Toast.LENGTH_SHORT);
+                toast.show();
+                startActivity(nIntent);
+                break;
+        }
 
-
-        /**
-         * on press of button my info the activity to configure my info
-         * is initialized
-         */
-        profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ImageFragment fragment = ImageFragment.newInstance(currentUser);
-                fragment.show(getSupportFragmentManager(), "Profile Picture");
-            }
-        });
-
-
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

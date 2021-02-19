@@ -50,7 +50,7 @@ import java.util.Map;
  */
 
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity implements kidImageFragment.OnFragmentInteractionListener {
 
     private final int REQUEST = 22;
     FirebaseStorage storage;
@@ -163,6 +163,14 @@ public class UserProfile extends AppCompatActivity {
                 }
             }
         });
+
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ImageFragment fragment = ImageFragment.newInstance(user);
+//                fragment.show(getSupportFragmentManager(), "Profile Picture");
+//            }
+//        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
