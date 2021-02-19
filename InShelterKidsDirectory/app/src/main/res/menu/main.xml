@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:title="Search"
+        android:id="@+id/itemSearch"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/search" />
+    <item android:title="MyProfile"
+        android:id="@+id/itemProfile"
+        android:orderInCategory="101"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/profile_menu_layout"/>
+    <item android:title="Logout"
+        android:id="@+id/itemLogOut"
+        android:orderInCategory="102"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/logout"
+        />
+</menu>
