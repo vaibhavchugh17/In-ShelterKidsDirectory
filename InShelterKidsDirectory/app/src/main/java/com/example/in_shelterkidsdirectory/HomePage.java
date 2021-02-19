@@ -19,13 +19,17 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,7 +42,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 //As soon as the user successfully logs in, this activity gets invoked. This is the home page of the user.
-public class HomePage extends AppCompatActivity implements ImageFragment.OnFragmentInteractionListener {
+public class HomePage extends AppCompatActivity implements ImageFragment.OnFragmentInteractionListener, NavigationView.OnNavigationItemSelectedListener {
     public static final String EXTRA_MESSAGE2 = "com.example.dlpbgj.MESSAGE2";
 
     ImageButton userProfiles;
@@ -47,6 +51,10 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
     FirebaseFirestore Userdb;
     private User currentUser;
     StorageReference storageReference;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle toggle;
+
 
     /**
      * Activity is launched when a user successfully signs in.
@@ -57,14 +65,21 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        setSupportActionBar(findViewById(R.id.my_toolbar));
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
 
 
         currentUser = (User) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE1);//Catching the user object given by the MainActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Welcome!");
 
-
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
 
         userProfiles = findViewById(R.id.UserProfiles);
         KidsButton = findViewById(R.id.AllKids);
@@ -199,13 +214,44 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 toast.show();
                 startActivity(nIntent);
                 break;
+
+
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
     @Override
     public void onBackPressed() {
         //do nothing
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_myProfile:
+                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
+                intent.putExtra("User", currentUser);
+                startActivity(intent);
+                break;
+            case R.id.nav_allProfiles:
+                Intent intent1 = new Intent(getApplicationContext(), allUserProfiles.class);
+                intent1.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
+                startActivity(intent1);
+                break;
+            case R.id.nav_logout:
+                Intent nIntent = new Intent(HomePage.this, MainActivity.class);
+                Toast toast = Toast.makeText(HomePage.this, "Signed Out!", Toast.LENGTH_SHORT);
+                toast.show();
+                startActivity(nIntent);
+                break;
+
+        }
+
+
+        return true;
     }
 }

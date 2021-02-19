@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="General">
+        <menu>
+            <item
+                android:id="@+id/nav_myProfile"
+                android:title="My Profile"
+                android:icon="@drawable/ic_baseline_person_24"/>
+            <item
+                android:id="@+id/nav_allProfiles"
+                android:title="All Users"
+                android:icon="@drawable/ic_baseline_people_24"/>
+        </menu>
+    </item>
+
+    <item android:title="Logout">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Logout"
+                android:icon="@drawable/logout"/>
+        </menu>
+    </item>
+
+</menu>
