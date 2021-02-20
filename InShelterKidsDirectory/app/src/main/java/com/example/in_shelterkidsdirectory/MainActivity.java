@@ -4,6 +4,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.CycleInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         login = findViewById(R.id.login_button);
         signUp = findViewById(R.id.signup_button);
         final String success = "Login Successful!";
-        final String fail = "Invalid Login Details!";
+        final String fail = "Invalid Password!";
         final String noExist = "Please Sign Up!";
         final String exist = "User already exists!";
         final String signUpS = "Successfully Signed Up!";
@@ -131,10 +133,13 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
 
                                     } else {
+                                        pass.startAnimation(shakeError());
                                         Toast toast = Toast.makeText(v.getContext(), fail, Toast.LENGTH_SHORT);
                                         toast.show();
                                     }
                                 } else {
+                                    user.startAnimation(shakeError());
+                                    pass.startAnimation(shakeError());
                                     Toast toast = Toast.makeText(v.getContext(), noExist, Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
@@ -170,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
+                                    user.startAnimation(shakeError());
                                     Toast toast = Toast.makeText(v.getContext(), exist, Toast.LENGTH_SHORT);
                                     toast.show();
                                 } else {
@@ -216,6 +222,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public TranslateAnimation shakeError() {
+        TranslateAnimation shake = new TranslateAnimation(0, 10, 0, 0);
+        shake.setDuration(500);
+        shake.setInterpolator(new CycleInterpolator(7));
+        return shake;
     }
 
 }

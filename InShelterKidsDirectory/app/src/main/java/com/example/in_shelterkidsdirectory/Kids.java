@@ -854,6 +854,12 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         //Do nothing
     }
 
+    @Override
+    public void onBackPressed(){
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
 
 }
 

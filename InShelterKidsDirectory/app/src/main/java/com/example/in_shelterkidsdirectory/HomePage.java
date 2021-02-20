@@ -25,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -130,6 +131,10 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
          * is initialized
          */
 
+        Intent intent = new Intent(getApplicationContext(), Kids.class);
+        intent.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the MyBooks activity
+        startActivity(intent);
+        Animatoo.animateSlideUp(this);
 
         KidsButton.setOnClickListener(new View.OnClickListener() {
             @Override

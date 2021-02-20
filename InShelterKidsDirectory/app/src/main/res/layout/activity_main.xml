@@ -2,17 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C8E9E6">
+    android:background="@drawable/sample1">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:scaleType="centerInside"
-        android:gravity="center"
-        android:layout_marginLeft="75dp"
-        android:layout_marginRight="75dp"
-        android:layout_marginTop="60dp"
-        android:src="@drawable/logo" />
+
 
     <TextView
         android:layout_width="match_parent"
@@ -46,6 +38,7 @@
             android:layout_width="250dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:drawableLeft="@drawable/user"
             android:layout_marginTop="230dp"
             android:layout_marginBottom="50dp"
             android:background="?attr/colorButtonNormal"
@@ -61,6 +54,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginBottom="50dp"
+            android:drawableLeft="@drawable/key"
             android:background="?attr/colorButtonNormal"
             android:gravity="center"
             android:hint="PASSWORD"
