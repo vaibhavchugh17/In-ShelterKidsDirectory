@@ -68,7 +68,6 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
-
         currentUser = (User) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE1);//Catching the user object given by the MainActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Welcome");

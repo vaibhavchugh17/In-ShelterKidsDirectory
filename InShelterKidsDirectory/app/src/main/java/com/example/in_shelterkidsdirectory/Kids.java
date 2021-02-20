@@ -12,14 +12,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -42,11 +48,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 //When the user clicks Kids button from HomePage, this activity gets invoked
 //To display a list of all the kids. WORKING EDIT TILL HERE.
-public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener,SelectionFragment.OnFragmentInteractionListener {
+public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener,SelectionFragment.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener {
     public static Context contextOfApplication;
     ListView kidList;
     ArrayAdapter<Kid> kidAdapter; //A custom adapter
@@ -63,6 +70,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     CheckBox checkOut;
     String residentialConstraint = "Residential";
     String outConstraint = "Out-Reach";
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    ActionBarDrawerToggle toggle;
     private User currentUser;
     private Uri path;
 
@@ -79,11 +89,19 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_kids);
-        setSupportActionBar(findViewById(R.id.my_toolbar));
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
         kidList = findViewById(R.id.kid_list);
         contextOfApplication = getApplicationContext();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Details for all kids!");
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open, R.string.close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.setDrawerIndicatorEnabled(true);
+        toggle.syncState();
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -840,6 +858,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 toast.show();
                 startActivity(nIntent);
                 break;
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -859,6 +879,30 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         overridePendingTransition(0, 0);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_myProfile:
+                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
+                intent.putExtra("User", currentUser);
+                startActivity(intent);
+                break;
+            case R.id.nav_allProfiles:
+                Intent intent1 = new Intent(getApplicationContext(), allUserProfiles.class);
+                intent1.putExtra("usder", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
+                startActivity(intent1);
+                break;
+            case R.id.nav_logout:
+                Intent nIntent = new Intent(Kids.this, MainActivity.class);
+                Toast toast = Toast.makeText(Kids.this, "Signed Out!", Toast.LENGTH_SHORT);
+                toast.show();
+                startActivity(nIntent);
+                break;
+
+        }
+        return true;
     }
 
 }
