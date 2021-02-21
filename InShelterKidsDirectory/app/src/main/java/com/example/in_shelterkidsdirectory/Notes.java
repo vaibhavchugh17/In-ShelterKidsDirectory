@@ -45,14 +45,26 @@ public class Notes extends AppCompatActivity {
         HashMap<String,Object> extras = (HashMap<String, Object>) getIntent().getSerializableExtra(AddKidFragment.EXTRA_MESSAGE3);
         String flag = (String) extras.get("Flag");
         kid = (Kid) extras.get("Kid");
+        String name = kid.getFirstName();
         ActionBar actionBar = getSupportActionBar();
         ArrayList<Note> kidNotes = new ArrayList<>();
         if (flag.equals("Notes")){
-            actionBar.setTitle(kid.getFirstName() + "'s Notes");
+            if(name == null){
+                actionBar.setTitle("Notes");
+            }
+            else{
+                actionBar.setTitle(name + "'s Notes");
+            }
+
             adapter = new Adapter(kidNotes, kid,"Notes");
         }
         else{
-            actionBar.setTitle(kid.getFirstName() + "'s Concerns");
+            if(name == null){
+                actionBar.setTitle("Concerns");
+            }
+            else{
+                actionBar.setTitle(name + "'s Concerns");
+            }
             adapter = new Adapter(kidNotes, kid,"Concerns");
         }
         noteList = findViewById(R.id.noteList);

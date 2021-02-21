@@ -70,7 +70,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     CollectionReference arrayReference;
     String TAG = "MyKids";
     CheckBox checkResidential;
-    
+
     CheckBox checkOut;
     String residentialConstraint = "Residential";
     String outConstraint = "Out-Reach";
