@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -75,6 +76,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     ActionBarDrawerToggle toggle;
     private User currentUser;
     private Uri path;
+    TextView userDisplay;
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
@@ -94,7 +96,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         kidList = findViewById(R.id.kid_list);
         contextOfApplication = getApplicationContext();
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Details for all kids!");
+        actionBar.setTitle("List of Kids");
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -114,6 +116,18 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         filteredDataList = new ArrayList<>();
         filteredKidAdapter = new customKidAdapter(this, filteredDataList);
 
+        View headerView = navigationView.getHeaderView(0);
+        userDisplay= (TextView) headerView.findViewById(R.id.userDisplayName);
+        String name  = currentUser.getFirst_name();
+
+        if(name == null){
+            userDisplay.setText("Welcome");
+
+        }
+        else{
+            userDisplay.setText("Welcome, " + name);
+
+        }
 
         final FloatingActionButton addKidButton = findViewById(R.id.add_kid_button);  //Invoking a fragment to add the kids when the FAB is clicked
         addKidButton.setOnClickListener(new View.OnClickListener() {
@@ -858,6 +872,48 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 toast.show();
                 startActivity(nIntent);
                 break;
+            case R.id.filter1:
+                item.setChecked(!item.isChecked());
+                filteredDataList.clear();
+                if (item.isChecked()) {
+                    for (int i = 0; i < kidDataList.size(); i++) {
+                        Kid kid = kidDataList.get(i);
+                        if (item.isChecked()) {
+                            if (kid.getStatus().toLowerCase().equals(residentialConstraint) || kid.getStatus().toLowerCase().equals(outConstraint))
+                                filteredDataList.add(kid);
+                        } else {
+                            if (kid.getStatus().toLowerCase().equals(residentialConstraint))
+                                filteredDataList.add(kid);
+                        }
+                    }
+                    filteredKidAdapter.notifyDataSetChanged();
+                    kidList.setAdapter(filteredKidAdapter);
+                } else {
+                    if (!item.isChecked())
+                        kidList.setAdapter(kidAdapter);
+                    else {
+                        for (int i = 0; i < kidDataList.size(); i++) {
+                            Kid kid = kidDataList.get(i);
+                            filteredDataList.add(kid);
+                            if (!(kid.getStatus().toLowerCase().equals(outConstraint))) {
+                                filteredDataList.remove(kid);
+                            }
+
+                        }
+                        filteredKidAdapter.notifyDataSetChanged();
+                        kidList.setAdapter(filteredKidAdapter);
+                    }
+                }
+
+
+
+
+                break;
+            case R.id.filter2:
+                item.setChecked(!item.isChecked());
+                break;
+
+
 
 
         }
@@ -880,6 +936,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         startActivity(getIntent());
         overridePendingTransition(0, 0);
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

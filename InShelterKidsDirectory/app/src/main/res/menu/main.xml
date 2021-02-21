@@ -19,4 +19,27 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/logout"
         />
+    <item android:title="Filter"
+        android:orderInCategory="103">
+
+        <menu>
+            <item
+                android:title="Residential"
+                android:id="@+id/filter1"
+                app:showAsAction="never"
+                app:actionViewClass="android.widget.CheckBox"
+                android:checkable="true"
+                 />
+            <item
+                android:title="Out-Reach"
+                android:id="@+id/filter2"
+                app:showAsAction="never"
+                app:actionViewClass="android.widget.CheckBox"
+                android:checkable="true"
+                />
+        </menu>
+    </item>
+
+
+
 </menu>

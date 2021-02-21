@@ -23,7 +23,7 @@
             android:text="In-Shelter Kids Directory"
             android:textAlignment="viewStart"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:typeface="normal"
             app:layout_constraintBottom_toBottomOf="parent"

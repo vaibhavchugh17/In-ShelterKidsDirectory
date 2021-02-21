@@ -7,7 +7,9 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    android:background="@drawable/sample3">
+
 <FrameLayout
 
 
@@ -22,7 +24,7 @@
         android:id="@+id/kid_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="65dp"
         android:layout_marginBottom="65dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"/>
@@ -82,6 +84,9 @@
 
     </LinearLayout>
 
+
+
+</FrameLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
@@ -91,7 +96,4 @@
         app:menu="@menu/nav_menu"
         app:headerLayout="@layout/nav_header"
         />
-
-
-</FrameLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
