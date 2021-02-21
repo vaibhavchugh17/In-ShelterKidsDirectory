@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
-    android:background="@drawable/sample3">
+    android:background="@drawable/sample2">
 
 <FrameLayout
 
@@ -27,7 +27,7 @@
         android:layout_marginTop="65dp"
         android:layout_marginBottom="65dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="10dp"/>
+        android:dividerHeight="10dp" />
     <include
         layout="@layout/appbar"/>
 
@@ -42,10 +42,10 @@
         android:focusable="auto"
         android:focusableInTouchMode="false"
         android:visibility="visible"
-        app:backgroundTint="#0B6ACF"
+        app:backgroundTint="@color/white"
         app:elevation="9dp"
         app:fabSize="auto"
-        app:srcCompat="@drawable/fragment" />
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <LinearLayout
         android:layout_width="wrap_content"
