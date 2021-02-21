@@ -70,7 +70,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     CollectionReference arrayReference;
     String TAG = "MyKids";
     CheckBox checkResidential;
-
+    Integer check1 = 0;
+    Integer check2 = 0;
     CheckBox checkOut;
     String residentialConstraint = "Residential";
     String outConstraint = "Out-Reach";
@@ -963,12 +964,28 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 startActivity(nIntent);
                 break;
             case R.id.filter1:
-                item.setChecked(!item.isChecked());
                 filteredDataList.clear();
-                if (item.isChecked()) {
+                if(item.isChecked())
+                {
+                    if (check2 == 0)
+                        kidList.setAdapter(kidAdapter);
+                    else {
+                        for (int i = 0; i < kidDataList.size(); i++) {
+                            Kid kid = kidDataList.get(i);
+                            filteredDataList.add(kid);
+                            if (!(kid.getStatus().equals(outConstraint))){
+                                filteredDataList.remove(kid);
+                            }
+                        }
+                        filteredKidAdapter.notifyDataSetChanged();
+                        kidList.setAdapter(filteredKidAdapter);
+                    }
+                    check1 = 0;
+                    item.setChecked(false);
+                }else{
                     for (int i = 0; i < kidDataList.size(); i++) {
                         Kid kid = kidDataList.get(i);
-                        if (item.isChecked()) {
+                        if (check2 == 1) {
                             if (kid.getStatus().equals(residentialConstraint) || kid.getStatus().equals(outConstraint))
                                 filteredDataList.add(kid);
                         } else {
@@ -978,28 +995,49 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     }
                     filteredKidAdapter.notifyDataSetChanged();
                     kidList.setAdapter(filteredKidAdapter);
-                } else {
-                    if (!item.isChecked())
+                    check1 = 1;
+                    item.setChecked(true);
+                }
+                break;
+            case R.id.filter2:
+                filteredDataList.clear();
+                if(item.isChecked())
+                {
+                    if (check1 == 0)
                         kidList.setAdapter(kidAdapter);
                     else {
                         for (int i = 0; i < kidDataList.size(); i++) {
                             Kid kid = kidDataList.get(i);
                             filteredDataList.add(kid);
-                            if (!(kid.getStatus().equals(outConstraint))) {
+                            if (!(kid.getStatus().equals(residentialConstraint))){
                                 filteredDataList.remove(kid);
                             }
 
                         }
                         filteredKidAdapter.notifyDataSetChanged();
                         kidList.setAdapter(filteredKidAdapter);
+
                     }
+                    check2 = 0;
+                    item.setChecked(false);
+                }else{
+                    for (int i = 0; i < kidDataList.size(); i++) {
+                        Kid kid = kidDataList.get(i);
+                        if (check1 == 1) {
+                            if (kid.getStatus().equals(residentialConstraint) || kid.getStatus().equals(outConstraint))
+                                filteredDataList.add(kid);
+                        } else {
+                            if (kid.getStatus().equals(outConstraint))
+                                filteredDataList.add(kid);
+                        }
+
+
+                    }
+                    filteredKidAdapter.notifyDataSetChanged();
+                    kidList.setAdapter(filteredKidAdapter);
+                    check2 = 1;
+                    item.setChecked(true);
                 }
-
-
-
-                break;
-            case R.id.filter2:
-                item.setChecked(!item.isChecked());
                 break;
 
 
