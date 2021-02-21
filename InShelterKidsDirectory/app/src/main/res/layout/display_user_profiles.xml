@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageViewP"
         android:layout_width="100dp"
         android:layout_marginTop="10dp"
@@ -11,6 +11,14 @@
         android:layout_marginLeft="20dp"
         android:layout_height="100dp"
         android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:layout_width="800dp"
+        android:layout_height="110dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/customborder">
 
     <TextView
         android:id="@+id/textViewP"
@@ -22,8 +30,9 @@
         android:inputType = "textCapWords"
         android:layout_marginTop="40dp"
         android:text="TextView"
-        android:textColor="#000080"
-        android:gravity="center" />
-
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
+    </LinearLayout>
 
 </LinearLayout>

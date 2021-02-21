@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start"
-    android:background="@drawable/sample2">
+    android:background="@drawable/gradient1">
 
 <FrameLayout
 
@@ -19,12 +19,48 @@
     android:id="@+id/frame_layout"
     tools:context="com.example.in_shelterkidsdirectory.Kids">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="60dp">
+        <CheckBox
+            android:id="@+id/checkResidential"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="90dp"
+            android:text="Residential"
+            android:textColor="#ffffff"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="90dp" />
+
+        <CheckBox
+            android:id="@+id/checkOut"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="110dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="90dp"
+            android:layout_marginLeft="10dp"
+            android:text="Out Reach"
+            android:textColor="#ffffff"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="90dp"
+            android:layout_marginStart="10dp" />
+
+    </LinearLayout>
+
 
     <ListView
         android:id="@+id/kid_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="105dp"
         android:layout_marginBottom="65dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp" />
@@ -47,42 +83,7 @@
         app:fabSize="auto"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:layout_gravity="bottom|left"
-        android:orientation="horizontal"
-        android:weightSum="2">
 
-        <CheckBox
-            android:id="@+id/checkResidential"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="90dp"
-            android:text="Residential"
-            android:textColor="#ffffff"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/checkbox_selector"/>
-
-        <CheckBox
-            android:id="@+id/checkOut"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="100dp"
-            android:layout_marginLeft="10dp"
-            android:text="Out Reach"
-            android:textColor="#ffffff"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/checkbox_selector"/>
-
-    </LinearLayout>
 
 
 

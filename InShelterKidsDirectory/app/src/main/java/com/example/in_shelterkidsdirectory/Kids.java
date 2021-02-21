@@ -70,6 +70,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     CollectionReference arrayReference;
     String TAG = "MyKids";
     CheckBox checkResidential;
+
     CheckBox checkOut;
     String residentialConstraint = "Residential";
     String outConstraint = "Out-Reach";
@@ -968,10 +969,10 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     for (int i = 0; i < kidDataList.size(); i++) {
                         Kid kid = kidDataList.get(i);
                         if (item.isChecked()) {
-                            if (kid.getStatus().toLowerCase().equals(residentialConstraint) || kid.getStatus().toLowerCase().equals(outConstraint))
+                            if (kid.getStatus().equals(residentialConstraint) || kid.getStatus().equals(outConstraint))
                                 filteredDataList.add(kid);
                         } else {
-                            if (kid.getStatus().toLowerCase().equals(residentialConstraint))
+                            if (kid.getStatus().equals(residentialConstraint))
                                 filteredDataList.add(kid);
                         }
                     }
@@ -984,7 +985,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                         for (int i = 0; i < kidDataList.size(); i++) {
                             Kid kid = kidDataList.get(i);
                             filteredDataList.add(kid);
-                            if (!(kid.getStatus().toLowerCase().equals(outConstraint))) {
+                            if (!(kid.getStatus().equals(outConstraint))) {
                                 filteredDataList.remove(kid);
                             }
 
@@ -993,7 +994,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                         kidList.setAdapter(filteredKidAdapter);
                     }
                 }
-
 
 
 

@@ -2,6 +2,7 @@ package com.example.in_shelterkidsdirectory;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +14,9 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,8 +55,18 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentUser = (User) getIntent().getSerializableExtra("User");
         setContentView(R.layout.search_books);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Search");
+
+
+        currentUser = (User) getIntent().getSerializableExtra("User");
         kidList = findViewById(R.id.kid_list);
         description = findViewById(R.id.description);
         search = findViewById(R.id.search);
@@ -448,6 +461,18 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                 });
         //kidDataList.remove(kid);
         //kidAdapter.notifyDataSetChanged();
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
