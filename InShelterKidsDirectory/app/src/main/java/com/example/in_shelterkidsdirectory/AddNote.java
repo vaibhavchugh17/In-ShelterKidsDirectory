@@ -38,7 +38,9 @@ public class AddNote extends Activity {
         noteTitle = findViewById(R.id.addNoteTitle);
         noteContent = findViewById(R.id.addNoteContent);
         pbar = findViewById(R.id.progressBar);
-        Kid kid = (Kid) getIntent().getSerializableExtra("Kid");
+        HashMap<String,Object> extras = (HashMap<String, Object>) getIntent().getSerializableExtra("Extras");
+        Kid kid = (Kid) extras.get("Kid");
+        String flag = (String) extras.get("Flag");
         Note note = (Note) getIntent().getSerializableExtra("Note");
         if (note != null){
             noteContent.setText(note.getContent());
@@ -62,13 +64,22 @@ public class AddNote extends Activity {
 
                 db = FirebaseFirestore.getInstance();
                 userKidCollectionReference = db.collection("Kids");
-                DocumentReference doc = userKidCollectionReference.document(kid.getFirstName().toLowerCase() + kid.getMiddleName().toLowerCase() + kid.getLastName().toLowerCase());
-                DocumentReference docRef = doc.collection("notes").document();
-
-                if(note != null) {
-                    docRef = doc.collection("notes").document(note.getId());
+                DocumentReference doc = userKidCollectionReference.document(kid.getFirstName() + kid.getLastName() + kid.getUID());
+                DocumentReference docRef = doc.collection("Concerns").document();
+                if (flag.equals("Notes")){
+                    docRef = doc.collection("notes").document();
                 }
 
+
+                if(note != null) {
+                    if (flag.equals("Notes")){
+                        docRef = doc.collection("notes").document(note.getId());
+                    }
+                    else{
+                        docRef = doc.collection("Concerns").document(note.getId());
+                    }
+
+                }
                 Map<String,Object> noteMap = new HashMap<>();
                 noteMap.put("title", title);
                 noteMap.put("content", content);
@@ -90,11 +101,5 @@ public class AddNote extends Activity {
 
             }
         });
-
-
-
-
-
-
     }
 }

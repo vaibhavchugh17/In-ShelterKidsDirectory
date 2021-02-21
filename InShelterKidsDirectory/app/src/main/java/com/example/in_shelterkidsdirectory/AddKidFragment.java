@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener, SelectionFragment.OnFragmentInteractionListener {
     public static final String EXTRA_MESSAGE3 = "com.example.dlpbgj.MESSAGE3";
@@ -206,7 +207,10 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Notes.class);
-                intent.putExtra(EXTRA_MESSAGE3, kid);   //Sending the current kid as a parameter to the Notes activity
+                HashMap<String,Object> extras = new HashMap<>();
+                extras.put("Kid",kid);
+                extras.put("Flag","Notes");
+                intent.putExtra(EXTRA_MESSAGE3, extras);   //Sending the current kid as a parameter to the Notes activity
                 startActivity(intent);
             }
         });
@@ -214,8 +218,12 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         concernsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonFragment fragment = CommonFragment.newInstance(kid, "Concerns");
-                fragment.show(getFragmentManager(),"Add_Concerns");
+                Intent intent = new Intent(getContext(), Notes.class);
+                HashMap<String,Object> extras = new HashMap<>();
+                extras.put("Kid",kid);
+                extras.put("Flag","Concerns");
+                intent.putExtra(EXTRA_MESSAGE3, extras);   //Sending the current kid as a parameter to the Notes activity
+                startActivity(intent);
             }
         });
 

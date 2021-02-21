@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Notes extends AppCompatActivity {
@@ -41,10 +42,16 @@ public class Notes extends AppCompatActivity {
         }
 
 
-
-        kid = (Kid) getIntent().getSerializableExtra(AddKidFragment.EXTRA_MESSAGE3);
+        HashMap<String,Object> extras = (HashMap<String, Object>) getIntent().getSerializableExtra(AddKidFragment.EXTRA_MESSAGE3);
+        String flag = (String) extras.get("Flag");
+        kid = (Kid) extras.get("Kid");
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(kid.getFirstName() + "'s Notes");
+        if (flag.equals("Notes")){
+            actionBar.setTitle(kid.getFirstName() + "'s Notes");
+        }
+        else{
+            actionBar.setTitle(kid.getFirstName() + "'s Concerns");
+        }
         noteList = findViewById(R.id.noteList);
         ArrayList<Note> kidNotes = new ArrayList<>();
 
@@ -57,30 +64,63 @@ public class Notes extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AddNote.class);
-                intent.putExtra("Kid", kid);
-                startActivity(intent);
+                HashMap<String,Object> extras = new HashMap<>();
+                if (flag.equals("Notes")){
+                    extras.put("Kid",kid);
+                    extras.put("Flag","Notes");
+                    intent.putExtra("Extras", extras);
+                    startActivity(intent);
+                }
+                else{
+                    extras.put("Kid",kid);
+                    extras.put("Flag","Concerns");
+                    intent.putExtra("Extras", extras);
+                    startActivity(intent);
+                }
 
             }
         });
 
         db = FirebaseFirestore.getInstance();
-        kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName().toLowerCase() + kid.getMiddleName().toLowerCase() + kid.getLastName().toLowerCase()).collection("notes");
-        kidNoteCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                kidNotes.clear();
-                adapter.notifyDataSetChanged();
-                for (QueryDocumentSnapshot newNote : value) {
-                    String fireContent = (String) newNote.getData().get("content");
-                    String fireTitle = (String) newNote.getData().get("title");
-                    Note note = new Note (fireTitle,fireContent);
-                    note.setId(newNote.getId().toString());
-                    kidNotes.add(note);
+        if (flag.equals("Notes")){
+            kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName() + kid.getLastName() +kid.getUID()).collection("notes");
+            kidNoteCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    kidNotes.clear();
                     adapter.notifyDataSetChanged();
-                    kid.setNotes(kidNotes);
+                    for (QueryDocumentSnapshot newNote : value) {
+                        String fireContent = (String) newNote.getData().get("content");
+                        String fireTitle = (String) newNote.getData().get("title");
+                        Note note = new Note (fireTitle,fireContent);
+                        note.setId(newNote.getId().toString());
+                        kidNotes.add(note);
+                        adapter.notifyDataSetChanged();
+                        kid.setNotes(kidNotes);
+                    }
                 }
-            }
-        });
+            });
+        }
+        else{
+            kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName() + kid.getLastName() +kid.getUID()).collection("Concerns");
+            kidNoteCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                    kidNotes.clear();
+                    adapter.notifyDataSetChanged();
+                    for (QueryDocumentSnapshot newNote : value) {
+                        String fireContent = (String) newNote.getData().get("content");
+                        String fireTitle = (String) newNote.getData().get("title");
+                        Note note = new Note (fireTitle,fireContent);
+                        note.setId(newNote.getId().toString());
+                        kidNotes.add(note);
+                        adapter.notifyDataSetChanged();
+                        kid.setConcerns(kidNotes);
+                    }
+                }
+            });
+        }
+
 
 
 
