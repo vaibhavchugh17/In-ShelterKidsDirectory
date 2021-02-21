@@ -2,6 +2,7 @@ package com.example.in_shelterkidsdirectory;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,17 +62,52 @@ public class customProfileAdapter extends ArrayAdapter<String> {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        StorageReference imagesRef = storageReference.child("images/" + username);
-        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide
-                        .with(context)
-                        .load(downloadUrl.toString())
-                        .centerCrop()
-                        .into(dispImage);
-            }
-        });
+        StorageReference imagesRef = storageReference.child("images/");
+        final StorageReference defaultRef = imagesRef.child("default.png");
+        try {
+            final StorageReference ref = imagesRef.child(username);
+            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+                    Glide
+                            .with(context)
+                            .load(downloadUrl.toString())
+                            .centerCrop()
+                            .into(dispImage);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("KidImageError", e.getMessage());
+                    defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri downloadUrl) {
+
+                            Glide
+                                    .with(context)
+                                    .load(downloadUrl.toString())
+                                    .centerCrop()
+                                    .into(dispImage);
+                        }
+                    });
+
+
+                }
+            });
+        }
+        catch (Exception e){
+            defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri downloadUrl) {
+
+                    Glide
+                            .with(context)
+                            .load(downloadUrl.toString())
+                            .centerCrop()
+                            .into(dispImage);
+                }
+            });
+        }
     return view;
 
     }
