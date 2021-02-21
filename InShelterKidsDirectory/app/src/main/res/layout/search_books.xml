@@ -50,7 +50,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="90dp"
             android:ems="10"
-            android:text="Available"
+            android:text="Residential"
             android:clickable="true"
             android:focusable="true"
             android:background="@drawable/checkbox_selector">
@@ -66,7 +66,7 @@
             android:layout_marginRight="100dp"
             android:layout_marginLeft="10dp"
             android:ems="10"
-            android:text="Borrowed"
+            android:text="Out-Reach"
             android:background="@drawable/checkbox_selector">
 
         </CheckBox>

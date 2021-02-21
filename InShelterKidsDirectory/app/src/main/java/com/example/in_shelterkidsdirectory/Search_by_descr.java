@@ -1,6 +1,5 @@
 package com.example.in_shelterkidsdirectory;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,10 +43,10 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
     Button search;
     CollectionReference userKidCollectionReference;
     String TAG = "KidSearch";
-    CheckBox checkAvail;
-    CheckBox checkBorr;
-    String availableConstraint = "available";
-    String borrowedConstraint = "borrowed";
+    CheckBox checkResidential;
+    CheckBox checkOut;
+    String residentialConstraint = "Residential";
+    String outConstraint = "Out-Reach";
     private User currentUser;
     CollectionReference arrayReference;
 
@@ -59,8 +57,8 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
         kidList = findViewById(R.id.kid_list);
         description = findViewById(R.id.description);
         search = findViewById(R.id.search);
-        checkAvail = findViewById(R.id.check_available);
-        checkBorr = findViewById(R.id.check_borrowed);
+        checkResidential = findViewById(R.id.check_available);
+        checkOut = findViewById(R.id.check_borrowed);
 
         kidDataList = new ArrayList<>();
         filteredDataList = new ArrayList<>();
@@ -100,20 +98,20 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                     temp.setUID(kid_uid);
                                     kidDataList.add(temp);
                                     kidAdapter.notifyDataSetChanged();
-                                        if (checkAvail.isChecked() && checkBorr.isChecked()) {
-                                            if (!(kidStatus.toLowerCase().equals(availableConstraint) || kidStatus.toLowerCase().equals(borrowedConstraint))) {
+                                        if (checkResidential.isChecked() && checkOut.isChecked()) {
+                                            if (!(kidStatus.equals(residentialConstraint) || kidStatus.equals(outConstraint))) {
                                                 kidDataList.remove(temp);
                                                 kidAdapter.notifyDataSetChanged();
                                             }
                                         }
-                                        if (checkBorr.isChecked() && !checkAvail.isChecked()) {
-                                            if (!(kidStatus.toLowerCase().equals(borrowedConstraint))) {
+                                        if (checkOut.isChecked() && !checkResidential.isChecked()) {
+                                            if (!(kidStatus.equals(outConstraint))) {
                                                 kidDataList.remove(temp);
                                                 kidAdapter.notifyDataSetChanged();
                                             }
                                         }
-                                        if (!checkBorr.isChecked() && checkAvail.isChecked()) {
-                                            if (!(kidStatus.toLowerCase().equals(availableConstraint))) {
+                                        if (!checkOut.isChecked() && checkResidential.isChecked()) {
+                                            if (!(kidStatus.equals(residentialConstraint))) {
                                                 kidDataList.remove(temp);
                                                 kidAdapter.notifyDataSetChanged();
                                             }
@@ -127,6 +125,84 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                 });
             }
         });
+
+        checkResidential.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filteredDataList.clear();
+                if (isChecked) {
+                    for (int i = 0; i < kidDataList.size(); i++) {
+                        Kid kid = kidDataList.get(i);
+                        if (checkOut.isChecked()) {
+                            if (kid.getStatus().equals(residentialConstraint) || kid.getStatus().equals(outConstraint))
+                                filteredDataList.add(kid);
+                        } else {
+                            if (kid.getStatus().equals(residentialConstraint))
+                                filteredDataList.add(kid);
+                        }
+                    }
+                    filteredKidAdapter.notifyDataSetChanged();
+                    kidList.setAdapter(filteredKidAdapter);
+                } else {
+                    if (!checkOut.isChecked())
+                        kidList.setAdapter(kidAdapter);
+                    else {
+                        for (int i = 0; i < kidDataList.size(); i++) {
+                            Kid kid = kidDataList.get(i);
+                            filteredDataList.add(kid);
+                            if (!(kid.getStatus().equals(outConstraint))) {
+                                filteredDataList.remove(kid);
+                            }
+
+                        }
+                        filteredKidAdapter.notifyDataSetChanged();
+                        kidList.setAdapter(filteredKidAdapter);
+                    }
+                }
+            }
+        });
+
+        checkOut.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                filteredDataList.clear();
+                if (isChecked) {
+                    for (int i = 0; i < kidDataList.size(); i++) {
+                        Kid kid = kidDataList.get(i);
+                        if (checkResidential.isChecked()) {
+                            if (kid.getStatus().equals(residentialConstraint) || kid.getStatus().equals(outConstraint))
+                                filteredDataList.add(kid);
+                        } else {
+                            if (kid.getStatus().equals(outConstraint))
+                                filteredDataList.add(kid);
+                        }
+
+
+                    }
+                    filteredKidAdapter.notifyDataSetChanged();
+                    kidList.setAdapter(filteredKidAdapter);
+
+                } else {
+                    if (!checkResidential.isChecked())
+                        kidList.setAdapter(kidAdapter);
+                    else {
+                        for (int i = 0; i < kidDataList.size(); i++) {
+                            Kid kid = kidDataList.get(i);
+                            filteredDataList.add(kid);
+                            if (!(kid.getStatus().equals(residentialConstraint))) {
+                                filteredDataList.remove(kid);
+                            }
+
+                        }
+                        filteredKidAdapter.notifyDataSetChanged();
+                        kidList.setAdapter(filteredKidAdapter);
+
+                    }
+
+                }
+            }
+        });
+
 
         kidList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
