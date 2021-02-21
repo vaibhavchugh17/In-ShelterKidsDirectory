@@ -158,21 +158,6 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentDOB.setText(mother.getDOB());
                 }
             }
-            else if (flag.equals("Concerns")){
-                title = "Concerns";
-                //change the hint to notes
-                parentMiddleName.setVisibility(View.GONE);
-                parentLastName.setVisibility(View.GONE);
-                parentDOB.setVisibility(View.GONE);
-                parentNumber.setVisibility(View.GONE);
-                parentOccupation.setVisibility(View.GONE);
-                parentAddress.setVisibility(View.GONE);
-                dateOfBirth.setVisibility(View.GONE);
-                r_layout.setVisibility(View.GONE);
-                if (kid.getConcerns() != null){
-                    parentFirstName.setText(kid.getConcerns());
-                }
-            }
             else {
                 title = "Referral Information";
                 if (getArguments().get("Referral") != null){
@@ -203,10 +188,8 @@ public class CommonFragment extends DialogFragment implements Serializable {
                         if (flag == null){
                             flag = "";
                         }
-                        if (flag.equals("Concerns")){
-                            kid.setConcerns(firstName);
-                        }
-                        else if (flag.equals("Referral")){
+
+                        if (flag.equals("Referral")){
                             String lastName = parentLastName.getText().toString();
                             String DOB = parentDOB.getText().toString();
                             String occupation = parentOccupation.getText().toString();

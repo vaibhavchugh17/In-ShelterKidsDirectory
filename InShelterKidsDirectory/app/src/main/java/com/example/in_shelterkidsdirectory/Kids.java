@@ -356,10 +356,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         String kid_allergies = newKid.getAllergies();
         String kid_birthmarks = newKid.getBirthmarks();
         String kid_nationality = newKid.getNationality();
-        String kid_concerns = "";
-        if (newKid.getConcerns() != null){
-            kid_concerns = newKid.getConcerns();
-        }
 
         if (kid_firstName.length() > 0 && kid_lastName.length() > 0 && kidStatus.length() > 0) {//Data inside the document will consist of the following
             //Adding data inside the hash map
@@ -374,7 +370,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             data.put("Allergies", kid_allergies);
             data.put("Birthmarks", kid_birthmarks);
             data.put("Nationality", kid_nationality);
-            data.put("Concerns", kid_concerns);
         }
         CollectionReference collectionReference = db.collection("Kids");
         arrayReference = db.collection("GlobalArray");
@@ -541,10 +536,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         data.put("Allergies", kid.getAllergies());
         data.put("Birthmarks", kid.getBirthmarks());
         data.put("Nationality", kid.getNationality());
-        data.put("Concerns",kid.getConcerns());
-        if (kid.getConcerns() != null){
-            data.put("Concerns",kid.getConcerns());;
-        }
         data.put("Uid", kid.getUID());
         CollectionReference collectionReference = db.collection("Kids");
         DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getLastName()+kid.getUID());

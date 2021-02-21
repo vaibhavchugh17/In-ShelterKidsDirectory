@@ -20,7 +20,7 @@ public class Kid implements Serializable {
     //These attributes down below are not included in the constructor as they will be added later when the kid information is added using setters
     Parent father;
     Parent mother;
-    String concerns;
+    ArrayList<Note> concerns;
     ArrayList<Note> notes;
     ArrayList<Parent> referrals;
 
@@ -140,11 +140,11 @@ public class Kid implements Serializable {
         this.mother = mother;
     }
 
-    public String getConcerns() {
+    public ArrayList<Note> getConcerns() {
         return concerns;
     }
 
-    public void setConcerns(String concerns) {
+    public void setConcerns(ArrayList concerns) {
         this.concerns = concerns;
     }
 
