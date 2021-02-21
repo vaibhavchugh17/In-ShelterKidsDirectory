@@ -14,7 +14,7 @@
         android:inputType = "textCapWords"
         android:layout_marginTop="40dp"
         android:text="TextView"
-        android:textColor="#000080"
+        android:textColor="#FFFFFF"
         android:gravity="center" />
 
 

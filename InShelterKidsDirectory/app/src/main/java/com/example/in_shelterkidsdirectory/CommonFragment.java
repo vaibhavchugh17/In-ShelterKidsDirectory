@@ -159,6 +159,18 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentDOB.setText(mother.getDOB());
                 }
             }
+            else if (flag.equals("Guardian")){
+                title = "Guardian's Information";
+                if (kid.getGuardian() != null){
+                    Parent guardian = kid.getGuardian();
+                    parentFirstName.setText(guardian.getFirstName());
+                    parentLastName.setText(guardian.getLastName());
+                    parentAddress.setText(guardian.getHomeAddress());
+                    parentOccupation.setText(guardian.getOccupation());
+                    parentNumber.setText(guardian.getPhoneNumber());
+                    parentDOB.setText(guardian.getDOB());
+                }
+            }
             else {
                 title = "Referral Information";
                 if (getArguments().get("Referral") != null){
@@ -206,6 +218,12 @@ public class CommonFragment extends DialogFragment implements Serializable {
                         else if (flag.equals("Mother")){
                             if (kid.getMother()!=null){
                                 kid.setMother(null);
+                            }
+                            listener.onAddPressed();
+                        }
+                        else if (flag.equals("Guardian")){
+                            if (kid.getGuardian()!=null){
+                                kid.setGuardian(null);
                             }
                             listener.onAddPressed();
                         }
@@ -277,8 +295,9 @@ public class CommonFragment extends DialogFragment implements Serializable {
     @Override
     public void onStart() {
         super.onStart();
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#B59C34"));
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#B59C34"));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#202F65"));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#202F65"));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#202F65"));
     }
 
 }

@@ -48,6 +48,7 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
         String title = "Select a Parent";
         String mother_title = "Add Mother's Information";
         String father_title = "Add Father's Information";
+        String guardian_title = "Add Guardian's Information";
         if (getArguments() != null) {
             kid = (Kid) getArguments().get("Kid");
             if (kid.getMother()!=null){
@@ -60,12 +61,24 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
                     father_title = "View Father's details";
                 }
             }
+            if (kid.getGuardian()!=null){
+                if (kid.getGuardian().getFirstName() != null){
+                    father_title = "View Guardian's details";
+                }
+            }
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
                 .setTitle(title)
+                .setNeutralButton(guardian_title, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        CommonFragment fragment = CommonFragment.newInstance(kid, "Guardian");
+                        fragment.show(getFragmentManager(),"Add_Parent");
+                    }
+                })
                 .setNegativeButton(mother_title, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -85,8 +98,9 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
     @Override
     public void onStart() {
         super.onStart();
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#B59C34"));
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#B59C34"));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#202F65"));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#202F65"));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#202F65"));
     }
 
     public interface OnFragmentInteractionListener {
