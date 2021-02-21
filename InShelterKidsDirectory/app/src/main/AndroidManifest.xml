@@ -24,6 +24,7 @@
             android:label="@string/title_activity_add_note"/>
         <activity android:name=".Notes" />
         <activity android:name=".UserProfileViewOnly" />
+        <activity android:name=".referrals" />
         <activity android:name=".allUserProfiles" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

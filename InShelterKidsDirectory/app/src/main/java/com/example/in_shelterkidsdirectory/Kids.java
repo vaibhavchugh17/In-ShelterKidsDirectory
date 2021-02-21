@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -939,7 +937,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 break;
             case R.id.nav_allProfiles:
                 Intent intent1 = new Intent(getApplicationContext(), allUserProfiles.class);
-                intent1.putExtra("usder", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
+                intent1.putExtra("User", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
                 startActivity(intent1);
                 break;
             case R.id.nav_logout:

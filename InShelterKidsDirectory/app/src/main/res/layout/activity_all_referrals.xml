@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation = "vertical"
+    tools:context="com.example.in_shelterkidsdirectory.referrals">
+
+    <ListView
+    android:id="@+id/profile_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:inputType = "textCapCharacters" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_kid_button"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="-55dp"
+        android:layout_gravity="bottom|end"
+        android:clickable="true"
+        android:focusable="auto"
+        android:focusableInTouchMode="false"
+        android:visibility="visible"
+        app:backgroundTint="#0B6ACF"
+        app:elevation="9dp"
+        app:fabSize="auto"
+        app:srcCompat="@drawable/fragment" />
+
+
+</LinearLayout>

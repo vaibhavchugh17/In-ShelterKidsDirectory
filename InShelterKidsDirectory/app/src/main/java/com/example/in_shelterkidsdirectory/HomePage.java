@@ -1,19 +1,14 @@
 package com.example.in_shelterkidsdirectory;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -224,7 +219,7 @@ public class HomePage extends AppCompatActivity implements ImageFragment.OnFragm
                 startActivity(intent);
                 break;
             case R.id.nav_allProfiles:
-                Intent intent1 = new Intent(getApplicationContext(), allUserProfiles.class);
+                Intent intent1 = new Intent(getApplicationContext(), referrals.class);
                 intent1.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
                 startActivity(intent1);
                 break;
