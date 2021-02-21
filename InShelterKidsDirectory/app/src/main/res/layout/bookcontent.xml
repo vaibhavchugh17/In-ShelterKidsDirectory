@@ -22,7 +22,8 @@
         android:layout_height="110dp"
         android:layout_weight="1"
         android:layout_marginTop="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/customborder">
 
 
 
