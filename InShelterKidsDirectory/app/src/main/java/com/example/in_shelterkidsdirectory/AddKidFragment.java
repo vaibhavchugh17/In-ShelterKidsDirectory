@@ -502,6 +502,12 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         //nothing yet
     }
 
+    @Override
+    public void onDeletePressed(Parent referral){
+        //nothing yet
+    }
+
+
 }
 
 

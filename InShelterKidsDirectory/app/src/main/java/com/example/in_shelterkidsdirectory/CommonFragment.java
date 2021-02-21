@@ -60,6 +60,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
 
     public interface OnFragmentInteractionListener {
         void onAddPressed();
+        void onDeletePressed(Parent Referral);
     }
 
     static CommonFragment newInstance(Kid kid, String flag) {
@@ -180,6 +181,37 @@ public class CommonFragment extends DialogFragment implements Serializable {
         return builder
                 .setView(view)
                 .setTitle(title)
+                .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String flag = (String)getArguments().get("Flag");
+                        if (flag == null){
+                            flag = "";
+                        }
+
+                        if (flag.equals("Referral")){
+                            if (getArguments().get("Referral") != null){
+                                Parent temp = (Parent) getArguments().get("Referral");
+                                kid.removeReferral(temp);
+                                listener.onDeletePressed(temp);
+                            }
+                            listener.onAddPressed();
+                        }
+                        else if (flag.equals("Father")){
+                            if (kid.getFather()!=null){
+                                kid.setFather(null);
+                            }
+                            listener.onAddPressed();
+                        }
+                        else if (flag.equals("Mother")){
+                            if (kid.getMother()!=null){
+                                kid.setMother(null);
+                            }
+                            listener.onAddPressed();
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel",null)
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

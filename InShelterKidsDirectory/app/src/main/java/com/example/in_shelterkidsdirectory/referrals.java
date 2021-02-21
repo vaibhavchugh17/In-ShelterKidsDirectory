@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
@@ -121,10 +122,34 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
     }
 
     @Override
+    public void onDeletePressed(Parent referral){
+        CollectionReference collectionReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID() + "/Referrals/");
+        collectionReference
+                .document(referral.getFirstName())
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Referral","Delete Success");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Referral","Delete failed");
+                    }
+                });
+        profileList.remove(referral);
+        profileAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onBackPressed() {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("Kid",kid);
         setResult(RESULT_OK,returnIntent);
         finish();
     }
+
+
 }

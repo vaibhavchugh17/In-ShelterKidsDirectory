@@ -51,10 +51,14 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
         if (getArguments() != null) {
             kid = (Kid) getArguments().get("Kid");
             if (kid.getMother()!=null){
-                mother_title = "View Mother's details";
+                if (kid.getMother().getFirstName() != null){
+                    mother_title = "View Mother's details";
+                }
             }
             if (kid.getFather()!=null){
-                father_title = "View Father's details";
+                if (kid.getFather().getFirstName() != null){
+                    father_title = "View Father's details";
+                }
             }
         }
 
@@ -93,6 +97,12 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
     public void onAddPressed(){
         //nothing yet
     }
+
+    @Override
+    public void onDeletePressed(Parent referral){
+        //nothing yet
+    }
+
 
 
 }

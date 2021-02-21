@@ -433,6 +433,30 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         }
                                                     });
                                         }
+                                        else{
+                                            HashMap<String,Object> fatherData = new HashMap<>();
+                                            fatherData.put("First Name", null);
+                                            fatherData.put("Last Name", null);
+                                            fatherData.put("DOB", null);
+                                            fatherData.put("Occupation", null);
+                                            fatherData.put("Address",null);
+                                            fatherData.put("Phone Number", null);
+                                            fatherReference
+                                                    .document("Father")
+                                                    .set(fatherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
                                         if (newKid.getMother() != null){
                                             Parent mother = newKid.getMother();
                                             HashMap<String,String> motherData = new HashMap<>();
@@ -442,6 +466,30 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                             motherData.put("Occupation", mother.getOccupation());
                                             motherData.put("Address",mother.getHomeAddress());
                                             motherData.put("Phone Number", mother.getPhoneNumber());
+                                            motherReference
+                                                    .document("Mother")
+                                                    .set(motherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        else{
+                                            HashMap<String,String> motherData = new HashMap<>();
+                                            motherData.put("First Name", null);
+                                            motherData.put("Last Name", null);
+                                            motherData.put("DOB", null);
+                                            motherData.put("Occupation", null);
+                                            motherData.put("Address",null);
+                                            motherData.put("Phone Number", null);
                                             motherReference
                                                     .document("Mother")
                                                     .set(motherData)
@@ -576,6 +624,30 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         }
                                                     });
                                         }
+                                        else{
+                                            HashMap<String,Object> fatherData = new HashMap<>();
+                                            fatherData.put("First Name", null);
+                                            fatherData.put("Last Name", null);
+                                            fatherData.put("DOB", null);
+                                            fatherData.put("Occupation", null);
+                                            fatherData.put("Address",null);
+                                            fatherData.put("Phone Number", null);
+                                            fatherReference
+                                                    .document("Father")
+                                                    .set(fatherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
                                         if (kid.getMother() != null){
                                             Parent mother = kid.getMother();
                                             HashMap<String,String> motherData = new HashMap<>();
@@ -598,6 +670,30 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
                                                             Log.d("Parent","Mother failed");
+                                                        }
+                                                    });
+                                        }
+                                        else{
+                                            HashMap<String,String> motherData = new HashMap<>();
+                                            motherData.put("First Name", null);
+                                            motherData.put("Last Name", null);
+                                            motherData.put("DOB", null);
+                                            motherData.put("Occupation", null);
+                                            motherData.put("Address",null);
+                                            motherData.put("Phone Number", null);
+                                            motherReference
+                                                    .document("Mother")
+                                                    .set(motherData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Father added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Father failed");
                                                         }
                                                     });
                                         }
@@ -953,6 +1049,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
         }
         return true;
+    }
+
+    @Override
+    public void onDeletePressed(Parent referral){
+        //nothing yet
     }
 
 }
