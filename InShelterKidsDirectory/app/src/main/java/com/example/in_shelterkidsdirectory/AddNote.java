@@ -41,7 +41,7 @@ public class AddNote extends Activity {
         HashMap<String,Object> extras = (HashMap<String, Object>) getIntent().getSerializableExtra("Extras");
         Kid kid = (Kid) extras.get("Kid");
         String flag = (String) extras.get("Flag");
-        Note note = (Note) getIntent().getSerializableExtra("Note");
+        Note note = (Note) extras.get("Note");
         if (note != null){
             noteContent.setText(note.getContent());
             noteTitle.setText(note.getTitle());

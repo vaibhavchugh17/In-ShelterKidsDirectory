@@ -46,16 +46,17 @@ public class Notes extends AppCompatActivity {
         String flag = (String) extras.get("Flag");
         kid = (Kid) extras.get("Kid");
         ActionBar actionBar = getSupportActionBar();
+        ArrayList<Note> kidNotes = new ArrayList<>();
         if (flag.equals("Notes")){
             actionBar.setTitle(kid.getFirstName() + "'s Notes");
+            adapter = new Adapter(kidNotes, kid,"Notes");
         }
         else{
             actionBar.setTitle(kid.getFirstName() + "'s Concerns");
+            adapter = new Adapter(kidNotes, kid,"Concerns");
         }
         noteList = findViewById(R.id.noteList);
-        ArrayList<Note> kidNotes = new ArrayList<>();
 
-        adapter = new Adapter(kidNotes, kid);
         noteList.setLayoutManager(new LinearLayoutManager(this)); //Vid5
         noteList.setAdapter(adapter);
 

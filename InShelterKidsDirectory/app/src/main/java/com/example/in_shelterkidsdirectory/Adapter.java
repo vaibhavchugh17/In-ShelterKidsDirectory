@@ -20,14 +20,17 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     ArrayList<Note> kidNotes;
     Kid kid;
+    String flag;
     FirebaseFirestore db;
-    public Adapter(ArrayList<Note> notes, Kid k){
+    public Adapter(ArrayList<Note> notes, Kid k, String flag){
         this.kidNotes = notes;
         this.kid = k;
+        this.flag = flag;
     }
 
     @NonNull
@@ -47,8 +50,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), AddNote.class);
-                i.putExtra("Kid",kid);
-                i.putExtra("Note",kidNotes.get(position));
+                HashMap<String,Object> extras = new HashMap<>();
+                extras.put("Kid",kid);
+                extras.put("Note",kidNotes.get(position));
+                extras.put("Flag",flag);
+                i.putExtra("Extras",extras);
                 v.getContext().startActivity(i);
             }
         });
