@@ -3,12 +3,15 @@ package com.example.in_shelterkidsdirectory;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,7 +46,24 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_referrals);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
         kid = (Kid) getIntent().getSerializableExtra("Kid");
+        String n = kid.getFirstName();
+
+        ActionBar actionBar = getSupportActionBar();
+        if(n == null){
+            actionBar.setTitle("Referrals");
+        }
+        else{
+            actionBar.setTitle(name + "'s Referrals");
+        }
         referrals = findViewById(R.id.profile_list);
         profileList = new ArrayList<>();
         profileAdapter = new customReferralAdapter(this,profileList);   //Implementing a custom adapter that connects the ListView with the ArrayList using kidcontent.xml layout
@@ -151,5 +171,14 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
         finish();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }
