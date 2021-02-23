@@ -69,7 +69,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         db = FirebaseFirestore.getInstance();
-                        DocumentReference dRef =db.collection("Kids").document(kid.getFirstName().toLowerCase() + kid.getMiddleName().toLowerCase() + kid.getLastName().toLowerCase()).collection("notes").document(kidNotes.get(position).getId());
+                        DocumentReference dRef =db.collection("Kids").document(kid.getFirstName() + kid.getLastName() + kid.getUID()).collection("notes").document(kidNotes.get(position).getId());
                         dRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
