@@ -179,7 +179,7 @@ public class Kid implements Serializable {
     }
 
     public void removeReferral (Parent parent) {
-        this.referrals.remove(parent);
+        referrals.remove(parent);
     }
 
     public String getStatus() {

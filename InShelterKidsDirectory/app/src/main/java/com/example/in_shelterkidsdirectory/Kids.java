@@ -235,6 +235,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
         checkResidential = findViewById(R.id.checkResidential);
         checkOut = findViewById(R.id.checkOut);
+        checkResidential.setVisibility(View.GONE);
+        checkOut.setVisibility(View.GONE);
         //Code Added to update results depending on whether user wants to see only available or all kids
         checkResidential.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

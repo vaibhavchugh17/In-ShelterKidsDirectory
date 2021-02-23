@@ -200,16 +200,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                         if (flag == null){
                             flag = "";
                         }
-
-                        if (flag.equals("Referral")){
-                            if (getArguments().get("Referral") != null){
-                                Parent temp = (Parent) getArguments().get("Referral");
-                                kid.removeReferral(temp);
-                                listener.onDeletePressed(temp);
-                            }
-                            listener.onAddPressed();
-                        }
-                        else if (flag.equals("Father")){
+                        if (flag.equals("Father")){
                             if (kid.getFather()!=null){
                                 kid.setFather(null);
                             }
@@ -224,6 +215,14 @@ public class CommonFragment extends DialogFragment implements Serializable {
                         else if (flag.equals("Guardian")){
                             if (kid.getGuardian()!=null){
                                 kid.setGuardian(null);
+                            }
+                            listener.onAddPressed();
+                        }
+                        else{
+                            if (getArguments().get("Referral") != null){
+                                Parent temp = (Parent) getArguments().get("Referral");
+                                kid.removeReferral(temp);
+                                listener.onDeletePressed(temp);
                             }
                             listener.onAddPressed();
                         }
