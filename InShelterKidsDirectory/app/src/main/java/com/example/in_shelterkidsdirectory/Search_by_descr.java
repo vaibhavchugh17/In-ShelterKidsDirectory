@@ -303,7 +303,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
     }
 
     @Override
-    public void onOkPressed(final Kid newKid) { //Whenever the user adds a kid, this method is called where the added kid is sent as a parameter from the fragment
+    public void onOkPressed(final Kid newKid) {/* //Whenever the user adds a kid, this method is called where the added kid is sent as a parameter from the fragment
 
         final HashMap<String, String> data = new HashMap<>();
         final String kid_firstName = newKid.getFirstName();    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
@@ -569,7 +569,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
-        });
+        });*/
 
     }
 
@@ -784,20 +784,14 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         });
                                             }
                                         }
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
+                                        search.performClick();
                                         Log.d(TAG, "Data has been updated successfully!");
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
+                                        search.performClick();
                                         Log.d(TAG, "Data could not be updated!" + e.toString());
                                     }
                                 });
@@ -905,10 +899,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         });
                                             }
                                         }
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
+                                        search.performClick();
                                         // These are a method which gets executed when the task is succeeded
                                         Log.d(TAG, "Data has been added successfully!");
                                     }
@@ -916,10 +907,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
+                                        search.performClick();
                                         // These are a method which gets executed if there’s any problem
                                         Log.d(TAG, "Data could not be added!" + e.toString());
                                     }
@@ -946,20 +934,14 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        search.performClick();
                         Log.d(TAG, "user kid data has been deleted");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        search.performClick();
                         Log.d(TAG, "Failed to delete the user kid data");
                     }
                 });
