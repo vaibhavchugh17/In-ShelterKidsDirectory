@@ -741,7 +741,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                             guardianData.put("Address",null);
                                             guardianData.put("Phone Number", null);
                                             parentReference
-                                                    .document("Father")
+                                                    .document("Guardian")
                                                     .set(guardianData)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
@@ -868,6 +868,31 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
                                                             Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        if (kid.getGuardian() != null){
+                                            Parent guardian = kid.getGuardian();
+                                            HashMap<String,String> guardianData = new HashMap<>();
+                                            guardianData.put("First Name", guardian.getFirstName());
+                                            guardianData.put("Last Name", guardian.getLastName());
+                                            guardianData.put("DOB", guardian.getDOB());
+                                            guardianData.put("Occupation", guardian.getOccupation());
+                                            guardianData.put("Address",guardian.getHomeAddress());
+                                            guardianData.put("Phone Number", guardian.getPhoneNumber());
+                                            motherReference
+                                                    .document("Guardian")
+                                                    .set(guardianData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Guardian added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Guardian failed");
                                                         }
                                                     });
                                         }

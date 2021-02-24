@@ -200,13 +200,13 @@ public class CommonFragment extends DialogFragment implements Serializable {
                         if (flag == null){
                             flag = "";
                         }
-                        if (flag.equals("Father")){
+                       if (flag.equals("Father")){
                             if (kid.getFather()!=null){
                                 kid.setFather(null);
                             }
                             listener.onAddPressed();
                         }
-                        else if (flag.equals("Mother")){
+                        if (flag.equals("Mother")){
                             if (kid.getMother()!=null){
                                 kid.setMother(null);
                             }
@@ -266,6 +266,16 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             String address = parentAddress.getText().toString();
                             Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
                             kid.setMother(temp);
+                            listener.onAddPressed();
+                        }
+                        else if (flag.equals("Guardian")){
+                            String lastName = parentLastName.getText().toString();
+                            String DOB = parentDOB.getText().toString();
+                            String occupation = parentOccupation.getText().toString();
+                            String number = parentNumber.getText().toString();
+                            String address = parentAddress.getText().toString();
+                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
+                            kid.setGuardian(temp);
                             listener.onAddPressed();
                         }
                         else{

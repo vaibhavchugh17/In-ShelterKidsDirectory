@@ -63,7 +63,7 @@ public class SelectionFragment extends DialogFragment implements Serializable, C
             }
             if (kid.getGuardian()!=null){
                 if (kid.getGuardian().getFirstName() != null){
-                    father_title = "View Guardian's details";
+                    guardian_title = "View Guardian's details";
                 }
             }
         }
