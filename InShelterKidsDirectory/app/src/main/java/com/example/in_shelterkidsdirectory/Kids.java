@@ -181,6 +181,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     temp.setUID(kid_uid);
                     DocumentReference fatherReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Father");
                     DocumentReference motherReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Mother");
+                    DocumentReference guardianReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Guardian");
                     fatherReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -221,6 +222,29 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                     temp.setMother(mother);
                                 } else {
                                     Log.d("Mother","Mother does not exist");
+                                }
+                            } else {
+                                Log.d(TAG, "get failed with ", task.getException());
+                            }
+                        }
+                    });
+                    guardianReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Map<String, Object> data = document.getData();
+                                    String guardian_firstName = (String)data.get("First Name");    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
+                                    String guardian_lastName = (String)data.get("Last Name");
+                                    String guardian_dob = (String)data.get("DOB");
+                                    String guardian_number = (String)data.get("Phone Number");
+                                    String guardian_occupation = (String)data.get("Occupation");
+                                    String guardian_address = (String)data.get("Address");
+                                    Parent guardian = new Parent(guardian_firstName,guardian_lastName,guardian_dob,guardian_address,guardian_occupation,guardian_number);
+                                    temp.setGuardian(guardian);
+                                } else {
+                                    Log.d("Guardian","Mother does not exist");
                                 }
                             } else {
                                 Log.d(TAG, "get failed with ", task.getException());
@@ -437,6 +461,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                     });
                                         }
                                         else{
+                                            Log.d("Reached Null Father","Reached Null Father");
                                             HashMap<String,Object> fatherData = new HashMap<>();
                                             fatherData.put("First Name", null);
                                             fatherData.put("Last Name", null);
@@ -475,13 +500,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Log.d("Parent","Father added");
+                                                            Log.d("Parent","Mother added");
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d("Parent","Father failed");
+                                                            Log.d("Parent","Mother failed");
                                                         }
                                                     });
                                         }
@@ -499,13 +524,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Log.d("Parent","Father added");
+                                                            Log.d("Parent","Mother added");
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d("Parent","Father failed");
+                                                            Log.d("Parent","Mother failed");
                                                         }
                                                     });
                                         }
@@ -543,18 +568,18 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                             guardianData.put("Address",null);
                                             guardianData.put("Phone Number", null);
                                             parentReference
-                                                    .document("Father")
+                                                    .document("Guardian")
                                                     .set(guardianData)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Log.d("Parent","Father added");
+                                                            Log.d("Parent","Guardian added");
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d("Parent","Father failed");
+                                                            Log.d("Parent","Guardian failed");
                                                         }
                                                     });
                                         }
@@ -738,13 +763,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Log.d("Parent","Father added");
+                                                            Log.d("Parent","Mother added");
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d("Parent","Father failed");
+                                                            Log.d("Parent","Mother failed");
                                                         }
                                                     });
                                         }
@@ -782,7 +807,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                             guardianData.put("Address",null);
                                             guardianData.put("Phone Number", null);
                                             parentReference
-                                                    .document("Father")
+                                                    .document("Guardian")
                                                     .set(guardianData)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
@@ -915,6 +940,31 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
                                                             Log.d("Parent","Father failed");
+                                                        }
+                                                    });
+                                        }
+                                        if (kid.getGuardian() != null){
+                                            Parent guardian = kid.getGuardian();
+                                            HashMap<String,String> guardianData = new HashMap<>();
+                                            guardianData.put("First Name", guardian.getFirstName());
+                                            guardianData.put("Last Name", guardian.getLastName());
+                                            guardianData.put("DOB", guardian.getDOB());
+                                            guardianData.put("Occupation", guardian.getOccupation());
+                                            guardianData.put("Address",guardian.getHomeAddress());
+                                            guardianData.put("Phone Number", guardian.getPhoneNumber());
+                                            motherReference
+                                                    .document("Guardian")
+                                                    .set(guardianData)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("Parent","Guardian added");
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("Parent","Guardian failed");
                                                         }
                                                     });
                                         }
