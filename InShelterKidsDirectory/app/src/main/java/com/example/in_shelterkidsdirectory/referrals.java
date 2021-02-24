@@ -58,7 +58,7 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
         String n = kid.getFirstName();
 
         ActionBar actionBar = getSupportActionBar();
-        if(n == null){
+        if(n == null ) {
             actionBar.setTitle("Referrals");
         }
         else{
