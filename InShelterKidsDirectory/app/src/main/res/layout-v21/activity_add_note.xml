@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context="AddNote">
 
-
-
     <EditText
         android:id="@+id/addNoteTitle"
         android:layout_width="match_parent"
@@ -21,7 +19,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <EditText
         android:id="@+id/addNoteContent"
@@ -40,7 +37,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addNoteTitle" />
-
 
     <ProgressBar
         android:id="@+id/progressBar"
