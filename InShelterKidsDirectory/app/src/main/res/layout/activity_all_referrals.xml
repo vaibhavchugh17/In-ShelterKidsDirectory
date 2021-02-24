@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation = "vertical"
+    android:background="@drawable/gradient1"
     tools:context="com.example.in_shelterkidsdirectory.referrals">
 
     <include
@@ -15,7 +16,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:inputType = "textCapCharacters"
-        android:background="@drawable/gradient1"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="65dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
