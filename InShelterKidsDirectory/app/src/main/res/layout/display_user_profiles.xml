@@ -10,10 +10,11 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="20dp"
         android:layout_height="100dp"
-        android:layout_centerVertical="true" />
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="20dp" />
 
     <LinearLayout
-        android:layout_width="800dp"
+        android:layout_width="0dp"
         android:layout_height="110dp"
         android:layout_weight="1"
         android:layout_marginTop="10dp"
@@ -23,16 +24,14 @@
     <TextView
         android:id="@+id/textViewP"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="20dp"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
         android:layout_marginRight="20dp"
         android:inputType = "textCapWords"
-        android:layout_marginTop="40dp"
-        android:text="TextView"
         android:textColor="@color/white"
+        android:textAlignment="center"
         android:gravity="center"
-        />
+        android:layout_marginEnd="20dp" />
     </LinearLayout>
 
 </LinearLayout>
