@@ -1,5 +1,6 @@
 package com.example.in_shelterkidsdirectory;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -34,6 +35,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.in_shelterkidsdirectory.HomePage.EXTRA_MESSAGE2;
 
 public class Search_by_descr extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, SelectionFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener{
     ListView kidList;
@@ -980,9 +983,10 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity (if there is any)
+            Intent intent = new Intent(getApplicationContext(), Kids.class);
+            intent.putExtra(EXTRA_MESSAGE2, currentUser);   //Sending the current user as a parameter to the MyBooks activity
+            startActivity(intent);; // close this activity and return to preview activity (if there is any)
         }
-
         return super.onOptionsItemSelected(item);
     }
 
