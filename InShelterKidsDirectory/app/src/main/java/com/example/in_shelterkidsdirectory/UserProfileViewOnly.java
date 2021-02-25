@@ -1,9 +1,12 @@
 package com.example.in_shelterkidsdirectory;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -30,7 +33,16 @@ public class UserProfileViewOnly extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_view_only);
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+        ActionBar actionBar = getSupportActionBar();
+
         user = (User) getIntent().getSerializableExtra("sendingUser");
+        actionBar.setTitle(user.getUsername() + "'s Details");
         UserFirstName = findViewById(R.id.UserFirstNameView);
         UserLastName = findViewById(R.id.UserLastNameView);
         UserBirthDate = findViewById(R.id.UserBirthDateView);
@@ -64,5 +76,15 @@ public class UserProfileViewOnly extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
