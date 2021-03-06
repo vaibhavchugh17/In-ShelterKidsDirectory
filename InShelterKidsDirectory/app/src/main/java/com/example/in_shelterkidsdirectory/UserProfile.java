@@ -80,7 +80,6 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
 
         final User user = (User) getIntent().getSerializableExtra("User");
         Button update;
-        Button back;
         final FirebaseFirestore userDb;
         final TextInputEditText UserFirstName = findViewById(R.id.UserFirstName);
         final TextInputEditText  UserLastName = findViewById(R.id.UserLastName);
@@ -90,7 +89,6 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
         final TextInputEditText  UserPhone = findViewById(R.id.phoneNumber);
         final TextInputEditText  UserGenre = findViewById(R.id.UserFav);
         userDb = FirebaseFirestore.getInstance();
-        back = findViewById(R.id.BackButton);
         update = findViewById(R.id.Update);
 
         Button dateSelect = findViewById(R.id.select_date);
@@ -184,14 +182,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
 //                fragment.show(getSupportFragmentManager(), "Profile Picture");
 //            }
 //        });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),Kids.class);
-                intent.putExtra(MainActivity.EXTRA_MESSAGE1,user);
-                startActivity(intent);
-            }
-        });
+
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -24,7 +24,7 @@
             android:id="@+id/selectKidPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:background="@drawable/custom_button"
             android:text="Select"
@@ -38,16 +38,20 @@
             android:layout_marginLeft="20dp"
             android:background="@drawable/custom_button"
             android:text="Upload"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="20dp" />
 
         <Button
             android:id="@+id/deleteKidPicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="10dp"
             android:background="@drawable/custom_button"
             android:text="Delete"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp" />
 
     </LinearLayout>
 
