@@ -429,24 +429,24 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         });
                                             }
                                         }
-                                        search.performClick();
+                                        kidAdapter.notifyDataSetChanged();
                                         Log.d(TAG, "Data has been updated successfully!");
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        search.performClick();
                                         Log.d(TAG, "Data could not be updated!" + e.toString());
                                     }
                                 });
                     } else {
                         collectionReference
-                                .document(oldKidName+kid.getLastName()+kid.getUID())
+                                .document(oldKidName)
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        kidAdapter.notifyDataSetChanged();
                                         Log.d(TAG, "user kid data has been deleted");
                                     }
                                 })
@@ -456,7 +456,6 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                         Log.d(TAG, "Failed to delete the user kid data");
                                     }
                                 });
-                        kidDataList.remove(kid);
                         collectionReference
                                 .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
                                 .set(data)
@@ -569,7 +568,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         });
                                             }
                                         }
-                                        search.performClick();
+                                        kidAdapter.notifyDataSetChanged();
                                         // These are a method which gets executed when the task is succeeded
                                         Log.d(TAG, "Data has been added successfully!");
                                     }
@@ -577,7 +576,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        search.performClick();
+                                        kidAdapter.notifyDataSetChanged();
                                         // These are a method which gets executed if there’s any problem
                                         Log.d(TAG, "Data could not be added!" + e.toString());
                                     }
@@ -604,14 +603,15 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        search.performClick();
+                        kidDataList.remove(kid);
+                        kidAdapter.notifyDataSetChanged();
                         Log.d(TAG, "user kid data has been deleted");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        search.performClick();
+                        kidAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Failed to delete the user kid data");
                     }
                 });

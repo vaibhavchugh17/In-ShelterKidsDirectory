@@ -412,8 +412,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                         } else if (getArguments().get("Kid") != null) {
 
                             Kid oldKid = (Kid) getArguments().get("Kid");
-                            User user = (User) getArguments().get("User");
-
+                            String temp = oldKid.getFirstName() + oldKid.getLastName() +oldKid.getUID();
                             oldKid.setFirstName(first_name);
                             oldKid.setLastName(last_name);
                             oldKid.setMiddleName(middle_name);
@@ -424,7 +423,6 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             oldKid.setHeight(height);
                             oldKid.setStatus(kid_status);
                             oldKid.setReferrals(kid.getReferrals());
-                            String temp = kid.getFirstName();
                             kid.setStatus(kid_status.replace(statusStr,""));
                             listener.onOkPressed(kid, temp);
                             dialog.dismiss();

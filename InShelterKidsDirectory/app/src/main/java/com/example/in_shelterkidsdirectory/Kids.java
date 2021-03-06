@@ -849,8 +849,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        kidDataList.remove(kid);
-                                        kidDataList.add(kid);
+                                        //kidDataList.remove(kid);
+                                        //kidDataList.add(kid);
                                         kidAdapter.notifyDataSetChanged();
                                         /*finish();
                                         overridePendingTransition(0, 0);
@@ -862,20 +862,17 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
                                         Log.d(TAG, "Data could not be updated!" + e.toString());
                                     }
                                 });
                     } else {
                         collectionReference
-                                .document(oldKidName+kid.getLastName()+kid.getUID())
+                                .document(oldKidName)
                                 .delete()
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        kidAdapter.notifyDataSetChanged();
                                         Log.d(TAG, "user kid data has been deleted");
                                     }
                                 })
@@ -885,7 +882,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                         Log.d(TAG, "Failed to delete the user kid data");
                                     }
                                 });
-                        kidDataList.remove(kid);
                         collectionReference
                                 .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
                                 .set(data)
@@ -998,8 +994,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        kidDataList.remove(kid);
-                                        kidDataList.add(kid);
+                                        //kidDataList.remove(kid);
+                                        //kidDataList.add(kid);
                                         kidAdapter.notifyDataSetChanged();
                                         /*finish();
                                         overridePendingTransition(0, 0);
@@ -1012,10 +1008,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
                                         // These are a method which gets executed if there’s any problem
                                         Log.d(TAG, "Data could not be added!" + e.toString());
                                     }
@@ -1042,7 +1034,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        kidDataList.remove(kid);
+                        //kidDataList.remove(kid);
                         kidAdapter.notifyDataSetChanged();
                         Log.d(TAG, "user kid data has been deleted");
                     }
@@ -1050,10 +1042,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
                         Log.d(TAG, "Failed to delete the user kid data");
                     }
                 });
