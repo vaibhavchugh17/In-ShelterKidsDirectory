@@ -58,6 +58,7 @@ public class AddNote extends Activity {
 
 
                 if(title.isEmpty() || content.isEmpty()){
+                    pbar.setVisibility(View.INVISIBLE);
                     Toast.makeText(AddNote.this, "Should not have empty fields",Toast.LENGTH_SHORT).show();
                     return;
                 }
