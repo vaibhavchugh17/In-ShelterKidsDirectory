@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation = "vertical"
+    android:background="@drawable/gradient1"
+    tools:context="com.example.in_shelterkidsdirectory.list_of_codes">
+
+    <include
+        layout="@layout/appbar"/>
+
+    <ListView
+        android:id="@+id/codeList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="30dp"/>
+
+
+</LinearLayout>

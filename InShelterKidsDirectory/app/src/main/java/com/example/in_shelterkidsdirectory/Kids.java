@@ -1226,6 +1226,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 intent1.putExtra("User", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
                 startActivity(intent1);
                 break;
+
+            case R.id.nav_codeList:
+                Intent intent2 = new Intent(getApplicationContext(), list_of_codes.class);
+                intent2.putExtra("User", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
+                startActivity(intent2);
+                break;
+
             case R.id.nav_logout:
                 Intent nIntent = new Intent(Kids.this, MainActivity.class);
                 Toast toast = Toast.makeText(Kids.this, "Signed Out!", Toast.LENGTH_SHORT);

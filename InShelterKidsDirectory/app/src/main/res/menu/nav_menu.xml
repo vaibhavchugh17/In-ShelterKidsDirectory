@@ -10,6 +10,10 @@
                 android:id="@+id/nav_allProfiles"
                 android:title="All Users"
                 android:icon="@drawable/ic_baseline_people_24"/>
+            <item
+                android:id="@+id/nav_codeList"
+                android:title="Codes"
+                android:icon="@drawable/ic_baseline_list_24"/>
         </menu>
     </item>
 
