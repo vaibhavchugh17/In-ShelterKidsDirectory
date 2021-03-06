@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -186,32 +187,44 @@ public class CommonFragment extends DialogFragment implements Serializable {
             }
 
         }
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        return builder
+        final AlertDialog dialog = new AlertDialog.Builder(getContext())
                 .setView(view)
                 .setTitle(title)
-                .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", null)
+                .setNeutralButton("Delete", null)
+                .setPositiveButton("Add", null)
+                .create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                Button bAdd = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                Button bDel = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_NEUTRAL);
+
+                bDel.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         String flag = (String)getArguments().get("Flag");
                         if (flag == null){
                             flag = "";
                         }
-                       if (flag.equals("Father")){
+                        if (flag.equals("Father")){
                             if (kid.getFather()!=null){
                                 kid.setFather(null);
+                                Toast.makeText(getContext(), "Deleted",Toast.LENGTH_SHORT).show();
                             }
                             listener.onAddPressed();
                         }
                         if (flag.equals("Mother")){
                             if (kid.getMother()!=null){
+                                Toast.makeText(getContext(), "Deleted",Toast.LENGTH_SHORT).show();
                                 kid.setMother(null);
                             }
                             listener.onAddPressed();
                         }
                         else if (flag.equals("Guardian")){
                             if (kid.getGuardian()!=null){
+                                Toast.makeText(getContext(), "Deleted",Toast.LENGTH_SHORT).show();
                                 kid.setGuardian(null);
                             }
                             listener.onAddPressed();
@@ -220,98 +233,87 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             if (getArguments().get("Referral") != null){
                                 Parent temp = (Parent) getArguments().get("Referral");
                                 kid.removeReferral(temp);
+                                Toast.makeText(getContext(), "Deleted",Toast.LENGTH_SHORT).show();
                                 listener.onDeletePressed(temp);
                             }
                             listener.onAddPressed();
                         }
+                        dialog.dismiss();
+
                     }
-                })
-                .setNegativeButton("Cancel",null)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                });
+
+
+                bAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(View v) {
                         String flag = (String)getArguments().get("Flag");
                         String firstName = parentFirstName.getText().toString();
+                        String lastName = parentLastName.getText().toString();
+                        String DOB = parentDOB.getText().toString();
+                        String occupation = parentOccupation.getText().toString();
+                        String number = parentNumber.getText().toString();
+                        String address = parentAddress.getText().toString();
                         if (flag == null){
                             flag = "";
                         }
 
                         if (flag.equals("Referral")){
-                            String lastName = parentLastName.getText().toString();
-                            String DOB = parentDOB.getText().toString();
-                            String occupation = parentOccupation.getText().toString();
-                            String number = parentNumber.getText().toString();
-                            String address = parentAddress.getText().toString();
 
-                            View focus = null;
-                            boolean wrong_input = false;
-                            if (firstName.equals("")) { //Mandatory to enter kid's first name
-                                parentFirstName.setError("Please enter the first name of the referral");
-                                wrong_input = true;
-                                focus = parentFirstName;
-                            }
-
-                            if (lastName.equals("")) { //Mandatory to enter kid's last name
-                                parentLastName.setError("Please enter the last name of the kid");
-                                wrong_input = true;
-                                focus = parentLastName;
-                            }
-
-                            if (DOB.equals("")) { //Mandatory to enter kid's DOB
-                                parentDOB.setError("Please enter the DOB of the kid");
-                                wrong_input = true;
-                                focus = parentDOB;
-                            }
-
-                            if (wrong_input) {
-                                focus.requestFocus();
-                                getDialog().show();
-
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            if (ret.first) {
+                                ret.second.requestFocus();
                             }
 
                             else{
-                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
-                            kid.addReferrals(temp);
-                            listener.onAddPressed();
+                                Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
+                                kid.addReferrals(temp);
+                                Toast.makeText(getContext(), "Referral Added",Toast.LENGTH_SHORT).show();
+                                listener.onAddPressed();
+                                dialog.dismiss();
                             }
 
                         }
                         else if (flag.equals("Father")){
-                            String lastName = parentLastName.getText().toString();
-                            String DOB = parentDOB.getText().toString();
-                            String occupation = parentOccupation.getText().toString();
-                            String number = parentNumber.getText().toString();
-                            String address = parentAddress.getText().toString();
-                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
-                            kid.setFather(temp);
-                            listener.onAddPressed();
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            if (ret.first) {
+                                ret.second.requestFocus();
+                            }
+                            else {
+                                Parent temp = new Parent(firstName, lastName, DOB, address, occupation, number);
+                                kid.setFather(temp);
+                                Toast.makeText(getContext(), "Father Added",Toast.LENGTH_SHORT).show();
+                                listener.onAddPressed();
+                                dialog.dismiss();
+                            }
                         }
                         else if (flag.equals("Mother")){
-                            String lastName = parentLastName.getText().toString();
-                            String DOB = parentDOB.getText().toString();
-                            String occupation = parentOccupation.getText().toString();
-                            String number = parentNumber.getText().toString();
-                            String address = parentAddress.getText().toString();
-                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
-                            kid.setMother(temp);
-                            listener.onAddPressed();
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            if (ret.first) {
+                                ret.second.requestFocus();
+                            }
+                            else {
+                                Parent temp = new Parent(firstName, lastName, DOB, address, occupation, number);
+                                kid.setMother(temp);
+                                Toast.makeText(getContext(), "Mother Added",Toast.LENGTH_SHORT).show();
+                                listener.onAddPressed();
+                                dialog.dismiss();
+                            }
                         }
                         else if (flag.equals("Guardian")){
-                            String lastName = parentLastName.getText().toString();
-                            String DOB = parentDOB.getText().toString();
-                            String occupation = parentOccupation.getText().toString();
-                            String number = parentNumber.getText().toString();
-                            String address = parentAddress.getText().toString();
-                            Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
-                            kid.setGuardian(temp);
-                            listener.onAddPressed();
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            if (ret.first) {
+                                ret.second.requestFocus();
+                            }
+                            else {
+                                Parent temp = new Parent(firstName, lastName, DOB, address, occupation, number);
+                                kid.setGuardian(temp);
+                                Toast.makeText(getContext(), "Guardian Added",Toast.LENGTH_SHORT).show();
+                                listener.onAddPressed();
+                                dialog.dismiss();
+                            }
                         }
                         else{
-                            String lastName = parentLastName.getText().toString();
-                            String DOB = parentDOB.getText().toString();
-                            String occupation = parentOccupation.getText().toString();
-                            String number = parentNumber.getText().toString();
-                            String address = parentAddress.getText().toString();
                             Parent referral = (Parent) getArguments().get("Referral");
                             kid.removeReferral(referral);
                             referral.setLastName(lastName);
@@ -322,9 +324,16 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             referral.setHomeAddress(address);
                             kid.addReferrals(referral);
                             listener.onAddPressed();
+                            dialog.dismiss();
                         }
+
                     }
-                }).create();
+                });
+            }
+        });
+        dialog.show();
+
+        return dialog;
     }
 
 
@@ -335,6 +344,32 @@ public class CommonFragment extends DialogFragment implements Serializable {
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#202F65"));
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#202F65"));
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#202F65"));
+    }
+
+    public Pair<Boolean, View> checkValidInput(String firstName, String lastName, String DOB){
+
+        View focus = null;
+        boolean wrong_input = false;
+        if (firstName.equals("")) { //Mandatory to enter kid's first name
+            parentFirstName.setError("Please enter the first name");
+            wrong_input = true;
+            focus = parentFirstName;
+        }
+
+        if (lastName.equals("")) { //Mandatory to enter kid's last name
+            parentLastName.setError("Please enter the last name");
+            wrong_input = true;
+            focus = parentLastName;
+        }
+
+        if (DOB.equals("")) { //Mandatory to enter kid's DOB
+            parentDOB.setError("Please enter the DOB");
+            wrong_input = true;
+            focus = parentDOB;
+        }
+
+        return new Pair<Boolean, View>(wrong_input,focus);
+
     }
 
 }
