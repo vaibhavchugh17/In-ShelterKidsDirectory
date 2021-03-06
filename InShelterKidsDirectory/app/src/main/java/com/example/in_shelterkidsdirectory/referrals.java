@@ -38,7 +38,6 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
     ArrayAdapter<Parent> profileAdapter;
     ListView referrals;
     FirebaseFirestore db;
-    String name;
     Kid kid;
     CollectionReference collectionReference;
 
@@ -62,57 +61,15 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
             actionBar.setTitle("Referrals");
         }
         else{
-            actionBar.setTitle(name + "'s Referrals");
+            actionBar.setTitle(n + "'s Referrals");
         }
         referrals = findViewById(R.id.profile_list);
-        profileList = new ArrayList<>();
+        profileList = kid.getReferrals();
         profileAdapter = new customReferralAdapter(this,profileList);   //Implementing a custom adapter that connects the ListView with the ArrayList using kidcontent.xml layout
         referrals.setAdapter(profileAdapter);
         db = FirebaseFirestore.getInstance();
-        collectionReference = db.collection("Kids");
-
-        name = kid.getFirstName() + kid.getLastName() + kid.getUID();
-        profileList.clear();
         profileAdapter.notifyDataSetChanged();
-        for (Parent parent : kid.getReferrals()) {
-            if (!profileList.contains(parent)){
-                profileList.add(parent);
-            }
-            profileAdapter.notifyDataSetChanged();
-        }
-        DocumentReference docRef = collectionReference.document(name);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        CollectionReference referralsCollection = db.collection("Kids/" + name + "/Referrals");
-                        referralsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                for (QueryDocumentSnapshot referral : value) {
-                                    String referral_firstName = (String)referral.getData().get("First Name");    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
-                                    String referral_lastName = (String)referral.getData().get("Last Name");
-                                    String referral_dob = (String)referral.getData().get("DOB");
-                                    String referral_phoneNumber = (String)referral.getData().get("Phone Number");
-                                    String referral_occupation = (String)referral.getData().get("Occupation");
-                                    String referral_home_address = (String)referral.getData().get("Address");
-                                    Parent temp = new Parent(referral_firstName,referral_lastName,referral_dob,referral_home_address,referral_occupation,referral_phoneNumber);
-                                    profileList.add(temp); // Adding the cities and provinces from FireStore
-                                    profileAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
-                    } else {
-                        Log.d("Referral","Referral does not exist in database");
-                    }
-                } else {
-                    Log.d("Referrals", "get failed with ", task.getException());
-                }
-            }
-        });
+
         final FloatingActionButton addReferralButton = findViewById(R.id.add_kid_button);
         addReferralButton.setOnClickListener(new View.OnClickListener() {
             @Override

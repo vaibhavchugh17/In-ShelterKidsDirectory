@@ -106,7 +106,7 @@ public class Notes extends AppCompatActivity {
                         String fireContent = (String) newNote.getData().get("content");
                         String fireTitle = (String) newNote.getData().get("title");
                         Note note = new Note (fireTitle,fireContent);
-                        note.setId(newNote.getId().toString());
+                        note.setId(newNote.getId());
                         kidNotes.add(note);
                         adapter.notifyDataSetChanged();
                         kid.setNotes(kidNotes);
@@ -125,7 +125,7 @@ public class Notes extends AppCompatActivity {
                         String fireContent = (String) newNote.getData().get("content");
                         String fireTitle = (String) newNote.getData().get("title");
                         Note note = new Note (fireTitle,fireContent);
-                        note.setId(newNote.getId().toString());
+                        note.setId(newNote.getId());
                         kidNotes.add(note);
                         adapter.notifyDataSetChanged();
                         kid.setConcerns(kidNotes);

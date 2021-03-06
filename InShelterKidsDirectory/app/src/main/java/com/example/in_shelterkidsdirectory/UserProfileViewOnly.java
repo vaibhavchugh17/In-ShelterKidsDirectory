@@ -1,5 +1,6 @@
 package com.example.in_shelterkidsdirectory;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,11 +11,13 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 public class UserProfileViewOnly extends AppCompatActivity {
     User user;
@@ -63,19 +66,18 @@ public class UserProfileViewOnly extends AppCompatActivity {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
 
-        StorageReference imagesRef = storageReference.child("images/" + user.getUsername());
-        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("images/" + user.getUsername()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide
-                        .with(getApplicationContext())
-                        .load(downloadUrl.toString())
-                        .centerCrop()
-                        .into(img);
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Picasso.get().load(uri.toString()).into(img);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                img.setImageResource(R.drawable.defaultprofile);
             }
         });
-
-
     }
 
     @Override

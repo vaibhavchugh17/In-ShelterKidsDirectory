@@ -16,18 +16,10 @@ public class Kid implements Serializable {
     String nationality;
     String allergies;
     String birthmarks;
-
     //These attributes down below are not included in the constructor as they will be added later when the kid information is added using setters
     Parent father;
     Parent mother;
 
-    public Parent getGuardian() {
-        return guardian;
-    }
-
-    public void setGuardian(Parent guardian) {
-        this.guardian = guardian;
-    }
 
     Parent guardian;
     ArrayList<Note> concerns;
@@ -196,5 +188,14 @@ public class Kid implements Serializable {
 
     public void setUID(String UID) {
         this.UID = UID;
+    }
+
+
+    public Parent getGuardian() {
+        return guardian;
+    }
+
+    public void setGuardian(Parent guardian) {
+        this.guardian = guardian;
     }
 }

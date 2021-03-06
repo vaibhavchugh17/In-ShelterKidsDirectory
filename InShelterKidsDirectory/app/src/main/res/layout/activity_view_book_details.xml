@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#202F65"
-    tools:context="com.example.in_shelterkidsdirectory.ViewBookDetails">
+    tools:context="com.example.in_shelterkidsdirectory.ViewKidDetails">
 
     <ImageView
         android:layout_width="150dp"

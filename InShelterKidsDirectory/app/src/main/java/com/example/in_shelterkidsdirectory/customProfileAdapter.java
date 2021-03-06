@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.awt.font.NumericShaper;
 import java.util.ArrayList;
@@ -37,6 +38,11 @@ public class customProfileAdapter extends ArrayAdapter<String> {
         this.context = context;
     }
 
+    static class ViewHolder{
+        ImageView dispImg;
+        TextView dispUser;
+    }
+
     /**
      * Function to use our custom array adapter to show the different profiles of users.
      *
@@ -49,65 +55,35 @@ public class customProfileAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
-
+        ViewHolder viewHolder;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.display_user_profiles, parent, false); //Attaches layout from bookcontent to each item inside the ListView
+            viewHolder = new customProfileAdapter.ViewHolder();
+            viewHolder.dispUser = view.findViewById(R.id.textViewP);
+            viewHolder.dispImg = view.findViewById(R.id.imageViewP);
+            view.setTag(viewHolder);
+        }
+        else {
+            viewHolder = (customProfileAdapter.ViewHolder)convertView.getTag();
         }
 
         String username = users.get(position);
-
-        TextView dispUser = view.findViewById(R.id.textViewP);
-        ImageView dispImage = view.findViewById(R.id.imageViewP);
-        dispUser.setText(username);
+        viewHolder.dispUser.setText(username);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-
-        StorageReference imagesRef = storageReference.child("images/");
-        final StorageReference defaultRef = imagesRef.child("default.png");
-        try {
-            final StorageReference ref = imagesRef.child(username);
-            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri downloadUrl) {
-                    Glide
-                            .with(context)
-                            .load(downloadUrl.toString())
-                            .centerCrop()
-                            .into(dispImage);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("KidImageError", e.getMessage());
-                    defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri downloadUrl) {
-
-                            Glide
-                                    .with(context)
-                                    .load(downloadUrl.toString())
-                                    .centerCrop()
-                                    .into(dispImage);
-                        }
-                    });
-
-
-                }
-            });
-        }
-        catch (Exception e){
-            defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri downloadUrl) {
-
-                    Glide
-                            .with(context)
-                            .load(downloadUrl.toString())
-                            .centerCrop()
-                            .into(dispImage);
-                }
-            });
-        }
+        viewHolder.dispImg.setImageResource(R.drawable.load);
+        storageReference.child("images/" + username).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Picasso.get().load(uri.toString()).into(viewHolder.dispImg);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                viewHolder.dispImg.setImageResource(R.drawable.defaultprofile);
+            }
+        });
     return view;
 
     }

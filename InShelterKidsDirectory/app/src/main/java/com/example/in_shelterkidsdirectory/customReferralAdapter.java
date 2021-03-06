@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +25,9 @@ public class customReferralAdapter extends ArrayAdapter<Parent> {
         this.context = context;
     }
 
+    static class ViewHolder{
+        TextView dispReferral;
+    }
     /**
      * Function to use our custom array adapter to show the different profiles of users.
      *
@@ -36,15 +40,19 @@ public class customReferralAdapter extends ArrayAdapter<Parent> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = convertView;
-
+        ViewHolder viewHolder;
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.display_referral, parent, false); //Attaches layout from bookcontent to each item inside the ListView
+            viewHolder = new customReferralAdapter.ViewHolder();
+            viewHolder.dispReferral = view.findViewById(R.id.textViewP);
+            view.setTag(viewHolder);
+        }
+        else {
+            viewHolder = (customReferralAdapter.ViewHolder)convertView.getTag();
         }
 
         Parent referral = referrals.get(position);
-
-        TextView dispReferral = view.findViewById(R.id.textViewP);
-        dispReferral.setText(referral.getFirstName());
+        viewHolder.dispReferral.setText(referral.getFirstName());
 
     return view;
 
