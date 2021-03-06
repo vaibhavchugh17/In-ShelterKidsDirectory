@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +26,22 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.core.download.ImageDownloader;
+import com.nostra13.universalimageloader.utils.IoUtils;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class customKidAdapter extends ArrayAdapter<Kid> {
@@ -41,6 +57,13 @@ public class customKidAdapter extends ArrayAdapter<Kid> {
         this.context = context;
     }
 
+    static class ViewHolder{
+        ImageView img;
+        TextView kidTitle;
+        TextView kidDob;
+        TextView kidStatus;
+    }
+
     /**
      * Function to use our custom array adapter to show the kids of a user.
      *
@@ -52,75 +75,44 @@ public class customKidAdapter extends ArrayAdapter<Kid> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(getContext()));
         View view = convertView;
-
-        if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.bookcontent, parent, false); //Attaches layout from kidcontent to each item inside the ListView
-        }
-
+        ViewHolder viewHolder;
         Kid kid = kids.get(position);
-
-        ImageView img = view.findViewById(R.id.imageView1);
-        TextView kidTitle = view.findViewById(R.id.textView1);
-        TextView kidDob = view.findViewById(R.id.textView2);
-        TextView kidStatus = view.findViewById(R.id.textView3);
-
-        kidTitle.setText(kid.getFirstName() + " " + kid.getLastName());
-        kidDob.setText(kid.getDOB());
-        kidStatus.setText(kid.getStatus()); //Setting the values of each textView inside the view in ListView
-
-
-
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         StorageReference imagesRef =  storageReference.child("images/");
         final StorageReference defaultRef = imagesRef.child("default.png");
-        try {
-            final StorageReference ref = imagesRef.child(kid.getUID());
-            ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri downloadUrl) {
-                    Glide
-                            .with(context)
-                            .load(downloadUrl.toString())
-                            .centerCrop()
-                            .into(img);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("KidImageError", e.getMessage());
-                    defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri downloadUrl) {
-
-                            Glide
-                                    .with(context)
-                                    .load(downloadUrl.toString())
-                                    .centerCrop()
-                                    .into(img);
-                        }
-                    });
-
-
-                }
-            });
-        }
-        catch (Exception e){
-            defaultRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri downloadUrl) {
-
-                    Glide
-                            .with(context)
-                            .load(downloadUrl.toString())
-                            .centerCrop()
-                            .into(img);
-                }
-            });
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.bookcontent, parent, false);
+            //Attaches layout from kidcontent to each item inside the ListView
+            viewHolder = new ViewHolder();
+            viewHolder.img = view.findViewById(R.id.imageView1);
+            viewHolder.kidTitle = view.findViewById(R.id.textView1);
+            viewHolder.kidDob = view.findViewById(R.id.textView2);
+            viewHolder.kidStatus = view.findViewById(R.id.textView3);
+            view.setTag(viewHolder);
         }
 
-
+        else{
+            viewHolder= (ViewHolder)convertView.getTag();
+        }
+        viewHolder.img.setImageResource(R.drawable.load);
+        storageReference.child("images/" + kid.getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                Picasso.get().load(uri.toString()).into(viewHolder.img);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                viewHolder.img.setImageResource(R.drawable.defaultprofile);
+            }
+        });
+        viewHolder.kidTitle.setText(kid.getFirstName() + " " + kid.getLastName());
+        viewHolder.kidDob.setText(kid.getDOB());
+        viewHolder.kidStatus.setText(kid.getStatus()); //Setting the values of each textView inside the view in ListView
         return view;
 
     }

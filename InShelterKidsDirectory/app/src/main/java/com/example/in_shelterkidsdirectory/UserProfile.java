@@ -187,7 +187,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),HomePage.class);
+                Intent intent = new Intent(view.getContext(),Kids.class);
                 intent.putExtra(MainActivity.EXTRA_MESSAGE1,user);
                 startActivity(intent);
             }

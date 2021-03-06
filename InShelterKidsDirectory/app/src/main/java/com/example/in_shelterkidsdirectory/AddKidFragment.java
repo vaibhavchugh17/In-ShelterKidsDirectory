@@ -28,11 +28,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -161,17 +164,6 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         spinner.setAdapter(adapter);
 
         String title = "Add Kid";
-        StorageReference imagesRef1 = storageReference.child("images/default.png"); //CHANGE THIS TO DISPLAY KID PICTURES
-        imagesRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri downloadUrl) {
-                Glide
-                        .with(getContext())
-                        .load(downloadUrl.toString())
-                        .centerCrop()
-                        .into(kidPic);
-            }
-        });
 
         kidDobButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,25 +250,30 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
             kidStatus.setText(kid.getStatus());
             kidAllergies.setText(kid.getAllergies());
             kidBirthmarks.setText(kid.getBirthmarks());
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference storageReference = storage.getReference();
-            if (kid.getUID()!=null){
-                StorageReference imagesRef = storageReference.child("images/" + kid.getUID());
-                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri downloadUrl) {
-                        Glide
-                                .with(getContext())
-                                .load(downloadUrl.toString())
-                                .centerCrop()
-                                .into(kidPic);
-                    }
-                });
-            }
 
+            if (kid.getUID()!=null){
+                storageReference.child("images/" + kid.getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                            // Got the download URL for 'users/me/profile.png'
+                            Picasso.get().load(uri.toString()).into(kidPic);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            kidPic.setImageResource(R.drawable.defaultprofile);
+                        }
+                    });
+                }
+                else {
+                    kidPic.setImageResource(R.drawable.defaultprofile);
+                }
         }
         else if (getArguments().get("Uid")!=null){
             kidUid = (String)getArguments().get("Uid");
+        }
+        else {
+            kidPic.setImageResource(R.drawable.defaultprofile);
         }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -312,8 +309,6 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
             public void onClick(View v) {
                 kidImageFragment fragment = kidImageFragment.newInstance(kid);
                 fragment.show(getFragmentManager(), "Kid Profile Picture");
-
-
             }
         });
 

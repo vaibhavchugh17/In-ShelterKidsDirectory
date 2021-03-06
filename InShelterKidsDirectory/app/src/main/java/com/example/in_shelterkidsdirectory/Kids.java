@@ -1,10 +1,7 @@
 package com.example.in_shelterkidsdirectory;
 
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,8 +42,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,7 +77,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
     private User currentUser;
-    private Uri path;
     TextView userDisplay;
 
     public static Context getContextOfApplication() {
@@ -111,7 +108,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        currentUser = (User) getIntent().getSerializableExtra(HomePage.EXTRA_MESSAGE2);  //Catching the object of current user who's logged in
+        currentUser = (User) getIntent().getSerializableExtra(MainActivity.EXTRA_MESSAGE1);  //Catching the object of current user who's logged in
 
         kidDataList = new ArrayList<>();
         kidAdapter = new customKidAdapter(this, kidDataList);   //Implementing a custom adapter that connects the ListView with the ArrayList using kidcontent.xml layout
@@ -121,7 +118,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         filteredKidAdapter = new customKidAdapter(this, filteredDataList);
 
         View headerView = navigationView.getHeaderView(0);
-        userDisplay= (TextView) headerView.findViewById(R.id.userDisplayName);
+        userDisplay= headerView.findViewById(R.id.userDisplayName);
         String name  = currentUser.getFirst_name();
 
         if(name == null){
@@ -251,12 +248,27 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                             }
                         }
                     });
+                    CollectionReference referralsCollection = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid + "/Referrals");
+                    referralsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            for (QueryDocumentSnapshot referral : value) {
+                                String referral_firstName = (String)referral.getData().get("First Name");    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
+                                String referral_lastName = (String)referral.getData().get("Last Name");
+                                String referral_dob = (String)referral.getData().get("DOB");
+                                String referral_phoneNumber = (String)referral.getData().get("Phone Number");
+                                String referral_occupation = (String)referral.getData().get("Occupation");
+                                String referral_home_address = (String)referral.getData().get("Address");
+                                Parent tempReferral = new Parent(referral_firstName,referral_lastName,referral_dob,referral_home_address,referral_occupation,referral_phoneNumber);
+                                temp.addReferrals(tempReferral); // Adding the cities and provinces from FireStore
+                            }
+                        }
+                    });
                     kidDataList.add(temp); // Adding the cities and provinces from FireStore
                     kidAdapter.notifyDataSetChanged();
                 }
             }
         });
-
         checkResidential = findViewById(R.id.checkResidential);
         checkOut = findViewById(R.id.checkOut);
         checkResidential.setVisibility(View.GONE);
@@ -339,16 +351,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             }
         });
 
-        kidList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Kid kid = kidDataList.get(i);
-                Intent intent = new Intent(view.getContext(), ViewBookDetails.class);
-                intent.putExtra("Kid", kid);
-                startActivity(intent);
-                return false;
-            }
-        });
 
         kidList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -611,10 +613,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        finish();
+                                        /*finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
+                                        overridePendingTransition(0, 0);*/
+
                                         // These are a method which gets executed when the task is succeeded
                                         Log.d(TAG, "Data has been added successfully!");
                                     }
@@ -622,10 +625,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
                                         // These are a method which gets executed if there’s any problem
                                         Log.d(TAG, "Data could not be added!" + e.toString());
                                     }
@@ -850,11 +849,14 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        finish();
+                                        kidDataList.remove(kid);
+                                        kidDataList.add(kid);
+                                        kidAdapter.notifyDataSetChanged();
+                                        /*finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());
                                         overridePendingTransition(0, 0);
-                                        Log.d(TAG, "Data has been updated successfully!");
+                                        Log.d(TAG, "Data has been updated successfully!");*/
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -996,10 +998,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        finish();
+                                        kidDataList.remove(kid);
+                                        kidDataList.add(kid);
+                                        kidAdapter.notifyDataSetChanged();
+                                        /*finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
+                                        overridePendingTransition(0, 0);*/
                                         // These are a method which gets executed when the task is succeeded
                                         Log.d(TAG, "Data has been added successfully!");
                                     }
@@ -1037,10 +1042,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        finish();
-                        overridePendingTransition(0, 0);
-                        startActivity(getIntent());
-                        overridePendingTransition(0, 0);
+                        kidDataList.remove(kid);
+                        kidAdapter.notifyDataSetChanged();
                         Log.d(TAG, "user kid data has been deleted");
                     }
                 })
@@ -1054,8 +1057,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                         Log.d(TAG, "Failed to delete the user kid data");
                     }
                 });
-        //kidDataList.remove(kid);
-        //kidAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -1064,7 +1065,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         getMenuInflater().inflate(R.menu.main,menu);
         StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
         MenuItem menuItem = menu.findItem(R.id.itemProfile);
-        View view = MenuItemCompat.getActionView((MenuItem) menuItem);
+        View view = MenuItemCompat.getActionView(menuItem);
         CircleImageView profileImage = view.findViewById(R.id.appbar_profile_image);
 
         imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -1099,7 +1100,10 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
             case R.id.itemSearch:
                 Intent intent = new Intent(getApplicationContext(), Search_by_descr.class);
-                intent.putExtra("User", currentUser);
+                HashMap<String,Object> extras = new HashMap<>();
+                extras.put("User",currentUser);
+                extras.put("Kids",kidDataList);
+                intent.putExtra("Extras", extras);
                 startActivity(intent);
                 break;
             case R.id.itemProfile:

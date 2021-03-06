@@ -1,4 +1,5 @@
 package com.example.in_shelterkidsdirectory;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -22,30 +23,26 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
 
 public class kidImageFragment extends DialogFragment implements Serializable {
+    private final int REQUEST = 22;
     FirebaseStorage storage;
     StorageReference storageReference;
-    private OnFragmentInteractionListener listener;
     Button picture, picture2, deletePhoto;
-    private Kid kid;
-    private final int REQUEST = 22;
-    private Uri path;
     ImageView profile;
-
-
-
+    private OnFragmentInteractionListener listener;
+    private Kid kid;
+    private Uri path;
 
     static kidImageFragment newInstance(Kid kid) {
         Bundle args = new Bundle();
@@ -82,17 +79,19 @@ public class kidImageFragment extends DialogFragment implements Serializable {
             kid = (Kid) getArguments().get("Kid");
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageReference = storage.getReference();
-            StorageReference imagesRef = storageReference.child("images/default.png");
-            imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            storageReference.child("images/" + kid.getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
-                public void onSuccess(Uri downloadUrl) {
-                    Glide
-                            .with(getContext())
-                            .load(downloadUrl.toString())
-                            .centerCrop()
-                            .into(profile);
+                public void onSuccess(Uri uri) {
+                    // Got the download URL for 'users/me/profile.png'
+                    Picasso.get().load(uri.toString()).into(profile);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    profile.setImageResource(R.drawable.defaultprofile);
                 }
             });
+
         }
 
         picture.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +111,7 @@ public class kidImageFragment extends DialogFragment implements Serializable {
         deletePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (kid.getUID() != null){
+                if (kid.getUID() != null) {
                     StorageReference ref = storageReference.child("images/" + kid.getUID());
                     ref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -133,8 +132,7 @@ public class kidImageFragment extends DialogFragment implements Serializable {
                                     toast.show();
                                 }
                             });
-                }
-                else{
+                } else {
                     Toast toast = Toast.makeText(getContext(), "Please upload a kid photo first :)", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -205,7 +203,6 @@ public class kidImageFragment extends DialogFragment implements Serializable {
                     });
         }
     }
-
 
 
     @Override

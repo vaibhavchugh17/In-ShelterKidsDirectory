@@ -187,8 +187,6 @@ public class CommonFragment extends DialogFragment implements Serializable {
 
         }
 
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)

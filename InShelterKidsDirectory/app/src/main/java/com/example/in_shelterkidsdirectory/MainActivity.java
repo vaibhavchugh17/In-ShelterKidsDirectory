@@ -128,9 +128,10 @@ public class MainActivity extends AppCompatActivity {
 
                                         Toast toast = Toast.makeText(v.getContext(), success, Toast.LENGTH_SHORT);
                                         toast.show();
-                                        Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                                        Intent intent = new Intent(getApplicationContext(), Kids.class);
                                         intent.putExtra(EXTRA_MESSAGE1, newUser);
                                         startActivity(intent);
+                                        Animatoo.animateSlideUp(MainActivity.this);
 
                                     } else {
                                         pass.startAnimation(shakeError());
@@ -191,9 +192,10 @@ public class MainActivity extends AppCompatActivity {
                                                     Log.d(TAG, "Data has been added succesfully");
                                                     Toast toast = Toast.makeText(v.getContext(), signUpS, Toast.LENGTH_SHORT);
                                                     toast.show();
-                                                    Intent intent = new Intent(getApplicationContext(), HomePage.class);
+                                                    Intent intent = new Intent(getApplicationContext(), Kids.class);
                                                     intent.putExtra(EXTRA_MESSAGE1, new User(userName, userPass));
                                                     startActivity(intent);
+                                                    Animatoo.animateSlideUp(MainActivity.this);
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
