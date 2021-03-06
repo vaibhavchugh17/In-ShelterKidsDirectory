@@ -404,6 +404,14 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             hair_color = "Unknown";
                         }
 
+                        if (kid_allergies.equals("")){
+                            kid_allergies = "Unknown";
+                        }
+                        if (kid_birthmarks.equals("")){
+                            kid_birthmarks = "Unknown";
+                        }
+
+
 
 
                         if (wrong_input) {
@@ -423,6 +431,8 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             oldKid.setHeight(height);
                             oldKid.setStatus(kid_status);
                             oldKid.setReferrals(kid.getReferrals());
+                            oldKid.setAllergies(kid_allergies);
+                            oldKid.setBirthmarks(kid_birthmarks);
                             kid.setStatus(kid_status.replace(statusStr,""));
                             listener.onOkPressed(kid, temp);
                             dialog.dismiss();
