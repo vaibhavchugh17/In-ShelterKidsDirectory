@@ -145,12 +145,7 @@ public class kidImageFragment extends DialogFragment implements Serializable {
         return builder
                 .setView(view)
                 .setTitle(title)
-                .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        listener.onBackPressed();
-                    }
-                }).create();
+                .setPositiveButton("BACK", null).create();
     }
 
 

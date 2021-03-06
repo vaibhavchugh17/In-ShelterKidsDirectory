@@ -85,7 +85,7 @@
     <ListView
         android:id="@+id/kid_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@drawable/gradient1"
         android:layout_marginTop="160dp"
         android:divider="@android:color/transparent"
