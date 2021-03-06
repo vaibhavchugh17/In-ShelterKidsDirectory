@@ -242,9 +242,39 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             String occupation = parentOccupation.getText().toString();
                             String number = parentNumber.getText().toString();
                             String address = parentAddress.getText().toString();
+
+                            View focus = null;
+                            boolean wrong_input = false;
+                            if (firstName.equals("")) { //Mandatory to enter kid's first name
+                                parentFirstName.setError("Please enter the first name of the referral");
+                                wrong_input = true;
+                                focus = parentFirstName;
+                            }
+
+                            if (lastName.equals("")) { //Mandatory to enter kid's last name
+                                parentLastName.setError("Please enter the last name of the kid");
+                                wrong_input = true;
+                                focus = parentLastName;
+                            }
+
+                            if (DOB.equals("")) { //Mandatory to enter kid's DOB
+                                parentDOB.setError("Please enter the DOB of the kid");
+                                wrong_input = true;
+                                focus = parentDOB;
+                            }
+
+                            if (wrong_input) {
+                                focus.requestFocus();
+                                getDialog().show();
+
+                            }
+
+                            else{
                             Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
                             kid.addReferrals(temp);
                             listener.onAddPressed();
+                            }
+
                         }
                         else if (flag.equals("Father")){
                             String lastName = parentLastName.getText().toString();
