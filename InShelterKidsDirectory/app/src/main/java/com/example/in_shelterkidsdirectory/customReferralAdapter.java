@@ -52,7 +52,8 @@ public class customReferralAdapter extends ArrayAdapter<Parent> {
         }
 
         Parent referral = referrals.get(position);
-        viewHolder.dispReferral.setText(referral.getFirstName());
+        String  display = referral.getFirstName() + " " + referral.getLastName();
+        viewHolder.dispReferral.setText(display);
 
     return view;
 
