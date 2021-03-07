@@ -1,63 +1,33 @@
 {
   "project_info": {
-    "project_number": "443415958620",
-    "firebase_url": "https://userdb-40974.firebaseio.com",
-    "project_id": "userdb-40974",
-    "storage_bucket": "userdb-40974.appspot.com"
+    "project_number": "1073236042250",
+    "project_id": "kids-shelter",
+    "storage_bucket": "kids-shelter.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443415958620:android:3f022e2adee606308d0299",
-        "android_client_info": {
-          "package_name": "com.example.dlpbgj"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "443415958620-v90ignjbt5qg5dkajbkavhjrjl08quef.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBXnqO0eod0EsXnqjjznfMXJra3SqxU7u0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "443415958620-v90ignjbt5qg5dkajbkavhjrjl08quef.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:443415958620:android:f91d18a107f48d438d0299",
+        "mobilesdk_app_id": "1:1073236042250:android:2678fd15df5dcaf4b835f3",
         "android_client_info": {
           "package_name": "com.example.in_shelterkidsdirectory"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443415958620-v90ignjbt5qg5dkajbkavhjrjl08quef.apps.googleusercontent.com",
+          "client_id": "1073236042250-8ehsu420c156sbn0ho5ed6rsc7hdf4hc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBXnqO0eod0EsXnqjjznfMXJra3SqxU7u0"
+          "current_key": "AIzaSyDqteEoQbDUSqkdX5u4H4gBG3Ow8EmdRoQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "443415958620-v90ignjbt5qg5dkajbkavhjrjl08quef.apps.googleusercontent.com",
+              "client_id": "1073236042250-8ehsu420c156sbn0ho5ed6rsc7hdf4hc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
