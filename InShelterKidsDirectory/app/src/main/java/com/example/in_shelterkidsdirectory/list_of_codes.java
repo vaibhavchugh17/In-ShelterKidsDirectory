@@ -32,7 +32,7 @@ public class list_of_codes extends AppCompatActivity {
         codeList = findViewById(R.id.codeList);
 
         String []nums = {"10202","10304","10407","10509","10697","10764","10832","10944","10109","10112"};
-        String []values = {"Residential Admission Request", "First contact", "Intake assessment", "Case conferencing / management", "Direct contact", "Indirect contact", "Discharge started", "Departure completed", "Request for Outreach services", "Outreach intiation compeleted"};
+        String []values = {"Residential Admission Request", "First Contact", "Intake Assessment", "Case Conferencing / Management", "Direct Contact", "Indirect Contact", "Discharge Started", "Departure Completed", "Request for Outreach Services", "Outreach Initiation Completed"};
 
         codeDataList = new ArrayList<>();
 
