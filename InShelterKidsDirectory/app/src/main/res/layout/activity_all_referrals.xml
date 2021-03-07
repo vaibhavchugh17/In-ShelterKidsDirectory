@@ -31,13 +31,14 @@
         android:layout_marginBottom="8dp"
         android:layout_marginRight="10dp"
         android:clickable="true"
-        android:focusable="auto"
+        android:focusable="true"
         android:focusableInTouchMode="false"
         android:visibility="visible"
         app:backgroundTint="@color/white"
         app:elevation="9dp"
         app:fabSize="auto"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:srcCompat="@drawable/ic_baseline_add_24"
+        android:layout_marginEnd="10dp" />
 
 
 </LinearLayout>

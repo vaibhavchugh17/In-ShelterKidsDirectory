@@ -49,7 +49,6 @@ public class CommonFragment extends DialogFragment implements Serializable {
     private Kid kid;
     private TextInputEditText parentFirstName;
     private TextInputEditText parentLastName;
-    private TextInputEditText parentMiddleName;
     private TextInputEditText parentOccupation;
     private TextInputEditText parentAddress;
     private TextInputEditText parentDOB;
@@ -96,7 +95,6 @@ public class CommonFragment extends DialogFragment implements Serializable {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.common_fragment_layout, null);
         parentFirstName = view.findViewById(R.id.parent_firstName);
-        parentMiddleName = view.findViewById(R.id.parent_middleName);
         parentLastName = view.findViewById(R.id.parent_lastName);
         parentDOB = view.findViewById(R.id.parentBirthDate);
         parentNumber = view.findViewById(R.id.parent_number);
