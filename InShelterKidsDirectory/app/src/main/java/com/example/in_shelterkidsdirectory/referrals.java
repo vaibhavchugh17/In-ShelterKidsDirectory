@@ -131,6 +131,9 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("Kid",kid);
+            setResult(RESULT_OK,returnIntent);
             finish(); // close this activity and return to preview activity (if there is any)
         }
 
