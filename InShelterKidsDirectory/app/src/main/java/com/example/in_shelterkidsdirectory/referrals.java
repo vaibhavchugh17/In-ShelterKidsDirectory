@@ -39,7 +39,6 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
     ListView referrals;
     FirebaseFirestore db;
     Kid kid;
-    CollectionReference collectionReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

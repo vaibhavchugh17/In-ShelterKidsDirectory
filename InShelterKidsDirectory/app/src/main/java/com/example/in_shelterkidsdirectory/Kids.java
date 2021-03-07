@@ -246,6 +246,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                             }
                         }
                     });
+                    ArrayList<Parent> container = new ArrayList<>();
                     CollectionReference referralsCollection = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid + "/Referrals");
                     referralsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
@@ -258,10 +259,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 String referral_occupation = (String)referral.getData().get("Occupation");
                                 String referral_home_address = (String)referral.getData().get("Address");
                                 Parent tempReferral = new Parent(referral_firstName,referral_lastName,referral_dob,referral_home_address,referral_occupation,referral_phoneNumber);
-                                temp.addReferrals(tempReferral); // Adding the cities and provinces from FireStore
+                                container.add(tempReferral); // Adding the cities and provinces from FireStore
                             }
                         }
                     });
+                    temp.setReferrals(container);
                     kidDataList.add(temp); // Adding the cities and provinces from FireStore
                     kidAdapter.notifyDataSetChanged();
                 }
@@ -760,13 +762,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Log.d("Parent","Mother added");
+                                                            Log.d("Parent","Father added");
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d("Parent","Mother failed");
+                                                            Log.d("Parent","Father failed");
                                                         }
                                                     });
                                         }
@@ -847,14 +849,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        //kidDataList.remove(kid);
-                                        //kidDataList.add(kid);
                                         kidAdapter.notifyDataSetChanged();
-                                        /*finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);
-                                        Log.d(TAG, "Data has been updated successfully!");*/
+                                        Log.d(TAG, "Data has been updated successfully!");
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -992,13 +988,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
-                                        //kidDataList.remove(kid);
-                                        //kidDataList.add(kid);
                                         kidAdapter.notifyDataSetChanged();
-                                        /*finish();
-                                        overridePendingTransition(0, 0);
-                                        startActivity(getIntent());
-                                        overridePendingTransition(0, 0);*/
                                         // These are a method which gets executed when the task is succeeded
                                         Log.d(TAG, "Data has been added successfully!");
                                     }
@@ -1006,6 +996,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
+                                        kidAdapter.notifyDataSetChanged();
                                         // These are a method which gets executed if there’s any problem
                                         Log.d(TAG, "Data could not be added!" + e.toString());
                                     }
