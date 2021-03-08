@@ -883,7 +883,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                     }
                                 });
                         collectionReference
-                                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
+                                .document(kid.getFirstName()+kid.getUID())
                                 .set(data)
                                 //Debugging methods
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {

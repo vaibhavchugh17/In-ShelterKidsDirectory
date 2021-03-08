@@ -71,10 +71,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         db = FirebaseFirestore.getInstance();
                         DocumentReference dRef;
                         if (flag =="Notes"){
-                             dRef =db.collection("Kids").document(kid.getFirstName() + kid.getLastName() + kid.getUID()).collection("notes").document(kidNotes.get(position).getId());
+                             dRef =db.collection("Kids").document(kid.getFirstName() + kid.getUID()).collection("notes").document(kidNotes.get(position).getId());
                         }
                         else{
-                            dRef =db.collection("Kids").document(kid.getFirstName() + kid.getLastName() + kid.getUID()).collection("Concerns").document(kidNotes.get(position).getId());
+                            dRef =db.collection("Kids").document(kid.getFirstName() + kid.getUID()).collection("Concerns").document(kidNotes.get(position).getId());
                         }
                         dRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override

@@ -65,7 +65,7 @@ public class AddNote extends Activity {
 
                 db = FirebaseFirestore.getInstance();
                 userKidCollectionReference = db.collection("Kids");
-                DocumentReference doc = userKidCollectionReference.document(kid.getFirstName() + kid.getLastName() + kid.getUID());
+                DocumentReference doc = userKidCollectionReference.document(kid.getFirstName() + kid.getUID());
                 DocumentReference docRef = doc.collection("Concerns").document();
                 if (flag.equals("Notes")){
                     docRef = doc.collection("notes").document();
