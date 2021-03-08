@@ -79,7 +79,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                         dRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                Toast.makeText(v.getContext(), "Note deleted" ,Toast.LENGTH_SHORT).show();
+                                if (flag =="Notes"){
+                                    Toast.makeText(v.getContext(), "Note deleted" ,Toast.LENGTH_SHORT).show();
+
+                                }
+                                else{
+                                    Toast.makeText(v.getContext(), "Concern deleted" ,Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

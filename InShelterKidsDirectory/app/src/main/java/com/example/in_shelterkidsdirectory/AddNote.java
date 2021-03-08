@@ -88,7 +88,14 @@ public class AddNote extends Activity {
                 docRef.set(noteMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(AddNote.this, "Note saved",Toast.LENGTH_SHORT).show();
+                        if (flag.equals("Notes")){
+                            Toast.makeText(AddNote.this, "Note saved",Toast.LENGTH_SHORT).show();
+
+                        }
+                        else{
+                            Toast.makeText(AddNote.this, "Concern saved",Toast.LENGTH_SHORT).show();
+
+                        }
                         onBackPressed();
 
                     }

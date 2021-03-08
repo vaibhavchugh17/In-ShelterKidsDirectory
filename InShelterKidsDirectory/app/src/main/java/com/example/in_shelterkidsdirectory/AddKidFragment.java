@@ -366,53 +366,45 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             wrong_input = true;
                             focus = kidFirstName;
                         }
-                        if (last_name.equals("")) { //Mandatory to enter kid's last name
-                            kidLastName.setError("Please enter the last name of the kid");
-                            wrong_input = true;
-                            focus = kidLastName;
-                        }
-
-                        if (dob.equals("")) { //Mandatory to enter kid's DOB
-                            kidDOB.setError("Please enter the DOB of the kid");
-                            wrong_input = true;
-                            focus = kidDOB;
-                        }
-
-
 
                         if (!validStatus.contains(kid_status)) { //Input validation for the status
-                            kidStatus.setError("Please choose a valid status from drop-down menu");
+                            kidStatus.setError("Please choose a valid status from the drop-down menu");
                             wrong_input = true;
                             focus = spinner;
 
+                        }
+
+                        if (last_name.equals("")) { //Mandatory to enter kid's last name
+                            last_name = "";
+                        }
+
+                        if (dob.equals("")) { //Mandatory to enter kid's DOB
+                            dob = "" ;
                         }
                         if (middle_name.equals("")) {
                             middle_name = "";
 
                         }
                         if (nationality.equals("")) {
-                            nationality = "Unknown";
+                            nationality = "";
                         }
                         if (height.equals("")) {
-                            height = "Unknown";
+                            height = "";
                         }
 
                         if (eye_color.equals("")) {
-                            eye_color = "Unknown";
+                            eye_color = "";
                         }
                         if (hair_color.equals("")) {
-                            hair_color = "Unknown";
+                            hair_color = "";
                         }
 
                         if (kid_allergies.equals("")){
-                            kid_allergies = "Unknown";
+                            kid_allergies = "";
                         }
                         if (kid_birthmarks.equals("")){
-                            kid_birthmarks = "Unknown";
+                            kid_birthmarks = "";
                         }
-
-
-
 
                         if (wrong_input) {
                             focus.requestFocus();

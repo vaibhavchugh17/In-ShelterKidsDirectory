@@ -119,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Last Name*">
+                android:hint="Last Name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/kid_lastName"
@@ -136,7 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Date of Birth*">
+                    android:hint="Date of Birth">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/kidBirthDate"
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="Height (in decimal)">
+                android:hint="Height (in cm)">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/kid_height"
