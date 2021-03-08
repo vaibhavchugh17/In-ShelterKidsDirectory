@@ -34,13 +34,14 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PinFragment.OnFragmentInteractionListener {
     public static final String EXTRA_MESSAGE1 = "com.example.iskd.MESSAGE1";
     EditText user;
     EditText pass;
     Button login;
     Button signUp;
     String TAG = "MainActivity";
+    String pin;
 
     /**
      * When app is launched.
@@ -65,7 +66,20 @@ public class MainActivity extends AppCompatActivity {
 
         //Instance of the User db
         userDb = FirebaseFirestore.getInstance();
-
+        CollectionReference pinReference = userDb.collection("PIN");
+        DocumentReference pinRef = pinReference.document("PIN");
+        pinRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()){
+                        Map<String,Object> data = document.getData();
+                        pin = (String)data.get("PIN");
+                    }
+                }
+            }
+        });
         final CollectionReference arrayReference = userDb.collection("GlobalArray");
         DocumentReference docRef = arrayReference.document("Array"); //If username does not exist then prompt for a sign-up
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -179,8 +193,11 @@ public class MainActivity extends AppCompatActivity {
                                     user.startAnimation(shakeError());
                                     Toast toast = Toast.makeText(v.getContext(), exist, Toast.LENGTH_SHORT);
                                     toast.show();
-                                } else {
-                                    collectionReference
+                                }
+                                else {
+                                    PinFragment fragment = PinFragment.newInstance(userName,userPass);
+                                    fragment.show(getSupportFragmentManager(), "PIN");
+                                    /*collectionReference
                                             .document(userName)
                                             .set(data)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -188,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
                                                 public void onSuccess(Void aVoid) {
                                                     /**
                                                      * If a new user is successfully registered to the database.
-                                                     */
+                                                     *
                                                     Log.d(TAG, "Data has been added succesfully");
                                                     Toast toast = Toast.makeText(v.getContext(), signUpS, Toast.LENGTH_SHORT);
                                                     toast.show();
@@ -204,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                                                     Log.d(TAG, "Data has been not been added");
 
                                                 }
-                                            });
+                                            });*/
                                 }
                             }
                         }
@@ -231,6 +248,45 @@ public class MainActivity extends AppCompatActivity {
         shake.setDuration(500);
         shake.setInterpolator(new CycleInterpolator(7));
         return shake;
+    }
+
+    @Override
+    public void onOkPressed(String pinVerify, String userName,String userPass){
+        if (pinVerify.equals(pin)){
+            FirebaseFirestore userDb = FirebaseFirestore.getInstance();
+            CollectionReference collectionReference = userDb.collection("Users");
+            HashMap<String,Object> data = new HashMap<>();
+            data.put("Password",userPass);
+            collectionReference
+                    .document(userName)
+                    .set(data)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            /**
+                             * If a new user is successfully registered to the database.
+                             **/
+                             Log.d(TAG, "Data has been added succesfully");
+                             Toast toast = Toast.makeText(getApplicationContext(), "Successfully Signed Up!", Toast.LENGTH_SHORT);
+                             toast.show();
+                             Intent intent = new Intent(getApplicationContext(), Kids.class);
+                             intent.putExtra(EXTRA_MESSAGE1, new User(userName, userPass));
+                             startActivity(intent);
+                             Animatoo.animateSlideUp(MainActivity.this);
+                             }
+                             })
+                             .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Data has been not been added");
+
+                            }
+                            });
+        }
+        else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Invalid Pin!", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 }

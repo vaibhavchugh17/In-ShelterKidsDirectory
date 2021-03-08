@@ -239,8 +239,9 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
         data.put("Birthmarks", kid.getBirthmarks());
         data.put("Nationality", kid.getNationality());
         data.put("Uid", kid.getUID());
+        data.put("DOA",kid.getDOA());
         CollectionReference collectionReference = db.collection("Kids");
-        DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getLastName()+kid.getUID());
+        DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getUID());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -248,12 +249,12 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         collectionReference
-                                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
+                                .document(kid.getFirstName()+kid.getUID())
                                 .update(data)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        CollectionReference parentReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        CollectionReference parentReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Parents");
                                         if (kid.getFather() != null){
                                             Parent father = kid.getFather();
                                             HashMap<String,String> fatherData = new HashMap<>();
@@ -401,7 +402,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         }
                                                     });
                                         }
-                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Referrals");
+                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Referrals");
                                         if (!kid.getReferrals().isEmpty()){
                                             ArrayList<Parent> referrals = kid.getReferrals();
                                             for (Parent referral : referrals){
@@ -412,6 +413,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                 referralData.put("Occupation", referral.getOccupation());
                                                 referralData.put("Address", referral.getHomeAddress());
                                                 referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralData.put("Extra Information",referral.getExtraInformation());
                                                 referralReference
                                                         .document(referral.getFirstName())
                                                         .set(referralData)
@@ -463,8 +465,8 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        CollectionReference fatherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
-                                        CollectionReference motherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        CollectionReference fatherReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Parents");
+                                        CollectionReference motherReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Parents");
                                         if (kid.getFather() != null){
                                             Parent father = kid.getFather();
                                             HashMap<String,String> fatherData = new HashMap<>();
@@ -540,7 +542,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                         }
                                                     });
                                         }
-                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Referrals");
+                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Referrals");
                                         if (!kid.getReferrals().isEmpty()){
                                             ArrayList<Parent> referrals = kid.getReferrals();
                                             for (Parent referral : referrals){
@@ -551,6 +553,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
                                                 referralData.put("Occupation", referral.getOccupation());
                                                 referralData.put("Address", referral.getHomeAddress());
                                                 referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralData.put("Extra Information",referral.getExtraInformation());
                                                 referralReference
                                                         .document(referral.getFirstName())
                                                         .set(referralData)
@@ -598,7 +601,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
     public void onDeletePressed(Kid kid) {
         CollectionReference collectionReference = db.collection("Kids");
         collectionReference
-                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
+                .document(kid.getFirstName()+kid.getUID())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

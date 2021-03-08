@@ -53,6 +53,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
     private TextInputEditText parentAddress;
     private TextInputEditText parentDOB;
     private TextInputEditText parentNumber;
+    private TextInputEditText extra_information;
     private DatePickerDialog.OnDateSetListener DateListener;
     private Button dateOfBirth;
     private RelativeLayout r_layout;
@@ -102,6 +103,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
         parentAddress = view.findViewById(R.id.parent_home_address);
         dateOfBirth = view.findViewById(R.id.select_date_parent);
         r_layout = view.findViewById(R.id.r_layout);
+        extra_information = view.findViewById(R.id.extra_information);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -144,6 +146,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentOccupation.setText(father.getOccupation());
                     parentNumber.setText(father.getPhoneNumber());
                     parentDOB.setText(father.getDOB());
+                    extra_information.setVisibility(View.GONE);
                 }
             }
             else if (flag.equals("Mother")){
@@ -156,6 +159,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentOccupation.setText(mother.getOccupation());
                     parentNumber.setText(mother.getPhoneNumber());
                     parentDOB.setText(mother.getDOB());
+                    extra_information.setVisibility(View.GONE);
                 }
             }
             else if (flag.equals("Guardian")){
@@ -168,6 +172,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentOccupation.setText(guardian.getOccupation());
                     parentNumber.setText(guardian.getPhoneNumber());
                     parentDOB.setText(guardian.getDOB());
+                    extra_information.setVisibility(View.GONE);
                 }
             }
             else {
@@ -181,6 +186,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentOccupation.setText(referral.getOccupation());
                     parentNumber.setText(referral.getPhoneNumber());
                     parentDOB.setText(referral.getDOB());
+                    extra_information.setText(referral.getExtraInformation());
                 }
             }
 
@@ -252,6 +258,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                         String occupation = parentOccupation.getText().toString();
                         String number = parentNumber.getText().toString();
                         String address = parentAddress.getText().toString();
+                        String extra_info = extra_information.getText().toString();
                         if (flag == null){
                             flag = "";
                         }
@@ -265,6 +272,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
 
                             else{
                                 Parent temp = new Parent(firstName,lastName,DOB,address,occupation,number);
+                                temp.setExtraInformation(extra_info);
                                 kid.addReferrals(temp);
                                 Toast.makeText(getContext(), "Referral Added",Toast.LENGTH_SHORT).show();
                                 listener.onAddPressed();
@@ -320,6 +328,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             referral.setOccupation(occupation);
                             referral.setPhoneNumber(number);
                             referral.setHomeAddress(address);
+                            referral.setExtraInformation(extra_info);
                             kid.addReferrals(referral);
                             listener.onAddPressed();
                             dialog.dismiss();

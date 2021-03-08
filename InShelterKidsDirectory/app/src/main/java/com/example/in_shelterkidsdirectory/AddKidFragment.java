@@ -50,16 +50,19 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
     private TextInputEditText kidNationality;
     private TextInputEditText kidHeight;
     private TextInputEditText kidDOB;
+    private TextInputEditText kidDOA;
     private TextInputEditText kidEyeColor;
     private TextInputEditText kidHairColor;
     private TextInputEditText kidAllergies;
     private TextInputEditText kidBirthmarks;
     private DatePickerDialog.OnDateSetListener DateListener;
+    private DatePickerDialog.OnDateSetListener AListener;
     private Button kidDobButton;
     private Button parentButton;
     private Button concernsButton;
     private Button referralsButton;
     private Button notesButton;
+    private Button kidDOAButton;
     private Kid kid = new Kid();
     private TextView kidStatus;
     private ImageView kidPic;
@@ -148,6 +151,8 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         referralsButton = view.findViewById(R.id.kid_referrals);
         concernsButton = view.findViewById(R.id.kid_concerns);
         notesButton = view.findViewById(R.id.kid_notes);
+        kidDOA = view.findViewById(R.id.kidAdmissionDate);
+        kidDOAButton = view.findViewById(R.id.select_admission_kid);
         final ArrayList<String> validStatus = new ArrayList<String>();
         validStatus.add("Residential");
         validStatus.add("Out-Reach");
@@ -173,6 +178,19 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
                 DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,DateListener,year,month,date);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        kidDOAButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                int date = calendar.get(Calendar.DATE);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                DatePickerDialog dialog = new DatePickerDialog(getContext(), android.R.style.Theme_Holo_Light_Dialog_MinWidth,AListener,year,month,date);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
@@ -235,6 +253,14 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
             }
         };
 
+        AListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                String temp = i2 + "/" + i1 + "/" + i ;
+                kidDOA.setText(temp);
+            }
+        };
+
         if (getArguments().get("Kid") != null) {
             kid  = (Kid) getArguments().get("Kid");
             title = "Edit Kid Details";
@@ -245,6 +271,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
             kidNationality.setText(kid.getNationality());
             kidHeight.setText(kid.getHeight()); //Convert to string
             kidDOB.setText(kid.getDOB());
+            kidDOA.setText(kid.getDOA());
             kidEyeColor.setText(kid.getEyeColor());
             kidHairColor.setText(kid.getHairColor());
             kidStatus.setText(kid.getStatus());
@@ -352,6 +379,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                         String nationality = kidNationality.getText().toString();
                         String height = kidHeight.getText().toString();
                         String dob = kidDOB.getText().toString();
+                        String doa = kidDOA.getText().toString();
                         String eye_color = kidEyeColor.getText().toString();
                         String hair_color =kidHairColor.getText().toString();
                         String kid_status = kidStatus.getText().toString();
@@ -380,6 +408,9 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
 
                         if (dob.equals("")) { //Mandatory to enter kid's DOB
                             dob = "" ;
+                        }
+                        if (doa.equals("")) { //Mandatory to enter kid's DOA
+                            doa = "" ;
                         }
                         if (middle_name.equals("")) {
                             middle_name = "";
@@ -412,11 +443,12 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                         } else if (getArguments().get("Kid") != null) {
 
                             Kid oldKid = (Kid) getArguments().get("Kid");
-                            String temp = oldKid.getFirstName() + oldKid.getLastName() +oldKid.getUID();
+                            String temp = oldKid.getFirstName() +oldKid.getUID();
                             oldKid.setFirstName(first_name);
                             oldKid.setLastName(last_name);
                             oldKid.setMiddleName(middle_name);
                             oldKid.setDOB(dob);
+                            oldKid.setDOA(doa);
                             oldKid.setEyeColor(eye_color);
                             oldKid.setHairColor(hair_color);
                             oldKid.setNationality(nationality);
@@ -430,6 +462,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                             dialog.dismiss();
                         } else {
                             Kid temp = new Kid(first_name,last_name,middle_name,eye_color,dob,hair_color,kid_status,height,nationality,kid_allergies,kid_birthmarks);
+                            temp.setDOA(doa);
                             if (kid != null){
                                 temp.setReferrals(kid.getReferrals());
                                 temp.setFather(kid.getFather());

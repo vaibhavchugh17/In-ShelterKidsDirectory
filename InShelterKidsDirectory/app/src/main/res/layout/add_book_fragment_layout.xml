@@ -157,6 +157,37 @@
                 </Button>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Date of Admission">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/kidAdmissionDate"
+                        android:editable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="2"
+                    android:textColor="#FFFFFF"
+                    android:text="SELECT Date"
+                    android:background="@drawable/custom_button"
+                    android:id="@+id/select_admission_kid">
+                </Button>
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

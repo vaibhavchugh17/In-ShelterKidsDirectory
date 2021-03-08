@@ -18,6 +18,8 @@ public class Kid implements Serializable {
     String birthmarks;
     Parent father;
     Parent mother;
+    String DOA;
+
 
 
     Parent guardian;
@@ -196,5 +198,13 @@ public class Kid implements Serializable {
 
     public void setGuardian(Parent guardian) {
         this.guardian = guardian;
+    }
+
+    public String getDOA() {
+        return DOA;
+    }
+
+    public void setDOA(String DOA) {
+        this.DOA = DOA;
     }
 }

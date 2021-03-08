@@ -99,7 +99,7 @@ public class referrals extends AppCompatActivity implements CommonFragment.OnFra
 
     @Override
     public void onDeletePressed(Parent referral){
-        CollectionReference collectionReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID() + "/Referrals/");
+        CollectionReference collectionReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID() + "/Referrals/");
         collectionReference
                 .document(referral.getFirstName())
                 .delete()

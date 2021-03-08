@@ -9,6 +9,7 @@ public class Parent implements Serializable {
     String homeAddress;
     String Occupation;
     String phoneNumber;
+    String extraInformation;
 
     public Parent(String firstName, String lastName, String DOB, String homeAddress, String occupation, String phoneNumber) {
         this.firstName = firstName;
@@ -65,5 +66,13 @@ public class Parent implements Serializable {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getExtraInformation() {
+        return extraInformation;
+    }
+
+    public void setExtraInformation(String extraInformation) {
+        this.extraInformation = extraInformation;
     }
 }

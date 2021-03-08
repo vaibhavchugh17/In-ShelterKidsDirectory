@@ -96,7 +96,7 @@ public class Notes extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         if (flag.equals("Notes")){
-            kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName() + kid.getLastName() +kid.getUID()).collection("notes");
+            kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName() +kid.getUID()).collection("notes");
             kidNoteCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -115,7 +115,7 @@ public class Notes extends AppCompatActivity {
             });
         }
         else{
-            kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName() + kid.getLastName() +kid.getUID()).collection("Concerns");
+            kidNoteCollectionRef = db.collection("Kids").document(kid.getFirstName() +kid.getUID()).collection("Concerns");
             kidNoteCollectionRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
                 @Override
                 public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

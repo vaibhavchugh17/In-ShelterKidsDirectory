@@ -172,11 +172,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     String kid_birthmarks = (String)newKid.getData().get("Birthmarks");
                     String kid_nationality = (String)newKid.getData().get("Nationality");
                     String kid_uid = (String) newKid.getData().get("Uid");
+                    String kid_doa = (String) newKid.getData().get("DOA");
                     Kid temp = new Kid(kid_firstName,kid_lastName,kid_middleName,kid_eye,kid_dob,kid_hair,kidStatus,kid_height,kid_nationality,kid_allergies,kid_birthmarks);
                     temp.setUID(kid_uid);
-                    DocumentReference fatherReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Father");
-                    DocumentReference motherReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Mother");
-                    DocumentReference guardianReference = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid +"/Parents").document("Guardian");
+                    temp.setDOA(kid_doa);
+                    DocumentReference fatherReference = db.collection("Kids/" + kid_firstName+kid_uid +"/Parents").document("Father");
+                    DocumentReference motherReference = db.collection("Kids/" + kid_firstName+kid_uid +"/Parents").document("Mother");
+                    DocumentReference guardianReference = db.collection("Kids/" + kid_firstName+kid_uid +"/Parents").document("Guardian");
                     fatherReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -247,7 +249,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                         }
                     });
                     ArrayList<Parent> container = new ArrayList<>();
-                    CollectionReference referralsCollection = db.collection("Kids/" + kid_firstName+kid_lastName+kid_uid + "/Referrals");
+                    CollectionReference referralsCollection = db.collection("Kids/" + kid_firstName+kid_uid + "/Referrals");
                     referralsCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
                         public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -257,8 +259,10 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 String referral_dob = (String)referral.getData().get("DOB");
                                 String referral_phoneNumber = (String)referral.getData().get("Phone Number");
                                 String referral_occupation = (String)referral.getData().get("Occupation");
+                                String referral_info = (String)referral.getData().get("Extra Information");
                                 String referral_home_address = (String)referral.getData().get("Address");
                                 Parent tempReferral = new Parent(referral_firstName,referral_lastName,referral_dob,referral_home_address,referral_occupation,referral_phoneNumber);
+                                tempReferral.setExtraInformation(referral_info);
                                 container.add(tempReferral); // Adding the cities and provinces from FireStore
                             }
                         }
@@ -376,6 +380,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         final String kid_firstName = newKid.getFirstName();    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
         final String kid_lastName = newKid.getLastName();
         String kid_dob = newKid.getDOB();
+        String kid_doa = newKid.getDOA();
         String kidStatus = newKid.getStatus();
         String kid_height = newKid.getHeight();
         String kid_middleName = newKid.getMiddleName();
@@ -384,8 +389,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         String kid_allergies = newKid.getAllergies();
         String kid_birthmarks = newKid.getBirthmarks();
         String kid_nationality = newKid.getNationality();
-
-        if (kid_firstName.length() > 0 && kid_lastName.length() > 0 && kidStatus.length() > 0) {//Data inside the document will consist of the following
             //Adding data inside the hash map
             data.put("First Name", kid_firstName);
             data.put("Last Name", kid_lastName);
@@ -398,7 +401,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             data.put("Allergies", kid_allergies);
             data.put("Birthmarks", kid_birthmarks);
             data.put("Nationality", kid_nationality);
-        }
+            data.put("DOA",kid_doa);
         CollectionReference collectionReference = db.collection("Kids");
         arrayReference = db.collection("GlobalArray");
         DocumentReference docRef = arrayReference.document("Array"); //If username does not exist then prompt for a sign-up
@@ -430,13 +433,13 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                     }
                                 });
                         collectionReference
-                                .document(kid_firstName+kid_lastName+data.get("Uid"))
+                                .document(kid_firstName+data.get("Uid"))
                                 .set(data)
                                 //Debugging methods
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        CollectionReference parentReference = db.collection("Kids/" + kid_firstName+kid_lastName+data.get("Uid")+"/Parents");
+                                        CollectionReference parentReference = db.collection("Kids/" + kid_firstName+data.get("Uid")+"/Parents");
                                         if (newKid.getFather() != null){
                                             Parent father = newKid.getFather();
                                             HashMap<String,String> fatherData = new HashMap<>();
@@ -585,7 +588,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         }
                                                     });
                                         }
-                                        CollectionReference referralReference = db.collection("Kids/" + kid_firstName+kid_lastName+data.get("Uid")+"/Referrals");
+                                        CollectionReference referralReference = db.collection("Kids/" + kid_firstName+data.get("Uid")+"/Referrals");
                                         if (!newKid.getReferrals().isEmpty()){
                                             ArrayList<Parent> referrals = newKid.getReferrals();
                                             for (Parent referral : referrals){
@@ -596,6 +599,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                 referralData.put("Occupation", referral.getOccupation());
                                                 referralData.put("Address", referral.getHomeAddress());
                                                 referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralData.put("Extra Information",referral.getExtraInformation());
                                                 referralReference
                                                         .document(referral.getFirstName())
                                                         .set(referralData)
@@ -659,8 +663,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         data.put("Birthmarks", kid.getBirthmarks());
         data.put("Nationality", kid.getNationality());
         data.put("Uid", kid.getUID());
+        data.put("DOA",kid.getDOA());
         CollectionReference collectionReference = db.collection("Kids");
-        DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getLastName()+kid.getUID());
+        DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getUID());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -668,12 +673,12 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         collectionReference
-                                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
+                                .document(kid.getFirstName()+kid.getUID())
                                 .update(data)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        CollectionReference parentReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        CollectionReference parentReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Parents");
                                         if (kid.getFather() != null){
                                             Parent father = kid.getFather();
                                             HashMap<String,String> fatherData = new HashMap<>();
@@ -821,7 +826,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         }
                                                     });
                                         }
-                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Referrals");
+                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Referrals");
                                         if (!kid.getReferrals().isEmpty()){
                                             ArrayList<Parent> referrals = kid.getReferrals();
                                             for (Parent referral : referrals){
@@ -832,6 +837,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                 referralData.put("Occupation", referral.getOccupation());
                                                 referralData.put("Address", referral.getHomeAddress());
                                                 referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralData.put("Extra Information",referral.getExtraInformation());
                                                 referralReference
                                                         .document(referral.getFirstName())
                                                         .set(referralData)
@@ -883,8 +889,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        CollectionReference fatherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
-                                        CollectionReference motherReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Parents");
+                                        CollectionReference fatherReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Parents");
+                                        CollectionReference motherReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Parents");
                                         if (kid.getFather() != null){
                                             Parent father = kid.getFather();
                                             HashMap<String,String> fatherData = new HashMap<>();
@@ -960,7 +966,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         }
                                                     });
                                         }
-                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getLastName()+kid.getUID()+"/Referrals");
+                                        CollectionReference referralReference = db.collection("Kids/" + kid.getFirstName()+kid.getUID()+"/Referrals");
                                         if (!kid.getReferrals().isEmpty()){
                                             ArrayList<Parent> referrals = kid.getReferrals();
                                             for (Parent referral : referrals){
@@ -971,6 +977,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                 referralData.put("Occupation", referral.getOccupation());
                                                 referralData.put("Address", referral.getHomeAddress());
                                                 referralData.put("Phone Number", referral.getPhoneNumber());
+                                                referralData.put("Extra Information",referral.getExtraInformation());
                                                 referralReference
                                                         .document(referral.getFirstName())
                                                         .set(referralData)
@@ -1018,7 +1025,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     public void onDeletePressed(Kid kid) {
         CollectionReference collectionReference = db.collection("Kids");
         collectionReference
-                .document(kid.getFirstName()+kid.getLastName()+kid.getUID())
+                .document(kid.getFirstName()+kid.getUID())
                 .delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
