@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation = "vertical"
+    android:background="@drawable/gradient1"
+    tools:context=".allUserProfiles">
+    <ListView
+    android:id="@+id/profile_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:inputType = "textCapCharacters"
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="65dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"
+        />
+    <include
+        layout="@layout/appbar"/>
+
+</FrameLayout>

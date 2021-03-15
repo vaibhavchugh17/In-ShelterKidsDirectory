@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/sample1">
+
+
+    <LinearLayout
+        android:weightSum="4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        >
+
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/editUserName"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/user"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:background="?attr/colorButtonNormal"
+            android:gravity="center"
+            android:hint="USERNAME"
+            android:inputType="textPersonName"
+            android:textColor="#100F0D"
+             />
+
+        <EditText
+            android:layout_weight="1"
+            android:id="@+id/editUserPassword"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:drawableLeft="@drawable/key"
+            android:background="?attr/colorButtonNormal"
+            android:gravity="center"
+            android:hint="PASSWORD"
+            android:inputType="textPassword"
+            android:textColor="#13120E" />
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/login_button"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:textColor="#C8E9E6"
+                android:layout_gravity="center"
+                android:background="@drawable/custom_button"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:onClick="displayToastMessage"
+                android:text="LOGIN" />
+
+            <Button
+                android:layout_weight="1"
+                android:id="@+id/signup_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="15dp"
+                android:textColor="#949A9C"
+                android:textAllCaps="false"
+                android:layout_gravity="center"
+                android:background="?android:attr/selectableItemBackground"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:onClick="displayToastMessage"
+                android:text="Don't have an account? Sign Up!" />
+
+</LinearLayout>
+</RelativeLayout>

@@ -240,6 +240,7 @@ public class Search_by_descr extends AppCompatActivity implements AddKidFragment
         data.put("Nationality", kid.getNationality());
         data.put("Uid", kid.getUID());
         data.put("DOA",kid.getDOA());
+        data.put("Url",kid.getUrl());
         CollectionReference collectionReference = db.collection("Kids");
         DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getUID());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

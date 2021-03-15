@@ -42,6 +42,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,9 +174,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                     String kid_nationality = (String)newKid.getData().get("Nationality");
                     String kid_uid = (String) newKid.getData().get("Uid");
                     String kid_doa = (String) newKid.getData().get("DOA");
+                    String kid_url = (String) newKid.getData().get("Url");
                     Kid temp = new Kid(kid_firstName,kid_lastName,kid_middleName,kid_eye,kid_dob,kid_hair,kidStatus,kid_height,kid_nationality,kid_allergies,kid_birthmarks);
                     temp.setUID(kid_uid);
                     temp.setDOA(kid_doa);
+                    temp.setUrl(kid_url);
                     DocumentReference fatherReference = db.collection("Kids/" + kid_firstName+kid_uid +"/Parents").document("Father");
                     DocumentReference motherReference = db.collection("Kids/" + kid_firstName+kid_uid +"/Parents").document("Mother");
                     DocumentReference guardianReference = db.collection("Kids/" + kid_firstName+kid_uid +"/Parents").document("Guardian");
@@ -389,6 +392,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         String kid_allergies = newKid.getAllergies();
         String kid_birthmarks = newKid.getBirthmarks();
         String kid_nationality = newKid.getNationality();
+        String kid_url = newKid.getUrl();
             //Adding data inside the hash map
             data.put("First Name", kid_firstName);
             data.put("Last Name", kid_lastName);
@@ -402,6 +406,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             data.put("Birthmarks", kid_birthmarks);
             data.put("Nationality", kid_nationality);
             data.put("DOA",kid_doa);
+            data.put("Url",kid_url);
         CollectionReference collectionReference = db.collection("Kids");
         arrayReference = db.collection("GlobalArray");
         DocumentReference docRef = arrayReference.document("Array"); //If username does not exist then prompt for a sign-up
@@ -664,6 +669,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         data.put("Nationality", kid.getNationality());
         data.put("Uid", kid.getUID());
         data.put("DOA",kid.getDOA());
+        data.put("Url",kid.getUrl());
         CollectionReference collectionReference = db.collection("Kids");
         DocumentReference docRef = collectionReference.document(kid.getFirstName()+kid.getUID());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

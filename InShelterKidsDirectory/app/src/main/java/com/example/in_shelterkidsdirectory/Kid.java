@@ -19,8 +19,15 @@ public class Kid implements Serializable {
     Parent father;
     Parent mother;
     String DOA;
+    String url;
 
+    public String getUrl() {
+        return url;
+    }
 
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     Parent guardian;
     ArrayList<Note> concerns;

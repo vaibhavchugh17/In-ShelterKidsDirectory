@@ -71,20 +71,19 @@ public class customKidAdapter extends ArrayAdapter<Kid> {
             viewHolder= (ViewHolder)convertView.getTag();
         }
         viewHolder.img.setImageResource(R.drawable.load);
-        storageReference.child("images/" + kid.getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                Picasso.get().load(uri.toString()).into(viewHolder.img);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                viewHolder.img.setImageResource(R.drawable.defaultprofile);
-            }
-        });
+        if (kid.getUrl() != null && !kid.getUrl().equals("")){
+            Picasso.get().load(kid.getUrl()).into(viewHolder.img);
+        }
+        else {
+            viewHolder.img.setImageResource(R.drawable.defaultprofile);
+        }
         viewHolder.kidTitle.setText(kid.getFirstName() + " " + kid.getLastName());
-        viewHolder.kidDob.setText(kid.getDOB());
+        if (!kid.getDOB().equals("")){
+            viewHolder.kidDob.setText(kid.getDOB());
+        }
+        else {
+            viewHolder.kidDob.setText(" ");
+        }
         viewHolder.kidStatus.setText(kid.getStatus()); //Setting the values of each textView inside the view in ListView
         return view;
 

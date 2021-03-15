@@ -153,6 +153,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         notesButton = view.findViewById(R.id.kid_notes);
         kidDOA = view.findViewById(R.id.kidAdmissionDate);
         kidDOAButton = view.findViewById(R.id.select_admission_kid);
+        kidPic.setImageResource(R.drawable.defaultprofile);
         final ArrayList<String> validStatus = new ArrayList<String>();
         validStatus.add("Residential");
         validStatus.add("Out-Reach");

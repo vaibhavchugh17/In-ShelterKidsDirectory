@@ -25,6 +25,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -79,18 +80,23 @@ public class kidImageFragment extends DialogFragment implements Serializable {
             kid = (Kid) getArguments().get("Kid");
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageReference = storage.getReference();
-            storageReference.child("images/" + kid.getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    // Got the download URL for 'users/me/profile.png'
-                    Picasso.get().load(uri.toString()).into(profile);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    profile.setImageResource(R.drawable.defaultprofile);
-                }
-            });
+            if (kid.getUID() != null){
+                storageReference.child("images/" + kid.getUID()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        // Got the download URL for 'users/me/profile.png'
+                        Picasso.get().load(uri.toString()).into(profile);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        profile.setImageResource(R.drawable.defaultprofile);
+                    }
+                });
+            }
+            else{
+                profile.setImageResource(R.drawable.defaultprofile);
+            }
 
         }
 
@@ -104,7 +110,6 @@ public class kidImageFragment extends DialogFragment implements Serializable {
             @Override
             public void onClick(View v) {
                 uploadPhoto(kid);
-
             }
         });
 
@@ -118,6 +123,7 @@ public class kidImageFragment extends DialogFragment implements Serializable {
                         public void onSuccess(Void aVoid) {
                             Toast toast = Toast.makeText(getContext(), "Kid Photo Successfully deleted!", Toast.LENGTH_SHORT);
                             toast.show();
+                            kid.setUrl("");
                             Fragment currentFragment = getFragmentManager().findFragmentByTag("ADD_BOOK");
                             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                             fragmentTransaction.detach(currentFragment);
@@ -180,12 +186,24 @@ public class kidImageFragment extends DialogFragment implements Serializable {
             ref.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    /*Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
+                    if(downloadUri.isSuccessful()) {
+                        kid.setUrl(downloadUri.getResult().toString());
+                    }*/
+                    //kid.setUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            kid.setUrl(uri.toString());
+                        }
+                    });
                     statusDialog.dismiss();
                 }
             })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
+                            kid.setUrl("");
                             statusDialog.dismiss();
                         }
                     })
