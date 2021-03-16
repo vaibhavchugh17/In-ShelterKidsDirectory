@@ -34,11 +34,13 @@
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/imgView"
             android:background="@drawable/custom_button"
-            android:text="Choose"
-            android:textColor="#FFFFFF" />
+            android:text="@string/choose"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/imgView" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/Update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/button1"
@@ -46,19 +48,23 @@
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/imgView"
             android:background="@drawable/custom_button"
-            android:text="UPLOAD"
-            android:textColor="#FFFFFF" />
+            android:text="@string/update"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="90dp"
+            android:layout_toEndOf="@+id/imgView" />
 
         <Button
-            android:id="@+id/Update"
+            android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/button1"
             android:background="@drawable/custom_button"
-            android:text="Update"
-            android:textColor="#FFFFFF" />
+            android:text="@string/upload"
+            android:textColor="#FFFFFF"
+            android:layout_marginStart="30dp"
+            android:layout_toEndOf="@+id/button1" />
 
     </RelativeLayout>
 

@@ -430,7 +430,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                         }
 
                         if (dob.equals("")) { //Mandatory to enter kid's DOB
-                            dob = "" ;
+                            dob = "Unknown" ;
                         }
                         if (doa.equals("")) { //Mandatory to enter kid's DOA
                             doa = "" ;

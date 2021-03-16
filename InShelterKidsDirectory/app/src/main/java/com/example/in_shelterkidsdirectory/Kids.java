@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -120,14 +121,14 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
         View headerView = navigationView.getHeaderView(0);
         userDisplay= headerView.findViewById(R.id.userDisplayName);
-        String name  = currentUser.getFirst_name();
+        String name  = currentUser.getUsername();
 
         if(name == null){
             userDisplay.setText("Welcome");
 
         }
         else{
-            userDisplay.setText("Welcome, " + name);
+            userDisplay.setText("Welcome " + name);
 
         }
 
@@ -1266,6 +1267,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 break;
 
         }
+        drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

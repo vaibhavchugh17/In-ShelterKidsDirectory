@@ -42,10 +42,29 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:textColor="@color/black"
-            android:textStyle="bold"
+            android:textAlignment="viewStart"
+            android:textStyle="bold|italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:gravity="start" />
+
+        <TextView
+            android:id="@+id/appVersion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="16dp"
+            android:textColor="#717171"
+            android:textStyle="bold"
+            android:textAlignment="viewStart"
+            android:text="@string/v_1_0"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userDisplayName"
+            android:gravity="start" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

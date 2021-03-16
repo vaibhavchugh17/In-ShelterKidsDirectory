@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
+    android:descendantFocusability = "blocksDescendants"
     android:background="@drawable/customborder">
 
 
@@ -13,7 +14,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
-        android:inputType = "textCapWords"
         android:layout_marginTop="20dp"
         android:gravity="center"
         android:layout_marginEnd="20dp"

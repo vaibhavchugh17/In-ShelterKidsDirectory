@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:weightSum="2"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -29,7 +29,7 @@
             <Button
                 android:id="@+id/kid_parent"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
@@ -37,7 +37,8 @@
                 android:background="@drawable/custom_button"
                 android:text="Parents"
                 android:textColor="#FFFFFF"
-                android:layout_toEndOf="@+id/kidPic" />
+                android:layout_toEndOf="@+id/kidPic"
+                android:layout_marginStart="20dp" />
 
             <Button
                 android:id="@+id/kid_referrals"
@@ -47,7 +48,9 @@
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/custom_button"
                 android:text="Referrals"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:layout_toEndOf="@+id/kid_parent"
+                android:layout_marginStart="20dp" />
 
             <Button
                 android:id="@+id/kid_notes"
@@ -59,7 +62,9 @@
                 android:layout_toRightOf="@+id/kidPic"
                 android:background="@drawable/custom_button"
                 android:text="Notes"
-                android:textColor="#FFFFFF"/>
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/kidPic" />
 
             <Button
                 android:id="@+id/kid_concerns"
@@ -71,7 +76,9 @@
                 android:layout_toRightOf="@+id/kid_notes"
                 android:background="@drawable/custom_button"
                 android:text="Concerns"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/kid_notes" />
 
         </RelativeLayout>
 
@@ -153,7 +160,8 @@
                     android:textColor="#FFFFFF"
                     android:text="SELECT Date"
                     android:background="@drawable/custom_button"
-                    android:id="@+id/select_date_kid">
+                    android:id="@+id/select_date_kid"
+                    android:layout_marginStart="20dp">
                 </Button>
             </LinearLayout>
 
@@ -184,7 +192,8 @@
                     android:textColor="#FFFFFF"
                     android:text="SELECT Date"
                     android:background="@drawable/custom_button"
-                    android:id="@+id/select_admission_kid">
+                    android:id="@+id/select_admission_kid"
+                    android:layout_marginStart="20dp">
                 </Button>
             </LinearLayout>
 
@@ -293,7 +302,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp" />
         </LinearLayout>
 
     </LinearLayout>

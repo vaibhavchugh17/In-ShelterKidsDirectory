@@ -14,4 +14,9 @@
     <string name="close">close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="v_1_0">v.1.0</string>
+    <string name="in_shelter_kids_directory">In-Shelter Kids Directory</string>
+    <string name="choose">Choose</string>
+    <string name="update">Update</string>
+    <string name="upload">Upload</string>
 </resources>
