@@ -287,4 +287,5 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
                     });
         }
     }
+
 }

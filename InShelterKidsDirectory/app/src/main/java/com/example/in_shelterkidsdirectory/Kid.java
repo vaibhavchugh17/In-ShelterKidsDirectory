@@ -1,5 +1,8 @@
 package com.example.in_shelterkidsdirectory;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -20,6 +23,15 @@ public class Kid implements Serializable {
     Parent mother;
     String DOA;
     String url;
+    String photo;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public String getUrl() {
         return url;

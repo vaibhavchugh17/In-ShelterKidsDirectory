@@ -95,7 +95,12 @@ public class kidImageFragment extends DialogFragment implements Serializable {
                 });
             }
             else{
-                profile.setImageResource(R.drawable.defaultprofile);
+                if (kid.getPhoto() != null){
+                    Picasso.get().load(kid.getPhoto()).into(profile);
+                }
+                else{
+                    profile.setImageResource(R.drawable.defaultprofile);
+                }
             }
 
         }
@@ -124,11 +129,7 @@ public class kidImageFragment extends DialogFragment implements Serializable {
                             Toast toast = Toast.makeText(getContext(), "Kid Photo Successfully deleted!", Toast.LENGTH_SHORT);
                             toast.show();
                             kid.setUrl("");
-                            Fragment currentFragment = getFragmentManager().findFragmentByTag("ADD_BOOK");
-                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                            fragmentTransaction.detach(currentFragment);
-                            fragmentTransaction.attach(currentFragment);
-                            fragmentTransaction.commit();
+                            profile.setImageResource(R.drawable.defaultprofile);
                         }
                     })
                             .addOnFailureListener(new OnFailureListener() {
@@ -139,8 +140,16 @@ public class kidImageFragment extends DialogFragment implements Serializable {
                                 }
                             });
                 } else {
-                    Toast toast = Toast.makeText(getContext(), "Please upload a kid photo first :)", Toast.LENGTH_SHORT);
-                    toast.show();
+                    if (kid.getPhoto() != null){
+                        kid.setPhoto(null);
+                        profile.setImageResource(R.drawable.defaultprofile);
+                        Toast toast = Toast.makeText(getContext(), "Kid Photo Successfully deleted!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                    else{
+                        Toast toast = Toast.makeText(getContext(), "Please upload a kid photo first :)", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
                 }
 
             }
@@ -151,7 +160,18 @@ public class kidImageFragment extends DialogFragment implements Serializable {
         return builder
                 .setView(view)
                 .setTitle(title)
-                .setPositiveButton("BACK", null).create();
+                .setPositiveButton("BACK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Fragment currentFragment = getFragmentManager().findFragmentByTag("Kid Profile Picture");
+                        Fragment dest = getFragmentManager().findFragmentByTag("ADD_BOOK");
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.detach(currentFragment);
+                        fragmentTransaction.detach(dest);
+                        fragmentTransaction.attach(dest);
+                        fragmentTransaction.commit();
+                    }
+                }).create();
     }
 
 
@@ -178,42 +198,43 @@ public class kidImageFragment extends DialogFragment implements Serializable {
 
     private void uploadPhoto(Kid kid) {
         if (path != null) {
-            final ProgressDialog statusDialog = new ProgressDialog(this.getContext());
-            statusDialog.setTitle("Uploading");
-            statusDialog.show();
-            //Log.d("Kid Fragment",kid.getUid());
-            StorageReference ref = storageReference.child("images/" + kid.getUID());
-            ref.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    /*Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
-                    if(downloadUri.isSuccessful()) {
-                        kid.setUrl(downloadUri.getResult().toString());
-                    }*/
-                    //kid.setUrl(taskSnapshot.getStorage().getDownloadUrl().toString());
-                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            kid.setUrl(uri.toString());
-                        }
-                    });
-                    statusDialog.dismiss();
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            kid.setUrl("");
-                            statusDialog.dismiss();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            statusDialog.setMessage("Uploaded " + (int) progress + "%");
-                        }
-                    });
+            if (kid.getUID() != null){
+                final ProgressDialog statusDialog = new ProgressDialog(this.getContext());
+                statusDialog.setTitle("Uploading");
+                statusDialog.show();
+                StorageReference ref = storageReference.child("images/" + kid.getUID());
+                ref.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                kid.setUrl(uri.toString());
+                            }
+                        });
+                        statusDialog.dismiss();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                kid.setUrl("");
+                                statusDialog.dismiss();
+                            }
+                        })
+                        .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                                statusDialog.setMessage("Uploaded " + (int) progress + "%");
+                            }
+                        });
+            }
+            else {
+                kid.setPhoto(path.toString());
+                Toast toast = Toast.makeText(getContext(), "Uploaded!", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
     }
 

@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener, SelectionFragment.OnFragmentInteractionListener {
+public class AddKidFragment extends DialogFragment implements Serializable, CommonFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener, SelectionFragment.OnFragmentInteractionListener {
     public static final String EXTRA_MESSAGE3 = "com.example.dlpbgj.MESSAGE3";
     private TextInputEditText kidFirstName;
     private TextInputEditText kidLastName;
@@ -294,14 +294,24 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                     });
                 }
                 else {
-                    kidPic.setImageResource(R.drawable.defaultprofile);
+                    if (kid.getPhoto() != null){
+                        Picasso.get().load(kid.getPhoto()).into(kidPic);
+                    }
+
+                    //kidPic.setImageResource(R.drawable.defaultprofile);
                 }
         }
         else if (getArguments().get("Uid")!=null){
             kidUid = (String)getArguments().get("Uid");
+            if (kid.getPhoto() != null){
+                Picasso.get().load(kid.getPhoto()).into(kidPic);
+            }
         }
         else {
             kidPic.setImageResource(R.drawable.defaultprofile);
+            if (kid.getPhoto() != null){
+                Picasso.get().load(kid.getPhoto()).into(kidPic);
+            }
         }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -335,6 +345,18 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         kidPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                kid.setFirstName(kidFirstName.getText().toString());
+                kid.setLastName(kidLastName.getText().toString());
+                kid.setMiddleName(kidMiddleName.getText().toString());
+                kid.setNationality(kidNationality.getText().toString());
+                kid.setHeight(kidHeight.getText().toString());
+                kid.setDOB(kidDOB.getText().toString());
+                kid.setDOA(kidDOA.getText().toString());
+                kid.setEyeColor(kidEyeColor.getText().toString());
+                kid.setHairColor(kidHairColor.getText().toString());
+                kid.setStatus(kidStatus.getText().toString());
+                kid.setAllergies(kidAllergies.getText().toString());
+                kid.setBirthmarks(kidBirthmarks.getText().toString());
                 kidImageFragment fragment = kidImageFragment.newInstance(kid);
                 fragment.show(getFragmentManager(), "Kid Profile Picture");
             }
@@ -468,6 +490,7 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                                 temp.setReferrals(kid.getReferrals());
                                 temp.setFather(kid.getFather());
                                 temp.setMother(kid.getMother());
+                                temp.setPhoto(kid.getPhoto());
                             }
                             listener.onOkPressed(temp);//Send the inputted kid as a parameter to the main function's implementation of this method
                             dialog.dismiss();
@@ -535,7 +558,6 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
     public void onDeletePressed(Parent referral){
         //nothing yet
     }
-
 
 }
 

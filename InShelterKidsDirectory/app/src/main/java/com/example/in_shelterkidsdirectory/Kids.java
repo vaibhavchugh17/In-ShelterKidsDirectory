@@ -41,7 +41,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -378,8 +380,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public void onOkPressed(final Kid newKid) { //Whenever the user adds a kid, this method is called where the added kid is sent as a parameter from the fragment
-
-        final HashMap<String, String> data = new HashMap<>();
+        final HashMap<String, Object> data = new HashMap<>();
         final String kid_firstName = newKid.getFirstName();    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
         final String kid_lastName = newKid.getLastName();
         String kid_dob = newKid.getDOB();
@@ -392,7 +393,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
         String kid_allergies = newKid.getAllergies();
         String kid_birthmarks = newKid.getBirthmarks();
         String kid_nationality = newKid.getNationality();
-        String kid_url = newKid.getUrl();
             //Adding data inside the hash map
             data.put("First Name", kid_firstName);
             data.put("Last Name", kid_lastName);
@@ -406,7 +406,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             data.put("Birthmarks", kid_birthmarks);
             data.put("Nationality", kid_nationality);
             data.put("DOA",kid_doa);
-            data.put("Url",kid_url);
+            data.put("Url",newKid.getUrl());
         CollectionReference collectionReference = db.collection("Kids");
         arrayReference = db.collection("GlobalArray");
         DocumentReference docRef = arrayReference.document("Array"); //If username does not exist then prompt for a sign-up
@@ -437,6 +437,36 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                         Log.d(TAG, "Failed to update Array Size");
                                     }
                                 });
+                        if(newKid.getPhoto()!= null){
+                            StorageReference ref = storageReference.child("images/" + data.get("Uid"));
+                            ref.putFile(Uri.parse(newKid.getPhoto())).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            data.put("Url",uri.toString());
+                                            collectionReference
+                                                    .document(kid_firstName+data.get("Uid"))
+                                                    .update(data)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Log.d("TAG","Updated");
+                                                        }
+                                                    });
+
+                                        }
+                                    });
+                                }
+                            })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            newKid.setUrl("");
+                                        }
+                                    });
+                        }
                         collectionReference
                                 .document(kid_firstName+data.get("Uid"))
                                 .set(data)
@@ -622,6 +652,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                                                         });
                                             }
                                         }
+
                                         /*finish();
                                         overridePendingTransition(0, 0);
                                         startActivity(getIntent());
@@ -1242,7 +1273,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     public void onDeletePressed(Parent referral){
         //nothing yet
     }
-
 }
 
 
