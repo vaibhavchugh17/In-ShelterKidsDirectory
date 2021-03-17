@@ -24,15 +24,15 @@ import com.squareup.picasso.Picasso;
 import java.awt.font.NumericShaper;
 import java.util.ArrayList;
 
-public class customProfileAdapter extends ArrayAdapter<String> {
+public class customProfileAdapter extends ArrayAdapter<User> {
 
-    private final ArrayList<String> users;
+    private final ArrayList<User> users;
     private final Context context;
     FirebaseStorage storage;
     StorageReference storageReference;
 
 
-    public customProfileAdapter(Context context, ArrayList<String> users) {
+    public customProfileAdapter(Context context, ArrayList<User> users) {
         super(context, 0, users);
         this.users = users;
         this.context = context;
@@ -66,13 +66,20 @@ public class customProfileAdapter extends ArrayAdapter<String> {
         else {
             viewHolder = (customProfileAdapter.ViewHolder)convertView.getTag();
         }
-
-        String username = users.get(position);
+        User user = users.get(position);
+        String username = user.getUsername();
         viewHolder.dispUser.setText(username);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         viewHolder.dispImg.setImageResource(R.drawable.load);
-        storageReference.child("images/" + username).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        if (user.getUrl() != null){
+            Picasso.get().load(user.getUrl()).into(viewHolder.dispImg);
+        }
+        else{
+            viewHolder.dispImg.setImageResource(R.drawable.defaultprofile);
+        }
+
+        /*storageReference.child("images/" + username).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
@@ -83,7 +90,7 @@ public class customProfileAdapter extends ArrayAdapter<String> {
             public void onFailure(@NonNull Exception exception) {
                 viewHolder.dispImg.setImageResource(R.drawable.defaultprofile);
             }
-        });
+        });*/
     return view;
 
     }

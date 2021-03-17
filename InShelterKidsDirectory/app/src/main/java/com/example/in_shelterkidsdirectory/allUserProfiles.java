@@ -32,8 +32,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class allUserProfiles extends AppCompatActivity {
-    ArrayList<String> profileList;
-    ArrayAdapter<String> profileAdapter;
+    ArrayList<User> profileList;
+    ArrayAdapter<User> profileAdapter;
     ListView profiles;
     FirebaseFirestore db;
     CollectionReference userCollection;
@@ -67,8 +67,9 @@ public class allUserProfiles extends AppCompatActivity {
                                 if (user.getUsername().equals(doc.getId())){
                                     continue;
                                 }
-                                System.out.println(doc.getId());
-                                profileList.add(doc.getId());
+                                User user = new User(doc.getId(),"temp");
+                                user.setUrl((String)doc.getData().get("Url"));
+                                profileList.add(user);
                             }
                             profiles = findViewById(R.id.profile_list);
                             profileAdapter = new customProfileAdapter(getApplicationContext(),profileList);
@@ -77,7 +78,7 @@ public class allUserProfiles extends AppCompatActivity {
                             profiles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    String username = profileList.get(position);
+                                    String username = profileList.get(position).getUsername();
                                     docRef = userCollection.document(username);
                                     docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)

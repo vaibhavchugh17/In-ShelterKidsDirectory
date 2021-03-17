@@ -41,6 +41,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -63,6 +64,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
     DatePickerDialog.OnDateSetListener listener;
     String DOB;
     TextView UserBirthDate;
+    FirebaseFirestore userDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +82,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
 
         final User user = (User) getIntent().getSerializableExtra("User");
         Button update;
-        final FirebaseFirestore userDb;
+        //final FirebaseFirestore userDb;
         final TextInputEditText UserFirstName = findViewById(R.id.UserFirstName);
         final TextInputEditText  UserLastName = findViewById(R.id.UserLastName);
         UserBirthDate = findViewById(R.id.UserBirthDate);
@@ -95,7 +97,12 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
         Button photoSelect = findViewById(R.id.button1);
         Button photoUpload = findViewById(R.id.button2);
         imageView = findViewById(R.id.imgView);
-
+        if (user.getUrl() != null){
+            Picasso.get().load(user.getUrl()).into(imageView);
+        }
+        else{
+            imageView.setImageResource(R.drawable.defaultprofile);
+        }
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
@@ -149,6 +156,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
                         user.setEmail((String) data.get("Email"));
                         user.setPhone((String) data.get("Phone"));
                         user.setGenre((String) data.get("Genre"));
+                        user.setUrl((String) data.get("Url"));
                         UserFirstName.setText(user.getFirst_name());
                         UserLastName.setText(user.getLast_name());
                         UserBirthDate.setText(user.getDOB());
@@ -156,8 +164,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
                         UserEmail.setText(user.getEmail());
                         UserPhone.setText(user.getPhone());
                         UserGenre.setText(user.getGenre());
-
-                        StorageReference imagesRef = storageReference.child("images/" + user.getUsername());
+                        /*StorageReference imagesRef = storageReference.child("images/" + user.getUsername());
                         imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri downloadUrl) {
@@ -167,7 +174,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
                                         .centerCrop()
                                         .into(imageView);
                             }
-                        });
+                        });*/
                     }
                 } else {
                     Log.d("UserProfile", "get failed with ", task.getException());
@@ -205,6 +212,7 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
                 data.put("Email", Email);
                 data.put("Phone",Phone);
                 data.put("Genre",Genre);
+                data.put("Url",user.getUrl());
                 userBookCollectionReference
                         .document(user.getUsername())
                         .update(data)
@@ -267,6 +275,24 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
             ref.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            user.setUrl(uri.toString());
+                            CollectionReference collectionReference = userDb.collection("Users");
+                            HashMap<String,Object> data = new HashMap<>();
+                            data.put("Url",uri.toString());
+                            collectionReference
+                                    .document(user.getUsername())
+                                    .update(data)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("TAG","Url added");
+                                        }
+                                    });
+                        }
+                    });
                     statusDialog.dismiss();
                     Toast.makeText(UserProfile.this, "Uploaded!!", Toast.LENGTH_SHORT).show();
                 }
