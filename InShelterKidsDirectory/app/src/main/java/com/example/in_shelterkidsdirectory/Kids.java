@@ -1137,6 +1137,12 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 toast.show();
                 startActivity(nIntent);
                 break;
+            case R.id.itemRefresh:
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+                break;
+
             case R.id.filter1:
                 filteredDataList.clear();
                 if(item.isChecked())

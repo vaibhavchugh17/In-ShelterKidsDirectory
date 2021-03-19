@@ -19,6 +19,12 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/logout"
         />
+    <item android:title="Refresh"
+        android:id="@+id/itemRefresh"
+        android:orderInCategory="102"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_baseline_refresh_24"
+        />
     <item android:title="Filter"
         android:orderInCategory="103">
 
