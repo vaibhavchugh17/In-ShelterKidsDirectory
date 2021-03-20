@@ -381,7 +381,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
-                startActivity(navigationIntent);
+                if (navigationIntent != null){
+                    startActivity(navigationIntent);
+                }
             }
 
             @Override
@@ -1313,6 +1315,11 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     @Override
     public void onDeletePressed(Parent referral){
         //nothing yet
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        navigationIntent = null;
     }
 }
 
