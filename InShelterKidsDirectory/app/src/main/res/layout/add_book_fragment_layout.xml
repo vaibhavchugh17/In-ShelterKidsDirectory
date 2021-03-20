@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#202F65"
+            android:gravity="center"
             android:padding="20dp">
 
             <ImageView
@@ -32,38 +33,38 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="40dp"
                 android:layout_toRightOf="@+id/kidPic"
                 android:background="@drawable/custom_button"
                 android:text="Parents"
                 android:textColor="#FFFFFF"
                 android:layout_toEndOf="@+id/kidPic"
-                android:layout_marginStart="20dp" />
+                android:layout_marginStart="40dp" />
 
             <Button
                 android:id="@+id/kid_referrals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/kid_parent"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="40dp"
                 android:background="@drawable/custom_button"
                 android:text="Referrals"
                 android:textColor="#FFFFFF"
                 android:layout_toEndOf="@+id/kid_parent"
-                android:layout_marginStart="20dp" />
+                android:layout_marginStart="40dp" />
 
             <Button
                 android:id="@+id/kid_notes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginTop="8dp"
                 android:layout_below="@+id/kid_referrals"
                 android:layout_toRightOf="@+id/kidPic"
                 android:background="@drawable/custom_button"
                 android:text="Notes"
                 android:textColor="#FFFFFF"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="40dp"
                 android:layout_toEndOf="@+id/kidPic" />
 
             <Button
@@ -71,13 +72,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kid_referrals"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="40dp"
                 android:layout_marginTop="8dp"
                 android:layout_toRightOf="@+id/kid_notes"
                 android:background="@drawable/custom_button"
                 android:text="Concerns"
                 android:textColor="#FFFFFF"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="40dp"
                 android:layout_toEndOf="@+id/kid_notes" />
 
         </RelativeLayout>

@@ -6,10 +6,11 @@
 
 
     <LinearLayout
-        android:weightSum="4"
+        android:weightSum="12"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
+        android:gravity="center"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
@@ -24,7 +25,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:drawableLeft="@drawable/user"
-            android:layout_marginTop="50dp"
             android:layout_marginBottom="50dp"
             android:background="?attr/colorButtonNormal"
             android:gravity="center"

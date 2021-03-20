@@ -4,22 +4,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/sample1">
 
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:textColor="#B59C34"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:typeface="monospace" />
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -39,14 +27,13 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:drawableLeft="@drawable/user"
-            android:layout_marginTop="230dp"
             android:layout_marginBottom="50dp"
             android:background="?attr/colorButtonNormal"
             android:gravity="center"
             android:hint="USERNAME"
             android:inputType="textPersonName"
             android:textColor="#100F0D"
-             />
+            android:drawableStart="@drawable/user" />
 
         <EditText
             android:id="@+id/editUserPassword"
@@ -59,7 +46,8 @@
             android:gravity="center"
             android:hint="PASSWORD"
             android:inputType="textPassword"
-            android:textColor="#13120E" />
+            android:textColor="#13120E"
+            android:drawableStart="@drawable/key" />
 
             <Button
                 android:id="@+id/login_button"

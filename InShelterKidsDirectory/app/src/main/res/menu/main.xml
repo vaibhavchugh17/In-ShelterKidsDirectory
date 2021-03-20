@@ -13,17 +13,18 @@
         android:orderInCategory="101"
         app:showAsAction="ifRoom"
         app:actionLayout="@layout/profile_menu_layout"/>
-    <item android:title="Logout"
-        android:id="@+id/itemLogOut"
-        android:orderInCategory="102"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/logout"
-        />
+
     <item android:title="Refresh"
         android:id="@+id/itemRefresh"
         android:orderInCategory="102"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_baseline_refresh_24"
+        />
+    <item android:title="Logout"
+        android:id="@+id/itemLogOut"
+        android:orderInCategory="102"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/logout"
         />
     <item android:title="Filter"
         android:orderInCategory="103">
