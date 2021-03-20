@@ -12,15 +12,6 @@ public class User implements Serializable {
     private String first_name;
     private String last_name;
     private String genre;
-    private String url;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public User(String username, String password) {
         this.username = username;

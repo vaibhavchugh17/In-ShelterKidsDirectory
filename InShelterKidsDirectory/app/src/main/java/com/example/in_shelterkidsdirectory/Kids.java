@@ -3,7 +3,6 @@ package com.example.in_shelterkidsdirectory;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.annotation.NonNull;
@@ -1087,33 +1085,22 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main,menu);
-        //StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
-        CollectionReference userBookCollectionReference = db.collection("Users");
-        DocumentReference docRef = userBookCollectionReference.document(currentUser.getUsername());
+        StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
         MenuItem menuItem = menu.findItem(R.id.itemProfile);
         View view = MenuItemCompat.getActionView(menuItem);
         CircleImageView profileImage = view.findViewById(R.id.appbar_profile_image);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+
+        imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Map<String, Object> data = document.getData();
-                        currentUser.setUrl((String) data.get("Url"));
-                        if (currentUser.getUrl() != null){
-                            Picasso.get().load(currentUser.getUrl()).into(profileImage);
-                        }
-                        else{
-                            profileImage.setImageResource(R.drawable.defaultprofile);
-                        }
-                    }
-                } else {
-                    Log.d("UserProfile", "get failed with ", task.getException());
-                }
+            public void onSuccess(Uri downloadUrl) {
+                Glide
+                        .with(getApplicationContext())
+                        .load(downloadUrl.toString())
+                        .centerCrop()
+                        .into(profileImage);
             }
         });
+
 
         profileImage.setOnClickListener(new View.OnClickListener() {
             @Override

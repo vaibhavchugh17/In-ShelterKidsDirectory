@@ -24,15 +24,15 @@ import com.squareup.picasso.Picasso;
 import java.awt.font.NumericShaper;
 import java.util.ArrayList;
 
-public class customProfileAdapter extends ArrayAdapter<User> {
+public class customProfileAdapter extends ArrayAdapter<String> {
 
-    private final ArrayList<User> users;
+    private final ArrayList<String> users;
     private final Context context;
     FirebaseStorage storage;
     StorageReference storageReference;
 
 
-    public customProfileAdapter(Context context, ArrayList<User> users) {
+    public customProfileAdapter(Context context, ArrayList<String> users) {
         super(context, 0, users);
         this.users = users;
         this.context = context;
@@ -66,20 +66,13 @@ public class customProfileAdapter extends ArrayAdapter<User> {
         else {
             viewHolder = (customProfileAdapter.ViewHolder)convertView.getTag();
         }
-        User user = users.get(position);
-        String username = user.getUsername();
+
+        String username = users.get(position);
         viewHolder.dispUser.setText(username);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         viewHolder.dispImg.setImageResource(R.drawable.load);
-        if (user.getUrl() != null){
-            Picasso.get().load(user.getUrl()).into(viewHolder.dispImg);
-        }
-        else{
-            viewHolder.dispImg.setImageResource(R.drawable.defaultprofile);
-        }
-
-        /*storageReference.child("images/" + username).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        storageReference.child("images/" + username).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 // Got the download URL for 'users/me/profile.png'
@@ -90,7 +83,7 @@ public class customProfileAdapter extends ArrayAdapter<User> {
             public void onFailure(@NonNull Exception exception) {
                 viewHolder.dispImg.setImageResource(R.drawable.defaultprofile);
             }
-        });*/
+        });
     return view;
 
     }

@@ -289,11 +289,4 @@ public class MainActivity extends AppCompatActivity implements PinFragment.OnFra
         }
     }
 
-    @Override
-    public void onBackPressed(){
-        overridePendingTransition(0, 0);
-        startActivity(getIntent());
-        overridePendingTransition(0, 0);
-    }
-
 }
