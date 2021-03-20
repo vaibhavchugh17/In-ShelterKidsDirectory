@@ -40,7 +40,8 @@
              You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <activity android:name=".UserProfile" />
-        <activity android:name=".Kids" />
+        <activity android:name=".Kids"
+            android:hardwareAccelerated="true"/>
         <activity android:name=".Search_by_descr" />
         <activity android:name=".MainActivity">
             <intent-filter>

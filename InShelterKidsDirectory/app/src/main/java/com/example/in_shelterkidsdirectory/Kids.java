@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -59,6 +61,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Kids extends AppCompatActivity implements AddKidFragment.OnFragmentInteractionListener, kidImageFragment.OnFragmentInteractionListener,CommonFragment.OnFragmentInteractionListener,SelectionFragment.OnFragmentInteractionListener,NavigationView.OnNavigationItemSelectedListener {
     public static Context contextOfApplication;
     ListView kidList;
+    private Handler mHandler;
     ArrayAdapter<Kid> kidAdapter; //A custom adapter
     ArrayList<Kid> kidDataList;   //List of all the kids user owns
     ArrayAdapter<Kid> filteredKidAdapter; //A custom adapter
@@ -80,6 +83,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     ActionBarDrawerToggle toggle;
     private User currentUser;
     TextView userDisplay;
+    Intent navigationIntent;
+
+
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
@@ -93,6 +99,7 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mHandler = new Handler();
         setContentView(R.layout.activity_all_kids);
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -361,6 +368,27 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
             }
         });
 
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                startActivity(navigationIntent);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+
+            }
+        });
 
         kidList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -1084,6 +1112,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         getMenuInflater().inflate(R.menu.main,menu);
         StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
         MenuItem menuItem = menu.findItem(R.id.itemProfile);
@@ -1117,7 +1148,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         switch(item.getItemId()){
 
             case R.id.itemSearch:
@@ -1126,7 +1159,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 extras.put("User",currentUser);
                 extras.put("Kids",kidDataList);
                 intent.putExtra("Extras", extras);
+                overridePendingTransition(0, 0);
                 startActivity(intent);
+                overridePendingTransition(0, 0);
                 break;
             case R.id.itemProfile:
                 Toast.makeText(this,"profileClicked",Toast.LENGTH_SHORT).show();
@@ -1135,7 +1170,9 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
                 Intent nIntent = new Intent(Kids.this, MainActivity.class);
                 Toast toast = Toast.makeText(Kids.this, "Signed Out!", Toast.LENGTH_SHORT);
                 toast.show();
+                overridePendingTransition(0, 0);
                 startActivity(nIntent);
+                overridePendingTransition(0, 0);
                 break;
             case R.id.itemRefresh:
                 overridePendingTransition(0, 0);
@@ -1249,27 +1286,23 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.nav_myProfile:
-                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
-                intent.putExtra("User", currentUser);
-                startActivity(intent);
+                navigationIntent = new Intent(getApplicationContext(), UserProfile.class);
+                navigationIntent.putExtra("User", currentUser);
                 break;
             case R.id.nav_allProfiles:
-                Intent intent1 = new Intent(getApplicationContext(), allUserProfiles.class);
-                intent1.putExtra("User", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
-                startActivity(intent1);
+                navigationIntent = new Intent(getApplicationContext(), allUserProfiles.class);
+                navigationIntent.putExtra("User", currentUser);
                 break;
 
             case R.id.nav_codeList:
-                Intent intent2 = new Intent(getApplicationContext(), list_of_codes.class);
-                intent2.putExtra("User", currentUser);   //Sending the current user as a parameter to the allUserProfiles activity
-                startActivity(intent2);
+                navigationIntent = new Intent(getApplicationContext(), list_of_codes.class);
+                navigationIntent.putExtra("User", currentUser);
                 break;
 
             case R.id.nav_logout:
-                Intent nIntent = new Intent(Kids.this, MainActivity.class);
+                navigationIntent = new Intent(Kids.this, MainActivity.class);
                 Toast toast = Toast.makeText(Kids.this, "Signed Out!", Toast.LENGTH_SHORT);
                 toast.show();
-                startActivity(nIntent);
                 break;
 
         }
