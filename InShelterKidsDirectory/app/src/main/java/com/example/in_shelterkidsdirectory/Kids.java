@@ -411,6 +411,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public void onOkPressed(final Kid newKid) { //Whenever the user adds a kid, this method is called where the added kid is sent as a parameter from the fragment
+        Toast toast = Toast.makeText(Kids.this, newKid.getFirstName() + " Added!", Toast.LENGTH_SHORT);
+        toast.show();
         final HashMap<String, Object> data = new HashMap<>();
         final String kid_firstName = newKid.getFirstName();    //Title of the kid will be the ID of the document representing the kid inside the sub-collections of MyKids
         final String kid_lastName = newKid.getLastName();
@@ -717,6 +719,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
      */
     @Override
     public void onOkPressed(final Kid kid, final String oldKidName) {
+        Toast toast = Toast.makeText(Kids.this, kid.getFirstName() + "'s Info Edited!", Toast.LENGTH_SHORT);
+        toast.show();
         final HashMap<String, Object> data = new HashMap<>();
         data.put("First Name", kid.getFirstName());
         data.put("Last Name", kid.getLastName());
@@ -1091,6 +1095,8 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public void onDeletePressed(Kid kid) {
+        Toast toast = Toast.makeText(Kids.this, kid.getFirstName() + " Deleted!", Toast.LENGTH_SHORT);
+        toast.show();
         CollectionReference collectionReference = db.collection("Kids");
         collectionReference
                 .document(kid.getFirstName()+kid.getUID())
@@ -1113,10 +1119,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         getMenuInflater().inflate(R.menu.main,menu);
         StorageReference imagesRef = storageReference.child("images/" + currentUser.getUsername());
         MenuItem menuItem = menu.findItem(R.id.itemProfile);
@@ -1150,9 +1152,6 @@ public class Kids extends AppCompatActivity implements AddKidFragment.OnFragment
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        getWindow().setFlags(
-                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         switch(item.getItemId()){
 
             case R.id.itemSearch:

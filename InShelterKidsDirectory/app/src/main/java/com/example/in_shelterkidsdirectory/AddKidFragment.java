@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -89,6 +90,23 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
 
         void onOkPressed();
     }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    listener.onDeletePressed(kid);
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+            }
+        }
+    };
+
+
 
     static AddKidFragment newInstance(Kid kid, User user) {
         Bundle args = new Bundle();
@@ -381,7 +399,9 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
                     public void onClick(View v) {
                         if (getArguments().get("Kid") != null) {
                             kid = (Kid) getArguments().get("Kid");
-                            listener.onDeletePressed(kid);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                            builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                                    .setNegativeButton("No", dialogClickListener).show();
                         } else {
                             listener.onOkPressed();
                         }
