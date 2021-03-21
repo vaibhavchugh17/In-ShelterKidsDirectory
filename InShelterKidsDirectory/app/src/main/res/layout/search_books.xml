@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:orientation="horizontal">
@@ -18,8 +18,8 @@
 
         <EditText
             android:id="@+id/description"
-            android:layout_width="440dp"
-            android:layout_height="40dp"
+            android:layout_width="450dp"
+            android:layout_height="60dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="8dp"
@@ -35,6 +35,7 @@
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/custom_button"
             android:ems="10"
             android:text="SEARCH">
@@ -52,23 +53,27 @@
 
         <CheckBox
             android:id="@+id/check_available"
-            android:layout_width="110dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:clickable="true"
+            android:layout_marginLeft="60dp"
+            android:layout_gravity="center"
             android:ems="10"
             android:focusable="true"
             android:text="Residential"
-            android:textColor="@color/white">
+            android:textColor="@color/white"
+            android:layout_marginStart="60dp">
 
         </CheckBox>
 
 
         <CheckBox
             android:id="@+id/check_borrowed"
-            android:layout_width="110dp"
+            android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:clickable="true"
             android:focusable="true"
+            android:layout_gravity="center"
             android:ems="10"
             android:text="Out-Reach"
             android:textColor="@color/white">
