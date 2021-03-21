@@ -22,7 +22,7 @@
         />
     <item android:title="Logout"
         android:id="@+id/itemLogOut"
-        android:orderInCategory="102"
+        android:orderInCategory="104"
         app:showAsAction="ifRoom"
         android:icon="@drawable/logout"
         />
