@@ -271,7 +271,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
 
                         if (flag.equals("Referral")){
 
-                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB,flag);
                             if (ret.first) {
                                 ret.second.requestFocus();
                             }
@@ -287,7 +287,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
 
                         }
                         else if (flag.equals("Father")){
-                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB,flag);
                             if (ret.first) {
                                 ret.second.requestFocus();
                             }
@@ -300,7 +300,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             }
                         }
                         else if (flag.equals("Mother")){
-                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB,flag);
                             if (ret.first) {
                                 ret.second.requestFocus();
                             }
@@ -313,7 +313,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
                             }
                         }
                         else if (flag.equals("Guardian")){
-                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB);
+                            Pair<Boolean, View> ret = checkValidInput(firstName,lastName,DOB,flag);
                             if (ret.first) {
                                 ret.second.requestFocus();
                             }
@@ -359,7 +359,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#202F65"));
     }
 
-    public Pair<Boolean, View> checkValidInput(String firstName, String lastName, String DOB){
+    public Pair<Boolean, View> checkValidInput(String firstName, String lastName, String DOB,String flag){
 
         View focus = null;
         boolean wrong_input = false;
@@ -375,12 +375,13 @@ public class CommonFragment extends DialogFragment implements Serializable {
             focus = parentLastName;
         }
 
-        if (DOB.equals("")) { //Mandatory to enter kid's DOB
-            parentDOB.setError("Please enter the DOB");
-            wrong_input = true;
-            focus = parentDOB;
+        if (!flag.equals("Referral")) {
+            if (DOB.equals("")) { //Mandatory to enter kid's DOB
+                parentDOB.setError("Please enter the DOB");
+                wrong_input = true;
+                focus = parentDOB;
+            }
         }
-
         return new Pair<Boolean, View>(wrong_input,focus);
 
     }
