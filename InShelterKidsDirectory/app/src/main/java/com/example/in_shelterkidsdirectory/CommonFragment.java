@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +59,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
     private Button dateOfBirth;
     private RelativeLayout r_layout;
     private String title;
+    private LinearLayout linearLayout;
 
     public interface OnFragmentInteractionListener {
         void onAddPressed();
@@ -106,6 +108,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
         extra_information = view.findViewById(R.id.extra_information);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        linearLayout = view.findViewById(R.id.linear_layout);
 
         dateOfBirth.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +126,8 @@ public class CommonFragment extends DialogFragment implements Serializable {
         DateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                String temp = i2 + "/" + i1 + "/" + i ;
+                int month = i1+1;
+                String temp = month + "/" + i2 + "/" + i ;
                 parentDOB.setText(temp);
             }
         };
@@ -177,6 +181,7 @@ public class CommonFragment extends DialogFragment implements Serializable {
             }
             else {
                 title = "Referral Information";
+                linearLayout.setVisibility(View.GONE);
                 if (getArguments().get("Referral") != null){
                     title = "Edit Referral Information";
                     Parent referral = (Parent) getArguments().get("Referral");
@@ -185,7 +190,8 @@ public class CommonFragment extends DialogFragment implements Serializable {
                     parentAddress.setText(referral.getHomeAddress());
                     parentOccupation.setText(referral.getOccupation());
                     parentNumber.setText(referral.getPhoneNumber());
-                    parentDOB.setText(referral.getDOB());
+                    //parentDOB.setText(referral.getDOB());
+                    linearLayout.setVisibility(View.GONE);
                     extra_information.setText(referral.getExtraInformation());
                 }
             }

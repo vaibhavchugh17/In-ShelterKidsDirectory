@@ -267,7 +267,8 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         DateListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                String temp = i2 + "/" + i1 + "/" + i ;
+                int month = i1+1;
+                String temp = month + "/" + i2 + "/" + i ;
                 kidDOB.setText(temp);
             }
         };
@@ -275,7 +276,8 @@ public class AddKidFragment extends DialogFragment implements Serializable, Comm
         AListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                String temp = i2 + "/" + i1 + "/" + i ;
+                int month = i1+1;
+                String temp = month + "/" + i2 + "/" + i ;
                 kidDOA.setText(temp);
             }
         };

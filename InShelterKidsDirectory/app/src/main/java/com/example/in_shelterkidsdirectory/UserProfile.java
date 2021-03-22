@@ -129,7 +129,8 @@ public class UserProfile extends AppCompatActivity implements kidImageFragment.O
         listener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                       DOB = i2 + "/" + i1 + "/" + i ;
+                       int month = i1+1;
+                       DOB = month + "/" + i2 + "/" + i ;
                        UserBirthDate.setText(DOB);
             }
         };
