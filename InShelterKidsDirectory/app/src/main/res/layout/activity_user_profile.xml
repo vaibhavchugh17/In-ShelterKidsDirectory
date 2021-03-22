@@ -1,186 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
-    <include
-        layout="@layout/appbar"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="#202F65"
-        android:gravity="center"
-        android:padding="20dp">
-
-        <ImageView
-            android:id="@+id/imgView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_centerVertical="true"
-            >
-        </ImageView>
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/imgView"
-            android:background="@drawable/custom_button"
-            android:text="@string/choose"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@+id/imgView" />
-
-        <Button
-            android:id="@+id/Update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/button1"
-            android:layout_marginLeft="90dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/imgView"
-            android:background="@drawable/custom_button"
-            android:text="@string/update"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="90dp"
-            android:layout_toEndOf="@+id/imgView" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_toRightOf="@+id/button1"
-            android:background="@drawable/custom_button"
-            android:text="@string/upload"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="30dp"
-            android:layout_toEndOf="@+id/button1" />
-
-    </RelativeLayout>
-
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        tools:context=".MainActivity">
+        <include
+            layout="@layout/appbar"/>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="User Name">
+            android:layout_height="200dp"
+            android:background="#202F65"
+            android:gravity="center"
+            android:padding="20dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/UserName"
-                android:layout_width="match_parent"
-                android:editable="false"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <ImageView
+                android:id="@+id/imgView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerVertical="true"
+                >
+            </ImageView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="First Name">
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/imgView"
+                android:background="@drawable/custom_button"
+                android:text="Choose"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="30dp"
+                android:layout_toEndOf="@+id/imgView" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/UserFirstName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/Update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/button1"
+                android:layout_marginLeft="90dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/imgView"
+                android:background="@drawable/custom_button"
+                android:text="@string/update"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="90dp"
+                android:layout_toEndOf="@+id/imgView" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Last Name">
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_toRightOf="@+id/button1"
+                android:background="@drawable/custom_button"
+                android:text="@string/upload"
+                android:textColor="#FFFFFF"
+                android:layout_marginStart="30dp"
+                android:layout_toEndOf="@+id/button1" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/UserLastName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Phone Number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phoneNumber"
-                android:layout_width="match_parent"
-                android:inputType="phone"
-                android:maxLength="10"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Email Address">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="ID Number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/UserFav"
-                android:inputType="number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Date of Birth">
+                android:layout_marginBottom="10dp"
+                android:hint="User Name">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/UserBirthDate"
+                    android:id="@+id/UserName"
+                    android:layout_width="match_parent"
+                    android:editable="false"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="First Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/UserFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="2"
-                android:textColor="#FFFFFF"
-                android:text="SELECT Date"
-                android:background="@drawable/custom_button"
-                android:id="@+id/select_date">
-            </Button>
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Last Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/UserLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Phone Number">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumber"
+                    android:layout_width="match_parent"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Email Address">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="ID Number">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/UserFav"
+                    android:inputType="number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Date of Birth">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/UserBirthDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="2"
+                    android:textColor="#FFFFFF"
+                    android:text="SELECT Date"
+                    android:background="@drawable/custom_button"
+                    android:id="@+id/select_date"
+                    android:layout_marginStart="20dp">
+                </Button>
+            </LinearLayout>
         </LinearLayout>
+
+
+
     </LinearLayout>
-
-
-
-</LinearLayout>
+</ScrollView>
